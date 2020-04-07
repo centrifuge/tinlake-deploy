@@ -29,12 +29,13 @@ contract FabDeployerTest is DSTest {
 
     function testFabDeploy() public {
         bytes memory pileFabBytes = type(PileFab).creationCode;
+        bytes32 pileFabHash = keccak256(pileFabBytes);
         // fab should not exist
-        assertEq(deployer.getAddress(pileFabBytes, "pileFab"), address(0));
+        assertEq(deployer.getAddress(pileFabHash, "pileFab"), address(0));
 
         deployer.deploy(pileFabBytes, "pileFab");
 
-        address pileFab_ = deployer.getAddress(pileFabBytes, "pileFab");
+        address pileFab_ = deployer.getAddress(pileFabHash, "pileFab");
         assertTrue(pileFab_ != address(0));
 
         PileFab pileFab = PileFab(pileFab_);
