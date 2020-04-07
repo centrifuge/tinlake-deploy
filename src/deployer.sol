@@ -24,12 +24,12 @@ contract MainDeployer {
     }
 
     /// returns address(0) if contract doesn't exist
-    function getAddress(bytes memory bytecode, bytes32 salt) public view returns(address) {
+    function getAddress(bytes32 bytecodeHash, bytes32 salt) public view returns(address) {
         // create2 address calculation
         // name is used as salt
         // keccak256(0xff ++ deployingAddr ++ salt ++ keccak256(bytecode))[12:]
         bytes32 _data = keccak256(
-            abi.encodePacked(bytes1(0xff), address(this), salt, keccak256(bytecode))
+            abi.encodePacked(bytes1(0xff), address(this), salt, bytecodeHash)
         );
         address addr = address(bytes20(_data << 96));
         uint size;
