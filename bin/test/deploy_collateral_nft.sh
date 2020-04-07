@@ -1,12 +1,13 @@
 BIN_DIR=${BIN_DIR:-$(cd "${0%/*}"&&pwd)}
 cd $BIN_DIR
+CONTRACT_BIN=$BIN_DIR/../../lib/tinlake/out
 
 source $BIN_DIR/../util/util.sh
 
 # set SETH enviroment variable
 source ./local_env.sh
 
-export COLLATERAL_NFT=$(seth send --create ./../../out/Title.bin 'Title(string memory, string memory)' "Test Collateral NFT" ,"TNFT")
+export COLLATERAL_NFT=$(seth send --create $CONTRACT_BIN/Title.bin 'Title(string memory, string memory)' "Test Collateral NFT" ,"TNFT")
 
 message Collateral NFT Address: $COLLATERAL_NFT
 

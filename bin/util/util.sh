@@ -39,23 +39,6 @@ warning_msg()
     echo -----------------------------------------------------------------------------
 }
 
-build_contracts()
-{
-    CONTRACT_FILES=1
-    if [ -d "$1/out" ]; then
-    # count contract abi files
-    CONTRACT_FILES=$(ls $1/out | wc -l)
-    fi
-    # build contracts if required
-    if [ "$CONTRACT_FILES" -lt  "2" ]; then
-        cd ../../
-        dapp update
-        dapp --use solc:0.5.15 build --extract
-        cd bin
-    fi
-    message contract build files are ready
-}
-
 loadValuesFromFile() {
     local keys
 

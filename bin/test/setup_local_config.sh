@@ -1,10 +1,9 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 BIN_DIR=${BIN_DIR:-$(cd "${0%/*}"&&pwd)}
 cd $BIN_DIR
+CONTRACT_BIN=$BIN_DIR/../../lib/tinlake/out
 
 source $BIN_DIR/../util/util.sh
-
-build_contracts $BIN_DIR/../../
 
 # set SETH enviroment variable
 source $BIN_DIR/local_env.sh
@@ -16,13 +15,13 @@ test -z "$CURRENCY_VERSION" && CURRENCY_VERSION="a"
 test -z "$CURRENCY_CHAINID" && CURRENCY_CHAINID=1
 
 # Deploy Default Currency
-TINLAKE_CURRENCY=$(seth send --create $BIN_DIR/../../out/SimpleToken.bin 'SimpleToken(string memory,string memory,string memory, uint)' "$CURRENCY_SYMBOL" "$CURRENCY_NAME" "$CURRENCY_VERSION" $(seth --to-uint256 $CURRENCY_CHAINID))
+TINLAKE_CURRENCY=$(seth send --create $CONTRACT_BIN/SimpleToken.bin 'SimpleToken(string memory,string memory,string memory, uint)' "$CURRENCY_SYMBOL" "$CURRENCY_NAME" "$CURRENCY_VERSION" $(seth --to-uint256 $CURRENCY_CHAINID))
 
 message test currency contract deployed
 CONFIG_FILE=$1
 [ -z "$1" ] && CONFIG_FILE="$BIN_DIR/../config_$(seth chain).json"
 
-touch $CONFIG_FILEf
+touch $CONFIG_FILE
 
 
 addValuesToFile $CONFIG_FILE <<EOF

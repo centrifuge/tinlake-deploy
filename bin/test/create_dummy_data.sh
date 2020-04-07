@@ -14,7 +14,6 @@ realpath $DEPLOYMENT_FILE
 
 loadValuesFromFile $DEPLOYMENT_FILE
 
-
 # get some currency
 AMOUNT=$(seth --to-uint256 $(seth --to-wei 1000 ether))
 seth send $TINLAKE_CURRENCY 'mint(address, uint)' $ETH_FROM $AMOUNT
