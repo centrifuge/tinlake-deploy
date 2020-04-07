@@ -21,10 +21,10 @@ import "tinlake/borrower/deployer.sol";
 
 
 contract FabDeployerTest is DSTest {
-    Deployer deployer;
+    MainDeployer deployer;
 
     function setUp() public {
-        deployer = new Deployer();
+        deployer = new MainDeployer();
     }
 
     function testFabDeploy() public {

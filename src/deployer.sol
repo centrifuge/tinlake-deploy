@@ -15,7 +15,7 @@
 
 pragma solidity >=0.5.15 <0.6.0;
 
-contract Deployer {
+contract MainDeployer {
     function deploy(bytes memory bytecode, bytes32 salt) public returns (address addr)  {
         assembly {
             addr := create2(0, add(bytecode, 0x20), mload(bytecode), salt)
