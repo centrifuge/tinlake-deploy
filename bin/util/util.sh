@@ -53,3 +53,9 @@ addValuesToFile() {
     result=$(jq -s add "$1" /dev/stdin)
     printf %s "$result" > "$1"
 }
+
+getFabContract() {
+
+    CONTRACT_BIN_FILE=$2
+
+}
