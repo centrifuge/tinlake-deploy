@@ -20,7 +20,7 @@ success_msg "Correct Config File"
 mkdir -p $BIN_DIR/../deployments
 
 # deploy root contract
-#source ./root/deploy.sh
+source ./root/deploy.sh
 #
 ## deploy lender contracts
 # source ./lender/deploy.sh
