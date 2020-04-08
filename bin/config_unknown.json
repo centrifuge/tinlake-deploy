@@ -1,9 +1,0 @@
-{
-  "ETH_RPC_URL": "http://127.0.0.1:8545",
-  "ETH_FROM": "e76eab10d4fe770e902096cb5c6345c0c6758fcc",
-  "ETH_GAS": "7000000",
-  "ETH_KEYSTORE": "/Users/manuelpolzhofer/.dapp/testnet/8545/keystore",
-  "ETH_PASSWORD": "/Users/manuelpolzhofer/.dapp/testnet/8545/.empty-password",
-  "TINLAKE_CURRENCY": "0xcfbf3056c5e5645c190424fbe7b2e4c632a7f461",
-  "MAIN_DEPLOYER": "0xa4e4174808d18142f8091bf4d58cafd46b4fd744"
-}
