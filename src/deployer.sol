@@ -42,7 +42,7 @@ contract MainDeployer {
         return address(0);
     }
 
-    function bytecodeHash(bytes memory bytecode) public returns(bytes32) {
+    function bytecodeHash(bytes memory bytecode) public view returns(bytes32) {
         return keccak256(bytecode);
     }
 }
