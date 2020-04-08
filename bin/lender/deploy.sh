@@ -11,7 +11,7 @@ message Deploy Lender
 DEPLOYMENT_FILE="./../deployments/addresses_$(seth chain).json"
 ZERO_ADDRESS=0x0000000000000000000000000000000000000000
 
-message Check or Deploy Lender Fabs
+message Fetch Fab Addresses or Deploy
 
 # check or deploy default fabs
 OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/AllowanceOperatorFab.bin "OPERATOR_FAB")

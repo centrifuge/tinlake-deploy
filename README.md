@@ -74,7 +74,9 @@ dapp testnet
 
 ### Util Scripts
 
-### Deploy Main Deployer
+**Create Main Deployer**
 ```json
 dapp create MainDeployer 
 ```
+
+
