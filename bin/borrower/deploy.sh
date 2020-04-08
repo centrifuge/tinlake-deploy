@@ -45,18 +45,21 @@ message Create Borrower Deployer
 
 export BORROWER_DEPLOYER=$(seth send --create $CONTRACT_BIN/BorrowerDeployer.bin 'BorrowerDeployer(address,address,address,address,address,address,address,address,address,string memory,string memory)' $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $CEILING_FAB $COLLECTOR_FAB $THRESHOLD_FAB $PRICEPOOL_FAB $TINLAKE_CURRENCY "$TITLE_NAME" "$TITLE_SYMBOL")
 
-message "Deploy Title contract"
+message "deploy title contract"
 seth send $BORROWER_DEPLOYER 'deployTitle()'
-message "Deploy Pile contract"
+message "deploy pile contract"
 seth send $BORROWER_DEPLOYER 'deployPile()'
-message "Deploy Ceiling contract"
+message "deploy ceiling contract"
 seth send $BORROWER_DEPLOYER 'deployCeiling()'
-message "Deploy Shelf contract"
+message "deploy shelf contract"
 seth send $BORROWER_DEPLOYER 'deployShelf()'
+message "deploy threshold contract"
 seth send $BORROWER_DEPLOYER 'deployThreshold()'
+message "deploy collector contract"
 seth send $BORROWER_DEPLOYER 'deployCollector()'
+message "deploy price pool contract"
 seth send $BORROWER_DEPLOYER 'deployPricePool()'
-
+message "finalize borrower contracts"
 seth send $BORROWER_DEPLOYER 'deploy()'
 
 success_msg Borrower Contracts deployed
