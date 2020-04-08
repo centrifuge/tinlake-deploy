@@ -4,6 +4,6 @@
   "ETH_GAS": "7000000",
   "ETH_KEYSTORE": "/Users/manuelpolzhofer/.dapp/testnet/8545/keystore",
   "ETH_PASSWORD": "/Users/manuelpolzhofer/.dapp/testnet/8545/.empty-password",
-  "TINLAKE_CURRENCY": "0xd37bdb5bc5ecb01864c21ebd1f7d21e6f39b5fb2",
-  "MAIN_DEPLOYER": "0x3db15661a37d30df466b95387306f88b1b229be6"
+  "TINLAKE_CURRENCY": "0xcfbf3056c5e5645c190424fbe7b2e4c632a7f461",
+  "MAIN_DEPLOYER": "0xa4e4174808d18142f8091bf4d58cafd46b4fd744"
 }
