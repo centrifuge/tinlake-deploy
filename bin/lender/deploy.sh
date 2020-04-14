@@ -14,9 +14,27 @@ ZERO_ADDRESS=0x0000000000000000000000000000000000000000
 message Fetch Fab Addresses or Deploy
 
 # check or deploy default fabs
+# modular operator contract
+if [ "$OPERATOR"  !=  "whitelist" ]; then
+    echo "Modular Contract Operator => Whitelist Operator"
+    OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/WhitelistOperatorFab.bin. "OPERATOR_FAB")
+else
+    echo "Modular Contract Operator => Allowance Operator"
+    OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/AllowanceOperatorFab.bin "OPERATOR_FAB")
+fi
+
 OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/AllowanceOperatorFab.bin "OPERATOR_FAB")
 echo "OPERATOR_FAB: $OPERATOR_FAB"
-ASSESSOR_FAB=$(getFabContract $CONTRACT_BIN/DefaultAssessorFab.bin "ASSESSOR_FAB")
+
+# modular assessor contract
+if [ "$ASSESSOR"  !=  "full_investment" ]; then
+    echo "Modular Contract Operator => Full Investment Assessor"
+    ASSESSOR_FAB=$(getFabContract $CONTRACT_BIN/FullInvestmentAssessorFab.bin "ASSESSOR_FAB")
+
+else
+    echo "Modular Contract Operator => Default Assessor"
+    ASSESSOR_FAB=$(getFabContract $CONTRACT_BIN/DefaultAssessorFab.bin "ASSESSOR_FAB")
+fi
 echo "ASSESSOR_FAB: $ASSESSOR_FAB"
 DISTRIBUTOR_FAB=$(getFabContract $CONTRACT_BIN/DefaultDistributorFab.bin "DISTRIBUTOR_FAB")
 echo "DISTRIBUTOR_FAB: $DISTRIBUTOR_FAB"
