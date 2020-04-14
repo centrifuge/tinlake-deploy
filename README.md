@@ -79,4 +79,78 @@ dapp testnet
 dapp create MainDeployer 
 ```
 
+## Customizable Modular Contracts
+It is possible to customize a Tinlake deployment with modular contracts. The deploy script
+uses the default version of each modular contract, if no specific contract is defined.
 
+A modular contract can be specified in the `config` file. For the difference between the modular contracts
+visit our documentation website.
+
+### Assessor Contract
+
+**Default Assessor**
+
+Calculates senior interest bearing amount based on borrowed tranche currency amount.
+```json
+{
+ "ASSESSOR": "default"
+}
+```
+**Full Investment Assessor**
+
+Calculates senior interest bearing amount based on investement currency in the senior tranche.
+```json
+{
+ "ASSESSOR": "full_investment"
+}
+```
+### Ceiling Contract
+
+**Principal Ceiling**
+```json
+{
+ "CEILING": "principal"
+}
+```
+If not defined `principal` is the default Ceiling contract implementation.
+
+**CreditLine Ceiling**
+```json
+{
+ "CEILING": "creditline"
+}
+```
+### Operator Contract
+
+**Allowance Operator**
+```json
+{
+ "OPERATOR": "allowance"
+}
+```
+If not defined `allowance` is the default
+**Whitelist Operator**
+```json
+{
+ "OPERATOR": "whitelist"
+}
+```
+
+**Whitelist Operator**
+
+### Senior Tranche
+```json
+{
+ "SENIOR_TRANCHE": "true"
+}
+```
+If not defined the default is `false`.
+
+If the senior tranche is `true` a senior operator must be defined.
+
+```json
+{
+ "SENIOR_OPERATOR": "allowance"
+}
+```
+The other option is `whitelist` by default the `allowance` contract is used. 
