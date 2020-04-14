@@ -16,10 +16,10 @@ message Fetch Fab Addresses or Deploy
 # check or deploy default fabs
 # modular operator contract
 if [ "$OPERATOR"  ==  "whitelist" ]; then
-    echo "Modular Contract Operator => Whitelist Operator"
+    echo "Modular Contract Operator => Whitelist"
     OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/WhitelistOperatorFab.bin. "OPERATOR_FAB")
 else
-    echo "Modular Contract Operator => Allowance Operator"
+    echo "Modular Contract Operator => Allowance"
     OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/AllowanceOperatorFab.bin "OPERATOR_FAB")
 fi
 
@@ -28,11 +28,11 @@ echo "OPERATOR_FAB: $OPERATOR_FAB"
 
 # modular assessor contract
 if [ "$ASSESSOR"  ==  "full_investment" ]; then
-    echo "Modular Contract Operator => Full Investment Assessor"
+    echo "Modular Contract Assessor => Full Investment"
     ASSESSOR_FAB=$(getFabContract $CONTRACT_BIN/FullInvestmentAssessorFab.bin "ASSESSOR_FAB")
 
 else
-    echo "Modular Contract Operator => Default Assessor"
+    echo "Modular Contract Assessor => Default "
     ASSESSOR_FAB=$(getFabContract $CONTRACT_BIN/DefaultAssessorFab.bin "ASSESSOR_FAB")
 fi
 echo "ASSESSOR_FAB: $ASSESSOR_FAB"
@@ -43,14 +43,14 @@ echo "TRANCHE_FAB: $TRANCHE_FAB"
 
 # default no senior tranche
 # modular assessor contract
-if [ "SENIOR_TRANCHE"  ==  "true" ]; then
+if [ "$SENIOR_TRANCHE"  ==  "true" ]; then
     echo "Modular Contract Senior Tranche => true"
     SENIOR_TRANCHE_FAB=$(getFabContract $CONTRACT_BIN/SeniorTrancheFab.bin "SENIOR_TRANCHE_FAB")
     if [ "$SENIOR_OPERATOR"  ==  "whitelist" ]; then
-        echo "Modular Contract Operator => Whitelist Operator"
+        echo "Modular Contract Senior Operator => Whitelist"
         SENIOR_OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/WhitelistOperatorFab.bin. "OPERATOR_FAB")
     else
-        echo "Modular Contract Senior Operator => Allowance Operator"
+        echo "Modular Contract Senior Operator => Allowance"
         SENIOR_OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/AllowanceOperatorFab.bin "OPERATOR_FAB")
     fi
 fi
