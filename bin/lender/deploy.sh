@@ -15,7 +15,7 @@ message Fetch Fab Addresses or Deploy
 
 # check or deploy default fabs
 # modular operator contract
-if [ "$OPERATOR"  !=  "whitelist" ]; then
+if [ "$OPERATOR"  ==  "whitelist" ]; then
     echo "Modular Contract Operator => Whitelist Operator"
     OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/WhitelistOperatorFab.bin. "OPERATOR_FAB")
 else
@@ -27,7 +27,7 @@ OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/AllowanceOperatorFab.bin "OPERATOR_F
 echo "OPERATOR_FAB: $OPERATOR_FAB"
 
 # modular assessor contract
-if [ "$ASSESSOR"  !=  "full_investment" ]; then
+if [ "$ASSESSOR"  ==  "full_investment" ]; then
     echo "Modular Contract Operator => Full Investment Assessor"
     ASSESSOR_FAB=$(getFabContract $CONTRACT_BIN/FullInvestmentAssessorFab.bin "ASSESSOR_FAB")
 
@@ -42,8 +42,18 @@ TRANCHE_FAB=$(getFabContract $CONTRACT_BIN/TrancheFab.bin "TRANCHE_FAB")
 echo "TRANCHE_FAB: $TRANCHE_FAB"
 
 # default no senior tranche
-SENIOR_TRANCHE_FAB=$ZERO_ADDRESS
-SENIOR_OPERATOR_FAB=$ZERO_ADDRESS
+# modular assessor contract
+if [ "SENIOR_TRANCHE"  ==  "true" ]; then
+    echo "Modular Contract Senior Tranche => true"
+    SENIOR_TRANCHE_FAB=$(getFabContract $CONTRACT_BIN/SeniorTrancheFab.bin "SENIOR_TRANCHE_FAB")
+    if [ "$SENIOR_OPERATOR"  ==  "whitelist" ]; then
+        echo "Modular Contract Operator => Whitelist Operator"
+        SENIOR_OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/WhitelistOperatorFab.bin. "OPERATOR_FAB")
+    else
+        echo "Modular Contract Senior Operator => Allowance Operator"
+        SENIOR_OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/AllowanceOperatorFab.bin "OPERATOR_FAB")
+    fi
+fi
 
 success_msg Lender Fabs ready
 TOKEN_AMOUNT_FOR_ONE=$(seth --to-uint256 1)
