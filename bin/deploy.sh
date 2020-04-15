@@ -21,11 +21,11 @@ mkdir -p $BIN_DIR/../deployments
 
 # deploy root contract
 source ./root/deploy.sh
-#
-## deploy lender contracts
+
+# deploy lender contracts
 source ./lender/deploy.sh
 
-## deploy borrower contracts
+# deploy borrower contracts
 source ./borrower/deploy.sh
 
 # finalize deployment
