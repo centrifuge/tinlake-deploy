@@ -42,7 +42,8 @@ success_msg "Deployment File: $(realpath $DEPLOYMENT_FILE)"
 #touch $DEPLOYMENT_FILE
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
-    "GOVERNANCE" : "$GOVERNANCE"
+    "GOVERNANCE"        :    "$GOVERNANCE",
+    "MAIN_DEPLOYER"     :    "$MAIN_DEPLOYER"
 }
 EOF
 
