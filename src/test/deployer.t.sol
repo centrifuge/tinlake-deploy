@@ -44,5 +44,4 @@ contract FabDeployerTest is DSTest {
         Pile pile = Pile(pile_);
         assertEq(pile.wards(address(this)), 1);
     }
-
 }
