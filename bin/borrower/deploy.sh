@@ -15,26 +15,32 @@ ZERO_ADDRESS=0x0000000000000000000000000000000000000000
 message Fetch Fab Addresses or Deploy
 
 TITLE_FAB=$(getFabContract $CONTRACT_BIN/TitleFab.bin "TITLE_FAB")
-echo "TITLE_FAB: $TITLE_FAB"
+message "TITLE_FAB: $TITLE_FAB"
 
 SHELF_FAB=$(getFabContract $CONTRACT_BIN/ShelfFab.bin "SHELF_FAB")
-echo "SHELF_FAB: $SHELF_FAB"
+message "SHELF_FAB: $SHELF_FAB"
 
 PILE_FAB=$(getFabContract $CONTRACT_BIN/PileFab.bin "PILE_FAB")
-echo "PILE_FAB: $PILE_FAB"
+message "PILE_FAB: $PILE_FAB"
 
 COLLECTOR_FAB=$(getFabContract $CONTRACT_BIN/CollectorFab.bin "COLLECTOR_FAB")
-echo "COLLECTOR_FAB: $COLLECTOR_FAB"
+message "COLLECTOR_FAB: $COLLECTOR_FAB"
 
 THRESHOLD_FAB=$(getFabContract $CONTRACT_BIN/ThresholdFab.bin "THRESHOLD_FAB")
-echo "THRESHOLD_FAB: $THRESHOLD_FAB"
+message "THRESHOLD_FAB: $THRESHOLD_FAB"
 
 PRICEPOOL_FAB=$(getFabContract $CONTRACT_BIN/PricePoolFab.bin "PRICEPOOL_FAB")
-echo "PRICEPOOL_FAB: $PRICEPOOL_FAB"
+message "PRICEPOOL_FAB: $PRICEPOOL_FAB"
 
-# default is Principal Ceiling Fab
-CEILING_FAB=$(getFabContract $CONTRACT_BIN/PrincipalCeilingFab.bin "THRESHOLD_FAB")
-echo "CEILING_FAB: $CEILING_FAB"
+# modular ceiling contract
+if [ "$CEILING"  ==  "creditline" ]; then
+    CEILING_FAB=$(getFabContract $CONTRACT_BIN/CreditLineCeilingFab.bin "CEILING_FAB")
+else
+    CEILING="principal"
+    CEILING_FAB=$(getFabContract $CONTRACT_BIN/PrincipalCeilingFab.bin "CEILING_FAB")
+fi
+echo "Modular Contract => Ceiling $CEILING"
+message "CEILING_FAB: $CEILING_FAB"
 
 success_msg Borrower Fabs ready
 
