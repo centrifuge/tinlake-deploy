@@ -29,7 +29,7 @@ if [ "$ASSESSOR"  ==  "full_investment" ]; then
     ASSESSOR_FAB=$(getFabContract $CONTRACT_BIN/FullInvestmentAssessorFab.bin "ASSESSOR_FAB")
 
 else
-    ASSESSOR="default assessor"
+    ASSESSOR="default_assessor"
     ASSESSOR_FAB=$(getFabContract $CONTRACT_BIN/DefaultAssessorFab.bin "ASSESSOR_FAB")
 fi
 echo "Modular Contract => Assessor $ASSESSOR"

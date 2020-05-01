@@ -67,7 +67,7 @@ message "deploy pile contract"
 seth send $BORROWER_DEPLOYER 'deployPile()'
 
 if [ "$NFT_FEED"  ==  "true" ]; then
-    message "deploy NFTFeed Contract"
+    message "deploy nftFeed contract"
     seth send $BORROWER_DEPLOYER 'deployNFTFeed()'
 else
     message "deploy ceiling contract"
