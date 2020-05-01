@@ -50,9 +50,12 @@ if [ "$SENIOR_TRANCHE"  ==  "true" ]; then
     if [ "$SENIOR_OPERATOR"  ==  "whitelist" ]; then
         SENIOR_OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/WhitelistOperatorFab.bin. "OPERATOR_FAB")
     else
-
-        SENIOR_OPERATOR="allowance"
-        SENIOR_OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/AllowanceOperatorFab.bin "OPERATOR_FAB")
+        if [ "$SENIOR_OPERATOR"  ==  "proportional" ]; then
+            SENIOR_OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/ProportionalOperatorFab.bin "OPERATOR_FAB")
+        else
+            SENIOR_OPERATOR="allowance"
+            SENIOR_OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/AllowanceOperatorFab.bin "OPERATOR_FAB")
+        fi
     fi
     echo "Modular Contract => $SENIOR_OPERATOR"
     message "SENIOR OPERATOR FAB: $SENIOR_OPERATOR_FAB"
