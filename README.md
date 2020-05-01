@@ -156,3 +156,13 @@ The senior tranche operator can be `whitelist`, `allowance` or `proportional`.
 }
 ```
 The default option is allowance.
+
+**NFT Feed**
+It is possible to use the NFT Feed instead of threshold and ceiling contracts.
+For activating the NFT Feed.
+
+```json
+{
+ "NFT_FEED": "true"
+}
+```
