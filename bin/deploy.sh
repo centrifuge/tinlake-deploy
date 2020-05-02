@@ -36,7 +36,7 @@ message Finalize Deployment
 seth send $ROOT_CONTRACT 'prepare(address,address,address)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $GOVERNANCE
 seth send $ROOT_CONTRACT 'deploy()'
 
-success_msg "Tinlake Deployment Finished"
+success_msg "Tinlake Deployment $(seth chain)"
 success_msg "Deployment File: $(realpath $DEPLOYMENT_FILE)"
 
 #touch $DEPLOYMENT_FILE

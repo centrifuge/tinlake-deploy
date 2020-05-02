@@ -148,9 +148,21 @@ If not defined the default is `false`.
 
 If the senior tranche is `true` a senior operator must be defined.
 
+The senior tranche operator can be `whitelist`, `allowance` or `proportional`.
+
 ```json
 {
  "SENIOR_OPERATOR": "allowance"
 }
 ```
-The other option is `whitelist` by default the `allowance` contract is used. 
+The default option is allowance.
+
+**NFT Feed**
+It is possible to use the NFT Feed instead of threshold and ceiling contracts.
+For activating the NFT Feed.
+
+```json
+{
+ "NFT_FEED": "true"
+}
+```

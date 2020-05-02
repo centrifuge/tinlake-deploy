@@ -7,7 +7,7 @@ CONTRACT_BIN=$BIN_DIR/../lib/tinlake/out
 # todo it should be possible to define other path
 DEPLOYMENT_FILE="./../deployments/addresses_$(seth chain).json"
 
-DEPLOYMENT_NAME="Local Test Deployment"
+DEPLOYMENT_NAME="Tinlake Deployment on $(seth chain)"
 
 message Deploy Root Contract
 export ROOT_CONTRACT=$(seth send --create $CONTRACT_BIN/TinlakeRoot.bin 'TinlakeRoot(address)' "$ETH_FROM")
