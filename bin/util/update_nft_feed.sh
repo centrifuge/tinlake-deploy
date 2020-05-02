@@ -46,8 +46,6 @@ else
      seth send $NFT_FEED 'update(bytes32, uint)' $NFT_ID $NFT_VALUE
 fi
 
-
-
 message Call Contract to verify
 echo "NFT Value: $(seth call $NFT_FEED 'nftValues(bytes32)(uint)' $NFT_ID)"
 echo "Risk Group: $(seth call $NFT_FEED 'risk(bytes32)(uint)' $NFT_ID)"
