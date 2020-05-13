@@ -37,6 +37,7 @@ echo "NFT Value: $NFT_VALUE"
 echo "Risk Group: $RISK"
 
 NFT_ID=$(seth call $NFT_FEED 'nftID(address,uint)' $NFT_REGISTRY $TOKEN_ID)
+echo $NFT_ID
 if [ ! -z "$RISK" ]
 then
      message Update Feed with Value and Risk
