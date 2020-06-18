@@ -92,20 +92,20 @@ touch $DEPLOYMENT_FILE
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
     "BORROWER_DEPLOYER"       :  "$BORROWER_DEPLOYER",
-    "TITLE_FAB"      :  "$TITLE_FAB",
-    "SHELF_FAB"      :  "$SHELF_FAB",
-    "PILE_FAB"       :  "$PILE_FAB",
-    "COLLECTOR_FAB"  :  "$COLLECTOR_FAB",
-    "THRESHOLD_FAB"  :  "$THRESHOLD_FAB",
-    "PRICEPOOL_FAB"  :  "$PRICEPOOL_FAB",
-    "CEILING_FAB"    :  "$CEILING_FAB",
-    "TITLE"          :  "$(seth call $BORROWER_DEPLOYER 'title()(address)')",
-    "PILE"           :  "$(seth call $BORROWER_DEPLOYER 'pile()(address)')",
-    "SHELF"          :  "$(seth call $BORROWER_DEPLOYER 'shelf()(address)')",
-    "CEILING"        :  "$(seth call $BORROWER_DEPLOYER 'ceiling()(address)')",
-    "COLLECTOR"      :  "$(seth call $BORROWER_DEPLOYER 'collector()(address)')",
-    "THRESHOLD"      :  "$(seth call $BORROWER_DEPLOYER 'threshold()(address)')",
-    "PRICE_POOL"     :  "$(seth call $BORROWER_DEPLOYER 'pricePool()(address)')",
-    "NFT_FEED"       :  "$(seth call $BORROWER_DEPLOYER 'nftFeed()(address)')"
+    "TITLE_FAB"               :  "$TITLE_FAB",
+    "SHELF_FAB"               :  "$SHELF_FAB",
+    "PILE_FAB"                :  "$PILE_FAB",
+    "COLLECTOR_FAB"           :  "$COLLECTOR_FAB",
+    "THRESHOLD_FAB"           :  "$THRESHOLD_FAB",
+    "PRICEPOOL_FAB"           :  "$PRICEPOOL_FAB",
+    "CEILING_FAB"             :  "$CEILING_FAB",
+    "TITLE"                   :  "$(seth call $BORROWER_DEPLOYER 'title()(address)')",
+    "PILE"                    :  "$(seth call $BORROWER_DEPLOYER 'pile()(address)')",
+    "SHELF"                   :  "$(seth call $BORROWER_DEPLOYER 'shelf()(address)')",
+    "CEILING"                 :  "$(seth call $BORROWER_DEPLOYER 'ceiling()(address)')",
+    "COLLECTOR"               :  "$(seth call $BORROWER_DEPLOYER 'collector()(address)')",
+    "THRESHOLD"               :  "$(seth call $BORROWER_DEPLOYER 'threshold()(address)')",
+    "PRICE_POOL"              :  "$(seth call $BORROWER_DEPLOYER 'pricePool()(address)')",
+    "NFT_FEED"                :  "$(seth call $BORROWER_DEPLOYER 'nftFeed()(address)')"
 }
 EOF
