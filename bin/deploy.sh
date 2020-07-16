@@ -43,7 +43,8 @@ success_msg "Deployment File: $(realpath $DEPLOYMENT_FILE)"
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
     "GOVERNANCE"        :    "$GOVERNANCE",
-    "MAIN_DEPLOYER"     :    "$MAIN_DEPLOYER"
+    "MAIN_DEPLOYER"     :    "$MAIN_DEPLOYER",
+    "COMMIT_HASH"       :    "$(git --git-dir ./../lib/tinlake/.git rev-parse HEAD )"
 }
 EOF
 

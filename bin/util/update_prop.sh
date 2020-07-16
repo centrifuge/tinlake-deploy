@@ -2,7 +2,7 @@
 
 function totalReturned {
   echo "Total Currency Returned: $(seth call $SENIOR_OPERATOR 'totalCurrencyReturned()(uint)')"
-  echo "Total Prinicpal Returned: $(seth call $SENIOR_OPERATOR 'totalPrincipalReturned()(uint)')"
+  echo "Total Principal Returned: $(seth call $SENIOR_OPERATOR 'totalPrincipalReturned()(uint)')"
 }
 
 # fetch arguments
