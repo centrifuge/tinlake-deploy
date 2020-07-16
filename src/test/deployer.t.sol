@@ -17,7 +17,7 @@ pragma solidity >=0.5.15 <0.6.0;
 
 import "ds-test/test.sol";
 import "./../deployer.sol";
-import "tinlake/borrower/deployer.sol";
+import "tinlake/borrower/fabs/pile.sol";
 
 
 contract FabDeployerTest is DSTest {
