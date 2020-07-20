@@ -57,12 +57,20 @@ addValuesToFile() {
 getFabContract() {
     CONTRACT_BIN_FILE=$1
     SALT=$(seth --to-bytes32 $(seth --from-ascii $2))
-    BYTECODE_HASH=$(seth call $MAIN_DEPLOYER 'bytecodeHash(bytes)(bytes32)' 0x$(cat $CONTRACT_BIN_FILE))
-    FAB_ADDR=$(seth call $MAIN_DEPLOYER 'getAddress(bytes32,bytes32)(address)' $BYTECODE_HASH $SALT)
-    if [ "$FAB_ADDR"  ==  "$ZERO_ADDRESS" ]; then
+    FAB_ADDR="${!2}"
+    if [ -z "$FAB_ADDR" ]
+    then
+        # check if fab bytecode is already deployed at the network
+        # Tinlake fabs have a deterministic address based on the create2 opcode
+        BYTECODE_HASH=$(seth call $MAIN_DEPLOYER 'bytecodeHash(bytes)(bytes32)' 0x$(cat $CONTRACT_BIN_FILE))
+        FAB_ADDR=$(seth call $MAIN_DEPLOYER 'getAddress(bytes32,bytes32)(address)' $BYTECODE_HASH $SALT)
+        if [ "$FAB_ADDR"  ==  "$ZERO_ADDRESS" ]; then
             echo "Deploying Fab: $2" > /dev/stderr
             seth send $MAIN_DEPLOYER 'deploy(bytes,bytes32)(address)' 0x$(cat $CONTRACT_BIN_FILE) $SALT
             FAB_ADDR=$(seth call $MAIN_DEPLOYER 'getAddress(bytes32,bytes32)(address)' $BYTECODE_HASH $SALT)
+        fi
+    else
+        echo "Using $2 address from config file" > /dev/stderr
     fi
     echo $FAB_ADDR
 }
