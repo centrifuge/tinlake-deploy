@@ -64,20 +64,22 @@ fi
 # contract deployment
 success_msg Lender Fabs ready
 TOKEN_AMOUNT_FOR_ONE=$(seth --to-uint256 1)
-JUNIOR_TRANCHE_NAME="TIN-Token"
-JUNIOR_TRANCHE_SYMBOL="TIN"
+
+[[ -z "$JUNIOR_TRANCHE_NAME" ]] && JUNIOR_TRANCHE_NAME="TIN Token"
+[[ -z "$JUNIOR_TRANCHE_SYMBOL" ]] && JUNIOR_TRANCHE_SYMBOL="TIN"
 
 # backer allows lender to take currency
 message create lender deployer
-export LENDER_DEPLOYER=$(seth send --create $CONTRACT_BIN/LenderDeployer.bin 'LenderDeployer(address,address,uint,string,string,address,address,address,address,bool)' $ROOT_CONTRACT $TINLAKE_CURRENCY $TOKEN_AMOUNT_FOR_ONE $JUNIOR_TRANCHE_NAME $JUNIOR_TRANCHE_SYMBOL $TRANCHE_FAB $ASSESSOR_FAB $OPERATOR_FAB $DISTRIBUTOR_FAB $SENIOR_ACTIVE)
+export LENDER_DEPLOYER=$(seth send --create $CONTRACT_BIN/LenderDeployer.bin 'LenderDeployer(address,address,uint,string,string,address,address,address,address,bool)' $ROOT_CONTRACT $TINLAKE_CURRENCY $TOKEN_AMOUNT_FOR_ONE "$JUNIOR_TRANCHE_NAME" "$JUNIOR_TRANCHE_SYMBOL" $TRANCHE_FAB $ASSESSOR_FAB $OPERATOR_FAB $DISTRIBUTOR_FAB $SENIOR_ACTIVE)
 
 if [ "$SENIOR_TRANCHE"  ==  "true" ]; then
     message "Init senior tranche"
     #default rate 5% APR
-    SENIOR_RATE=$(seth --to-uint256 1000000001547000000000000000)
-    SENIOR_TRANCHE_NAME="DROP-Token"
-    SENIOR_TRANCHE_SYMBOL="DROP"
-    seth send $LENDER_DEPLOYER 'initSenior(uint,string,string,address,address)' $SENIOR_RATE $SENIOR_TRANCHE_NAME $SENIOR_TRANCHE_SYMBOL $SENIOR_TRANCHE_FAB $SENIOR_OPERATOR_FAB
+    [[ -z "$SENIOR_RATE" ]] && SENIOR_RATE=1000000003170979198376458650
+    SENIOR_RATE=$(seth --to-uint256 $SENIOR_RATE)
+    [[ -z "$SENIOR_TRANCHE_NAME" ]] && SENIOR_TRANCHE_NAME="DROP Token"
+    [[ -z "$SENIOR_TRANCHE_SYMBOL" ]] && SENIOR_TRANCHE_SYMBOL="DROP"
+    seth send $LENDER_DEPLOYER 'initSenior(uint,string,string,address,address)' $SENIOR_RATE "$SENIOR_TRANCHE_NAME" "$SENIOR_TRANCHE_SYMBOL" $SENIOR_TRANCHE_FAB $SENIOR_OPERATOR_FAB
 fi
 
 message deploy assessor contract
