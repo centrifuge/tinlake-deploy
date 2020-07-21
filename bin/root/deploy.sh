@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+set -e
+
 BIN_DIR=${BIN_DIR:-$(cd "${0%/*}"&&pwd)}
 cd $BIN_DIR
 CONTRACT_BIN=$BIN_DIR/../lib/tinlake/out

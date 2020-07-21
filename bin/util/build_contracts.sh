@@ -1,6 +1,9 @@
 # script builds contracts into multiple files
 # by using dapp build --extracts
 # individual files are required for the deploy scripts
+
+set -e
+
 BIN_DIR=${BIN_DIR:-$(cd "${0%/*}"&&pwd)}
 cd $BIN_DIR
 
