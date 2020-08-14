@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+// converts ray 10^27 to human readable format
+var BigNumber = require("bignumber.js")
+var ray = process.argv[2], match
+var ray =new BigNumber(ray)
+var one = new BigNumber("1000000000000000000000000000") // 10 ^ 27
+var wad = ray.dividedBy(one)
+console.log(wad.toFixed())
