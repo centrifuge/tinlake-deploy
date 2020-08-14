@@ -111,7 +111,6 @@ if [ "$SENIOR_TRANCHE_FAB"  !=  "$ZERO_ADDRESS" ]; then
 else
     SENIOR_TOKEN="$ZERO_ADDRESS"
 fi
-
 #touch $DEPLOYMENT_FILE
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
