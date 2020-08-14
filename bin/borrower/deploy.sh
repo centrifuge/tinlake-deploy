@@ -101,6 +101,7 @@ addValuesToFile $DEPLOYMENT_FILE <<EOF
     "THRESHOLD_FAB"           :  "$THRESHOLD_FAB",
     "PRICEPOOL_FAB"           :  "$PRICEPOOL_FAB",
     "CEILING_FAB"             :  "$CEILING_FAB",
+    "NFT_FEED_FAB"            :  "$NFT_FEED_FAB",
     "TITLE"                   :  "$(seth call $BORROWER_DEPLOYER 'title()(address)')",
     "PILE"                    :  "$(seth call $BORROWER_DEPLOYER 'pile()(address)')",
     "SHELF"                   :  "$(seth call $BORROWER_DEPLOYER 'shelf()(address)')",
