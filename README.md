@@ -168,7 +168,7 @@ For activating the NFT Feed.
 }
 ```
 
-**NFT Feed**
+**NFT NAV Feed**
 It is possible to use the NAV module to determine the pool value based on the Net Asset Value of the loans instead 
 
 ```json
