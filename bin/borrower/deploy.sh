@@ -28,16 +28,19 @@ message "PILE_FAB: $PILE_FAB"
 COLLECTOR_FAB=$(getFabContract $CONTRACT_BIN/CollectorFab.bin "COLLECTOR_FAB")
 message "COLLECTOR_FAB: $COLLECTOR_FAB"
 
-PRICEPOOL_FAB=$(getFabContract $CONTRACT_BIN/PricePoolFab.bin "PRICEPOOL_FAB")
-message "PRICEPOOL_FAB: $PRICEPOOL_FAB"
 
 
 # deploy nft feed or ceiling and threshold
 if [ "$NFT_FEED"  ==  "true" ]; then
-    NFT_FEED_FAB=$(getFabContract $CONTRACT_BIN/NFTFeedFab.bin "NFT_FEED_FAB")
-     message "NFT_FEED_FAB: $NFT_FEED_FAB"
-     CEILING_FAB=$ZERO_ADDRESS
-     THRESHOLD_FAB=$ZERO_ADDRESS
+    if [ "$NAV"  ==  "true" ]; then
+        NFT_FEED_FAB=$(getFabContract $CONTRACT_BIN/NAVFeedFab.bin "NFT_FEED_FAB")
+    else 
+        NFT_FEED_FAB=$(getFabContract $CONTRACT_BIN/NFTFeedFab.bin "NFT_FEED_FAB")
+    fi
+    message "NFT_FEED_FAB: $NFT_FEED_FAB"
+    CEILING_FAB=$ZERO_ADDRESS
+    THRESHOLD_FAB=$ZERO_ADDRESS
+    PRICEPOOL_FAB=$ZERO_ADDRESS
 else
     NFT_FEED_FAB=$ZERO_ADDRESS
     # modular ceiling contract
@@ -52,6 +55,9 @@ else
 
     THRESHOLD_FAB=$(getFabContract $CONTRACT_BIN/ThresholdFab.bin "THRESHOLD_FAB")
     message "THRESHOLD_FAB: $THRESHOLD_FAB"
+
+    PRICEPOOL_FAB=$(getFabContract $CONTRACT_BIN/PricePoolFab.bin "PRICEPOOL_FAB")
+    message "PRICEPOOL_FAB: $PRICEPOOL_FAB"
 fi
 
 success_msg Borrower Fabs ready
@@ -77,14 +83,15 @@ else
 
     message "deploy threshold contract"
     seth send $BORROWER_DEPLOYER 'deployThreshold()'
+
+    message "deploy price pool contract"
+    seth send $BORROWER_DEPLOYER 'deployPricePool()'
 fi
 
 message "deploy shelf contract"
 seth send $BORROWER_DEPLOYER 'deployShelf()'
 message "deploy collector contract"
 seth send $BORROWER_DEPLOYER 'deployCollector()'
-message "deploy price pool contract"
-seth send $BORROWER_DEPLOYER 'deployPricePool()'
 message "finalize borrower contracts"
 seth send $BORROWER_DEPLOYER 'deploy()'
 
