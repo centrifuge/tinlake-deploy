@@ -161,8 +161,18 @@ The default option is allowance.
 It is possible to use the NFT Feed instead of threshold and ceiling contracts.
 For activating the NFT Feed.
 
+
 ```json
 {
  "NFT_FEED": "true"
+}
+```
+
+**NFT Feed**
+It is possible to use the NAV module to determine the pool value based on the Net Asset Value of the loans instead 
+
+```json
+{
+ "NAV": "true"
 }
 ```
