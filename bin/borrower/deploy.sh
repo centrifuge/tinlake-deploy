@@ -36,8 +36,8 @@ if [ "$NFT_FEED"  ==  "true" ]; then
         NFT_FEED_FAB=$(getFabContract $CONTRACT_BIN/NAVFeedFab.bin "NFT_FEED_FAB")
     else 
         NFT_FEED_FAB=$(getFabContract $CONTRACT_BIN/NFTFeedFab.bin "NFT_FEED_FAB")
-        message "NFT_FEED_FAB: $NFT_FEED_FAB"
     fi
+    message "NFT_FEED_FAB: $NFT_FEED_FAB"
     CEILING_FAB=$ZERO_ADDRESS
     THRESHOLD_FAB=$ZERO_ADDRESS
     PRICEPOOL_FAB=$ZERO_ADDRESS
