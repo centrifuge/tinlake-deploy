@@ -31,7 +31,7 @@ message "COLLECTOR_FAB: $COLLECTOR_FAB"
 
 
 # deploy nft feed or ceiling and threshold
-if [ "$FEED"  ==  "default" ]; then
+if [ "$FEED"  ==  "nav" ]; then
     FEED_FAB=$(getFabContract $CONTRACT_BIN/NAVFeedFab.bin "FEED_FAB")
 else
     FEED_FAB=$(getFabContract $CONTRACT_BIN/NFTFeedFab.bin "FEED_FAB")
@@ -73,11 +73,11 @@ addValuesToFile $DEPLOYMENT_FILE <<EOF
     "SHELF_FAB"               :  "$SHELF_FAB",
     "PILE_FAB"                :  "$PILE_FAB",
     "COLLECTOR_FAB"           :  "$COLLECTOR_FAB",
-    "FEED_FAB"            :  "$FEED_FAB",
+    "FEED_FAB"                :  "$FEED_FAB",
     "TITLE"                   :  "$(seth call $BORROWER_DEPLOYER 'title()(address)')",
     "PILE"                    :  "$(seth call $BORROWER_DEPLOYER 'pile()(address)')",
     "SHELF"                   :  "$(seth call $BORROWER_DEPLOYER 'shelf()(address)')",
     "COLLECTOR"               :  "$(seth call $BORROWER_DEPLOYER 'collector()(address)')",
-    "FEED"                :  "$(seth call $BORROWER_DEPLOYER 'feed()(address)')"
+    "FEED"                    :  "$(seth call $BORROWER_DEPLOYER 'feed()(address)')"
 }
 EOF

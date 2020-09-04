@@ -16,12 +16,35 @@ For a deployment config file needs to be defined.
   "ETH_RPC_URL": "<<RPC URL>>",
   "ETH_FROM": "<<ADDRESS>>",
   "TINLAKE_CURRENCY": "<<ADDRESS>>",
-  "MAIN_DEPLOYER": "<<ADDRESS>>"
+  "MAIN_DEPLOYER": "<<ADDRESS>>",
+  "SENIOR_INTEREST_RATE": "<<NUMBER>>",
+  "MAX_RESERVE": "<<NUMBER>>",
+  "MAX_SENIOR_RATIO": "<<NUMBER>>",
+  "MIN_SENIOR_RATIO": "<<NUMBER>>",
+  "CHALLENGE_TIME": "<<NUMBER>>",
 }
 ```
 `TINLAKE_CURRENCY` defines the stablecoin for the Tinlake. For example on mainnet this could be the `DAI` stablecoin or any other ERC20 contract.
 `MAIN_DEPLOYER` is a contract which deploys our factories with the create2 opcode.  The other parameters are default config parameters from `seth`
+`SENIOR_INTEREST_RATE` 
+`MAX_RESERVE` should follow ONE as 10^18
+`MAX_SENIOR_RATIO` should follow ONE as 10^27
+`MIN_SENIOR_RATIO` should follow ONE as 10^27
+`CHALLENGE_TIME` should be in seconds
 
+
+### NFT Feed
+
+It is possible to use the NFT Feed or the NAV Feed
+
+To use the NAV Feed, set FEED to nav
+
+```json
+{
+ "FEED": "nav"
+}
+```
+Otherwise, the FEED will default to the NFT Feed
 
 ### Optional Parameters
 ```json
@@ -77,102 +100,4 @@ dapp testnet
 **Create Main Deployer**
 ```json
 dapp create MainDeployer 
-```
-
-## Customizable Modular Contracts
-It is possible to customize a Tinlake deployment with modular contracts. The deploy script
-uses the default version of each modular contract, if no specific contract is defined.
-
-A modular contract can be specified in the `config` file. For the difference between the modular contracts
-visit our documentation website.
-
-### Assessor Contract
-
-**Default Assessor**
-
-Calculates senior interest bearing amount based on borrowed tranche currency amount.
-```json
-{
- "ASSESSOR": "default"
-}
-```
-**Full Investment Assessor**
-
-Calculates senior interest bearing amount based on investement currency in the senior tranche.
-```json
-{
- "ASSESSOR": "full_investment"
-}
-```
-### Ceiling Contract
-
-**Principal Ceiling**
-```json
-{
- "CEILING": "principal"
-}
-```
-If not defined `principal` is the default Ceiling contract implementation.
-
-**CreditLine Ceiling**
-```json
-{
- "CEILING": "creditline"
-}
-```
-### Operator Contract
-
-**Allowance Operator**
-```json
-{
- "OPERATOR": "allowance"
-}
-```
-If not defined `allowance` is the default
-**Whitelist Operator**
-```json
-{
- "OPERATOR": "whitelist"
-}
-```
-
-**Whitelist Operator**
-
-### Senior Tranche
-```json
-{
- "SENIOR_TRANCHE": "true"
-}
-```
-If not defined the default is `false`.
-
-If the senior tranche is `true` a senior operator must be defined.
-
-The senior tranche operator can be `whitelist`, `allowance` or `proportional`.
-
-```json
-{
- "SENIOR_OPERATOR": "allowance"
-}
-```
-The default option is allowance.
-
-**NFT Feed**
-It is possible to use the NFT Feed instead of threshold and ceiling contracts.
-For activating the NFT Feed.
-
-
-```json
-{
- "NFT_FEED": "true"
-}
-```
-
-**NFT NAV Feed**
-It is possible to use the NAV module to determine the pool value based on the Net Asset Value of the loans instead 
-
-```json
-{
- "NAV": "true"
-}
 ```
