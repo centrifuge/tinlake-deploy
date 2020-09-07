@@ -76,7 +76,6 @@ addValuesToFile $DEPLOYMENT_FILE <<EOF
     "SENIOR_TRANCHE"     :  "$(seth call $LENDER_DEPLOYER 'seniorTranche()(address)')",
     "JUNIOR_TOKEN"       :  "$(seth call $LENDER_DEPLOYER 'juniorToken()(address)')",
     "SENIOR_TOKEN"       :  "$(seth call $LENDER_DEPLOYER 'seniorToken()(address)')",
-    "DISTRIBUTOR"        :  "$(seth call $LENDER_DEPLOYER 'distributor()(address)')",
     "ASSESSOR"           :  "$(seth call $LENDER_DEPLOYER 'assessor()(address)')",
     "COORDINATOR"        :  "$(seth call $LENDER_DEPLOYER 'coordinator()(address)')",
     "RESERVE"            :  "$(seth call $LENDER_DEPLOYER 'reserve()(address)')"

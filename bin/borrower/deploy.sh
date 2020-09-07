@@ -28,8 +28,6 @@ message "PILE_FAB: $PILE_FAB"
 COLLECTOR_FAB=$(getFabContract $CONTRACT_BIN/CollectorFab.bin "COLLECTOR_FAB")
 message "COLLECTOR_FAB: $COLLECTOR_FAB"
 
-
-
 # deploy nft feed or ceiling and threshold
 if [ "$FEED"  ==  "nav" ]; then
     FEED_FAB=$(getFabContract $CONTRACT_BIN/NAVFeedFab.bin "FEED_FAB")
@@ -38,7 +36,6 @@ else
 fi
 message "FEED_FAB: $FEED_FAB"
 
-
 success_msg Borrower Fabs ready
 
 TITLE_NAME="Tinlake Loan Token"
@@ -46,7 +43,7 @@ TITLE_SYMBOL="TLNT"
 
 message Create Borrower Deployer
 
-export BORROWER_DEPLOYER=$(seth send --create $CONTRACT_BIN/BorrowerDeployer.bin 'BorrowerDeployer(address,address,address,address,address,address,address,string memory,string memory)' $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $COLLECTOR_FAB $FEED_FAB $TINLAKE_CURRENCY "$TITLE_NAME" "$TITLE_SYMBOL")
+export BORROWER_DEPLOYER=$(seth send --create $CONTRACT_BIN/BorrowerDeployer.bin 'BorrowerDeployer(address,address,address,address,address,address,address,string memory,string memory, uint, uint)' $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $COLLECTOR_FAB $FEED_FAB $TINLAKE_CURRENCY "$TITLE_NAME" "$TITLE_SYMBOL" $DISCOUNT_RATE $FEED_MAX_DAYS)
 
 message "deploy title contract"
 seth send $BORROWER_DEPLOYER 'deployTitle()'

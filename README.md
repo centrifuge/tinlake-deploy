@@ -22,6 +22,8 @@ For a deployment config file needs to be defined.
   "MAX_SENIOR_RATIO": "<<NUMBER>>",
   "MIN_SENIOR_RATIO": "<<NUMBER>>",
   "CHALLENGE_TIME": "<<NUMBER>>",
+  "DISCOUNT_RATE": "<<NUMBER>>",
+  "FEED_MAX_DAYS": "<<NUMBER>>"
 }
 ```
 `TINLAKE_CURRENCY` defines the stablecoin for the Tinlake. For example on mainnet this could be the `DAI` stablecoin or any other ERC20 contract.
@@ -31,7 +33,8 @@ For a deployment config file needs to be defined.
 `MAX_SENIOR_RATIO` should follow ONE as 10^27
 `MIN_SENIOR_RATIO` should follow ONE as 10^27
 `CHALLENGE_TIME` should be in seconds
-
+`DISCOUNT_RATE` 
+`FEED_MAX_DAYS`
 
 ### NFT Feed
 
