@@ -43,7 +43,7 @@ TITLE_SYMBOL="TLNT"
 
 message Create Borrower Deployer
 
-export BORROWER_DEPLOYER=$(seth send --create $CONTRACT_BIN/BorrowerDeployer.bin 'BorrowerDeployer(address,address,address,address,address,address,address,string memory,string memory, uint)' $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $COLLECTOR_FAB $FEED_FAB $TINLAKE_CURRENCY "$TITLE_NAME" "$TITLE_SYMBOL" $DISCOUNT_RATE)
+export BORROWER_DEPLOYER=$(seth send --create $CONTRACT_BIN/BorrowerDeployer.bin 'BorrowerDeployer(address,address,address,address,address,address,address,string memory,string memory, uint)' $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $COLLECTOR_FAB $FEED_FAB $TINLAKE_CURRENCY '"$TITLE_NAME"' '"$TITLE_SYMBOL"' $DISCOUNT_RATE)
 
 message "deploy title contract"
 seth send $BORROWER_DEPLOYER 'deployTitle()'
