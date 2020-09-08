@@ -2,3 +2,4 @@
 .idea
 deployments
 config
+bin/config_*.json

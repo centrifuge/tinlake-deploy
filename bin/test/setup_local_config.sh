@@ -16,7 +16,7 @@ test -z "$CURRENCY_CHAINID" && CURRENCY_CHAINID=1
 
 # Deploy Default Currency
 message create ERC20 Tinlake currency
-TINLAKE_CURRENCY=$(seth send --create $CONTRACT_BIN/SimpleToken.bin 'SimpleToken(string memory,string memory,string memory, uint)' "$CURRENCY_SYMBOL" "$CURRENCY_NAME" "$CURRENCY_VERSION" $(seth --to-uint256 $CURRENCY_CHAINID))
+TINLAKE_CURRENCY=$(seth send --create $CONTRACT_BIN/SimpleToken.bin 'SimpleToken(string memory,string memory,string memory, uint)' '"$CURRENCY_SYMBOL"' '"$CURRENCY_NAME"' '"$CURRENCY_VERSION"' $(seth --to-uint256 $CURRENCY_CHAINID))
 
 message create Main Deployer
 MAIN_DEPLOYER=$(seth send --create ./../../out/MainDeployer.bin 'MainDeployer()')
@@ -31,7 +31,7 @@ addValuesToFile $CONFIG_FILE <<EOF
 {
     "ETH_RPC_URL" :"$ETH_RPC_URL",
     "ETH_FROM" :"$ETH_FROM",
-    "ETH_GAS" :"$ETH_GAS",
+    "ETH_GAS_PRICE" :"$ETH_GAS_PRICE",
     "ETH_KEYSTORE" :"$ETH_KEYSTORE",
     "ETH_PASSWORD" :"$ETH_PASSWORD",
     "TINLAKE_CURRENCY": "$TINLAKE_CURRENCY",
