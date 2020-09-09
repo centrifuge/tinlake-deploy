@@ -27,6 +27,9 @@ message "TRANCHE_FAB: $TRANCHE_FAB"
 MEMBERLIST_FAB=$(getFabContract $CONTRACT_BIN/MemberlistFab.bin "MEMBERLIST_FAB")
 message "MEMBERLIST_FAB: $MEMBERLIST_FAB"
 
+RESTRICTEDTOKEN_FAB=$(getFabContract $CONTRACT_BIN/RestrictedTokenFab.bin "RESTRICTEDTOKEN_FAB")
+message "RESTRICTEDTOKEN_FAB: $RESTRICTEDTOKEN_FAB"
+
 OPERATOR_FAB=$(getFabContract $CONTRACT_BIN/OperatorFab.bin "OPERATOR_FAB")
 message "OPERATOR_FAB: $OPERATOR_FAB"
 
@@ -43,7 +46,7 @@ success_msg Lender Fabs ready
 
 ## backer allows lender to take currency
 message create lender deployer
-export LENDER_DEPLOYER=$(seth send --create $CONTRACT_BIN/LenderDeployer.bin 'LenderDeployer(address,address,address,address,address,address,address,address)' $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB)
+export LENDER_DEPLOYER=$(seth send --create $CONTRACT_BIN/LenderDeployer.bin 'LenderDeployer(address,address,address,address,address,address,address,address,address)' $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTEDTOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB)
 
 message "Init Lender Deployer"
 MIN_SENIOR_RATIO=$(seth --to-uint256 $MIN_SENIOR_RATIO)
