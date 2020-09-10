@@ -3,8 +3,10 @@ FROM ubuntu
 RUN apt-get update && \
     apt-get -y install curl build-essential automake autoconf git
 
-# add user for nix installation
+# add user
 RUN useradd -d /home/app/ -m -G sudo app
+RUN mkdir -m 0755 /app
+RUN chown app /app
 RUN mkdir -m 0755 /nix
 RUN chown app /nix
 USER app
@@ -21,5 +23,12 @@ RUN nix-env -iA dapp hevm seth solc -if https://github.com/dapphub/dapptools/tar
 # install dapp tools
 RUN curl https://dapp.tools/install | sh
 
-CMD dapp testnet
+# env variables that can be used by the user
+ENV ETH_RPC_URL http://127.0.0.1:8545
+ENV ETH_GAS_PRICE 7000000
+ENV ETH_KEYSTORE /home/app/keystore
+ENV ETH_PASSWORD /home/app/passphrase
 
+WORKDIR /app
+
+CMD dapp testnet

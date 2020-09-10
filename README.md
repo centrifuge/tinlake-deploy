@@ -113,7 +113,41 @@ This should generate a file at `./bin/config_unknown.json`. Modify that file if 
 ./bin/deploy.sh
 ```
 
-### Util Scripts
+## Docker-based Test Deployment of Contracts
+
+**1. Build docker image**
+
+```bash
+docker build -t centrifugeio/tinlake-deploy:latest .
+```
+
+**2. Build contracts**
+
+```bash
+docker run --mount type=bind,source="$(pwd)",target=/app centrifugeio/tinlake-deploy:latest ./bin/util/build_contracts.sh
+```
+
+**3. Start your own local testnet. Run in a seperated terminal**
+
+```bash
+dapp testnet
+```
+
+**4. Generate Test Config File**
+
+```bash
+./bin/test/setup_local_config.sh
+```
+
+This should generate a file at `./bin/config_unknown.json`. Modify that file if needed.
+
+**5. Run deploy script**
+
+```bash
+./bin/deploy.sh
+```
+
+## Util Scripts
 
 **Create Main Deployer**
 ```json
