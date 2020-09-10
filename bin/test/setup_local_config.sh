@@ -1,3 +1,5 @@
+#! /usr/bin/env bash
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 BIN_DIR=${BIN_DIR:-$(cd "${0%/*}"&&pwd)}
 cd $BIN_DIR
