@@ -33,7 +33,7 @@ ENV ETH_PASSWORD="/home/app/.dapp/testnet/8545/.empty-password"
 WORKDIR /app
 USER root
 COPY . /app
-RUN chown -R app /app &&\
+RUN chown -R app /app && \
     chmod -R 755 /app
 USER app
 
@@ -44,5 +44,8 @@ RUN nohup bash -c "dapp testnet --save=app &" && \
     curl --connect-timeout 2 --max-time 2 --retry 200 --retry-delay 1 --retry-max-time 120 --retry-connrefused -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":83}' 127.0.0.1:8545 && \
     ./bin/test/setup_local_config.sh && \
     ./bin/deploy.sh
+
+RUN mkdir -p /home/app/.dapp/testnet/snapshots && \
+    mv /home/app/.dapp/testnet/8545 /home/app/.dapp/testnet/snapshots/app
 
 CMD dapp testnet --load=app

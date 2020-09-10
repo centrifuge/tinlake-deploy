@@ -122,32 +122,10 @@ This should generate a file at `./bin/config_unknown.json`. Modify that file if 
 docker build -t centrifugeio/tinlake-deploy:latest .
 ```
 
-**2. Build contracts**
+**2. Run a docker container**
 
 ```bash
-docker run --rm --mount type=bind,source="$(pwd)",target=/app centrifugeio/tinlake-deploy:latest ./bin/util/build_contracts.sh
-```
-
-**3. Start a testnet in a docker container**
-
-TODO: keystore for deployment?
-
-```bash
-docker run --mount type=bind,source="$(pwd)",target=/app -p 38545:38545 -p 8545:8545 centrifugeio/tinlake-deploy:latest
-```
-
-**4. Generate Test Config File**
-
-```bash
-docker run --rm --mount type=bind,source="$(pwd)",target=/app --network host centrifugeio/tinlake-deploy:latest ./bin/test/setup_local_config.sh
-```
-
-This should generate a file at `./bin/config_unknown.json`. Modify that file if needed.
-
-**5. Run deploy script**
-
-```bash
-docker run --rm --mount type=bind,source="$(pwd)",target=/app centrifugeio/tinlake-deploy:latest ./bin/deploy.sh
+docker run --rm -p 8545:8545 centrifugeio/tinlake-deploy:latest
 ```
 
 ## Util Scripts
