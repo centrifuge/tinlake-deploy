@@ -6,6 +6,7 @@ Contains the scripts to deploy the [Tinlake contracts](https://github.com/centri
 
 1. Tinlake is build and developed with  [dapp.tools](https://github.com/dapphub/dapptools) from DappHub. The deployments happens with bash scripts and the command-line tool `seth`.
 2. On MacOS, install coreutils `brew install coreutils` (this package cotains `realpath`, a dependency used in the scripts).
+3. On Linux, install `jq`, e. g. with `apt-get install jq`
 3. Init/update git submodules: `git submodule update`
 
 ### Deploy Config File
@@ -115,7 +116,7 @@ This should generate a file at `./bin/config_unknown.json`. Modify that file if 
 
 ## Docker-based Test Deployment of Contracts
 
-**1. Build docker image**
+**1. Build the docker image**
 
 ```bash
 docker build -t centrifugeio/tinlake-deploy:latest .
@@ -124,19 +125,21 @@ docker build -t centrifugeio/tinlake-deploy:latest .
 **2. Build contracts**
 
 ```bash
-docker run --mount type=bind,source="$(pwd)",target=/app centrifugeio/tinlake-deploy:latest ./bin/util/build_contracts.sh
+docker run --rm --mount type=bind,source="$(pwd)",target=/app centrifugeio/tinlake-deploy:latest ./bin/util/build_contracts.sh
 ```
 
-**3. Start your own local testnet. Run in a seperated terminal**
+**3. Start a testnet in a docker container**
+
+TODO: keystore for deployment?
 
 ```bash
-dapp testnet
+docker run --mount type=bind,source="$(pwd)",target=/app -p 38545:38545 -p 8545:8545 centrifugeio/tinlake-deploy:latest
 ```
 
 **4. Generate Test Config File**
 
 ```bash
-./bin/test/setup_local_config.sh
+docker run --rm --mount type=bind,source="$(pwd)",target=/app --network host centrifugeio/tinlake-deploy:latest ./bin/test/setup_local_config.sh
 ```
 
 This should generate a file at `./bin/config_unknown.json`. Modify that file if needed.
@@ -144,7 +147,7 @@ This should generate a file at `./bin/config_unknown.json`. Modify that file if 
 **5. Run deploy script**
 
 ```bash
-./bin/deploy.sh
+docker run --rm --mount type=bind,source="$(pwd)",target=/app centrifugeio/tinlake-deploy:latest ./bin/deploy.sh
 ```
 
 ## Util Scripts

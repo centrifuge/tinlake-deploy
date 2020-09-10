@@ -1,7 +1,7 @@
 FROM ubuntu
 
 RUN apt-get update && \
-    apt-get -y install curl build-essential automake autoconf git
+    apt-get -y install curl build-essential automake autoconf git jq
 
 # add user
 RUN useradd -d /home/app/ -m -G sudo app
@@ -24,11 +24,25 @@ RUN nix-env -iA dapp hevm seth solc -if https://github.com/dapphub/dapptools/tar
 RUN curl https://dapp.tools/install | sh
 
 # env variables that can be used by the user
-ENV ETH_RPC_URL http://127.0.0.1:8545
-ENV ETH_GAS_PRICE 7000000
-ENV ETH_KEYSTORE /home/app/keystore
-ENV ETH_PASSWORD /home/app/passphrase
+ENV ETH_RPC_URL="http://127.0.0.1:8545"
+ENV ETH_GAS_PRICE="7000000"
+ENV ETH_KEYSTORE="/home/app/.dapp/testnet/8545/keystore"
+ENV ETH_PASSWORD="/home/app/.dapp/testnet/8545/.empty-password"
 
+# copy repository into /app, set rights
 WORKDIR /app
+USER root
+COPY . /app
+RUN chown -R app /app &&\
+    chmod -R 755 /app
+USER app
 
-CMD dapp testnet
+# build contracts and deploy them
+RUN ./bin/util/build_contracts.sh
+RUN nohup bash -c "dapp testnet --save=app &" && \
+    # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' -H ""Content-Type: application/json"" -X POST --data ''{""jsonrpc"":""2.0"",""method"":""eth_blockNumber"",""params"":[],""id"":83}'' 127.0.0.1:8545)" != "200" ]]; do sleep 5; done' || false && \
+    curl --connect-timeout 2 --max-time 2 --retry 200 --retry-delay 1 --retry-max-time 120 --retry-connrefused -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":83}' 127.0.0.1:8545 && \
+    ./bin/test/setup_local_config.sh && \
+    ./bin/deploy.sh
+
+CMD dapp testnet --load=app
