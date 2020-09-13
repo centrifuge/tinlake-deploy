@@ -1,3 +1,5 @@
+#! /usr/bin/env bash
+
 # script builds contracts into multiple files
 # by using dapp build --extracts
 # individual files are required for the deploy scripts

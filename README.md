@@ -1,16 +1,20 @@
 # Tinlake Deploy
+
 Contains the scripts to deploy the [Tinlake contracts](https://github.com/centrifuge/tinlake]) to Ethereum mainnet or a testnet.
 
-
 ## Requirements
-Tinlake is build and developed with  [dapp.tools](https://github.com/dapphub/dapptools) from DappHub.
-The deployments happens with bash scripts and the command-line tool `seth`.
 
-
+1. Tinlake is build and developed with  [dapp.tools](https://github.com/dapphub/dapptools) from DappHub. The deployments happens with bash scripts and the command-line tool `seth`.
+2. On MacOS, install coreutils `brew install coreutils` (this package cotains `realpath`, a dependency used in the scripts).
+3. On Linux, install `jq`, e. g. with `apt-get install jq`
+3. Init/update git submodules: `git submodule update`
 
 ### Deploy Config File
+
 For a deployment config file needs to be defined.
+
 ### Required Parameters
+
 ```json
 {
   "ETH_RPC_URL": "<<RPC URL>>",
@@ -27,12 +31,12 @@ For a deployment config file needs to be defined.
 ```
 `TINLAKE_CURRENCY` defines the stablecoin for the Tinlake. For example on mainnet this could be the `DAI` stablecoin or any other ERC20 contract.
 `MAIN_DEPLOYER` is a contract which deploys our factories with the create2 opcode.  The other parameters are default config parameters from `seth`
-`SENIOR_INTEREST_RATE` 
+`SENIOR_INTEREST_RATE`
 `MAX_RESERVE` should follow ONE as 10^18
 `MAX_SENIOR_RATIO` should follow ONE as 10^27
 `MIN_SENIOR_RATIO` should follow ONE as 10^27
 `CHALLENGE_TIME` should be in seconds
-`DISCOUNT_RATE` 
+`DISCOUNT_RATE`
 `FEED_MAX_DAYS`
 
 ### NFT Feed
@@ -49,6 +53,7 @@ To use the NAV Feed, set FEED to nav
 Otherwise, the FEED will default to the NFT Feed
 
 ### Optional Parameters
+
 ```json
 {
   "ETH_GAS": "<<NUMBER>>",
@@ -57,6 +62,7 @@ Otherwise, the FEED will default to the NFT Feed
   "ETH_PASSWORD": "<<FILE PATH>>",
 }
 ```
+
 The config file can contain addresses for Fabs.
 
 ## Deploy Contracts
@@ -74,32 +80,57 @@ For deploying the contracts execute the following script.
 ./bin/deploy.sh <<Optional: Path to config file>>
 ```
 The default filepath of the configfile is: `./config_$(seth chain).json`
-`seth chain` returns the name of the current chain based on the provided 
+`seth chain` returns the name of the current chain based on the provided
 
 ## Local Test Deployment of Contracts
-**1. Build contracts**
+
+**1. Set env variables**
+
+Adjust `.env-example.sh`, and run `source env-example.sh`.
+
+**2. Build contracts**
+
 ```json
 ./bin/util/build_contracts.sh
 ```
 
-**2. Start your own local testnet. Run in a seperated terminal**
+**3. Start your own local testnet. Run in a seperated terminal**
+
 ```bash
 dapp testnet
-
 ```
-**3. Generate Test Config File**
+
+**4. Generate Test Config File**
+
 ```bash
-./bin/test/setup_local_config.sh 
+./bin/test/setup_local_config.sh
 ```
 
-**4. Run deploy script**
+This should generate a file at `./bin/config_unknown.json`. Modify that file if needed.
+
+**5. Run deploy script**
+
 ```bash
 ./bin/deploy.sh
 ```
 
-### Util Scripts
+## Docker-based Test Deployment of Contracts
+
+**1. Build the docker image**
+
+```bash
+docker build -t centrifugeio/tinlake-deploy:latest .
+```
+
+**2. Run a docker container**
+
+```bash
+docker run --rm -p 8545:8545 centrifugeio/tinlake-deploy:latest
+```
+
+## Util Scripts
 
 **Create Main Deployer**
 ```json
-dapp create MainDeployer 
+dapp create MainDeployer
 ```
