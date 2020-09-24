@@ -29,3 +29,5 @@ message Root Contract
 seth send $ROOT_CONTRACT 'rely(address)' $ADMIN
 message Epoch Coordinator
 seth send $ROOT_CONTRACT 'relyContract(address,address)' $COORDINATOR $ADMIN
+message Pile
+seth send $ROOT_CONTRACT 'relyContract(address,address)' $PILE $ADMIN
