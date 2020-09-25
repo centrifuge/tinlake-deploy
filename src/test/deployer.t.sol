@@ -17,7 +17,13 @@ pragma solidity >=0.5.15 <0.6.0;
 
 import "ds-test/test.sol";
 import "./../deployer.sol";
-import "tinlake/borrower/fabs/pile.sol";
+
+import { TitleFab } from "./borrower/fabs/title.sol";
+import { PileFab } from "./borrower/fabs/pile.sol";
+import { ShelfFab} from "./borrower/fabs/shelf.sol";
+import { NAVFeedFab } from "./borrower/fabs/navfeed.sol";
+import { NFTFeedFab } from "./borrower/fabs/nftfeed.sol";
+import { CollectorFab } from "./borrower/fabs/collector.sol";
 
 
 contract FabDeployerTest is DSTest {

@@ -18,10 +18,10 @@ test -z "$CURRENCY_CHAINID" && CURRENCY_CHAINID=1
 
 # Deploy Default Currency
 message create ERC20 Tinlake currency
-TINLAKE_CURRENCY=$(seth send --create $CONTRACT_BIN/SimpleToken.bin 'SimpleToken(string memory,string memory,string memory, uint)' '"$CURRENCY_SYMBOL"' '"$CURRENCY_NAME"' '"$CURRENCY_VERSION"' $(seth --to-uint256 $CURRENCY_CHAINID))
+TINLAKE_CURRENCY=$(DAPP_ROOT=$BIN_DIR/../../lib/tinlake dapp create --verify 'src/test/simple/token.sol:SimpleToken' '"$CURRENCY_SYMBOL"' '"$CURRENCY_NAME"' '"$CURRENCY_VERSION"' $(seth --to-uint256 $CURRENCY_CHAINID))
 
 message create Main Deployer
-MAIN_DEPLOYER=$(seth send --create ./../../out/MainDeployer.bin 'MainDeployer()')
+MAIN_DEPLOYER=$(DAPP_ROOT=$BIN_DIR/../../ DAPP_JSON=$BIN_DIR/../../out/dapp.sol.json dapp create --verify src/deployer.sol:MainDeployer)
 
 CONFIG_FILE=$1
 [ -z "$1" ] && CONFIG_FILE="$BIN_DIR/../config_$(seth chain).json"

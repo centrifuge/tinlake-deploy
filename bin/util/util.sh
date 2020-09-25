@@ -54,20 +54,26 @@ addValuesToFile() {
     printf %s "$result" > "$1"
 }
 
+getContractCode() {
+    echo 0x$(cat $DAPP_JSON | jq -r ".contracts[\"$1\"].bin")
+}
+
+
 getFabContract() {
-    CONTRACT_BIN_FILE=$1
+    CONTRACT_CODE=$(getContractCode $1)
     SALT=$(seth --to-bytes32 $(seth --from-ascii $2))
     FAB_ADDR="${!2}"
     if [ -z "$FAB_ADDR" ]
     then
         # check if fab bytecode is already deployed at the network
         # Tinlake fabs have a deterministic address based on the create2 opcode
-        BYTECODE_HASH=$(seth call $MAIN_DEPLOYER 'bytecodeHash(bytes)(bytes32)' 0x$(cat $CONTRACT_BIN_FILE))
+        BYTECODE_HASH=$(seth call $MAIN_DEPLOYER 'bytecodeHash(bytes)(bytes32)' $CONTRACT_CODE)
         FAB_ADDR=$(seth call $MAIN_DEPLOYER 'getAddress(bytes32,bytes32)(address)' $BYTECODE_HASH $SALT)
         if [ "$FAB_ADDR"  ==  "$ZERO_ADDRESS" ]; then
             echo "Deploying Fab: $2" > /dev/stderr
-            seth send $MAIN_DEPLOYER 'deploy(bytes,bytes32)(address)' 0x$(cat $CONTRACT_BIN_FILE) $SALT
+            seth send $MAIN_DEPLOYER 'deploy(bytes,bytes32)(address)' $CONTRACT_CODE $SALT
             FAB_ADDR=$(seth call $MAIN_DEPLOYER 'getAddress(bytes32,bytes32)(address)' $BYTECODE_HASH $SALT)
+            dapp verify-contract $1 $FAB_ADDR
         fi
     else
         echo "Using $2 address from config file" > /dev/stderr
