@@ -30,12 +30,7 @@ COLLECTOR_FAB=$(getFabContract src/borrower/fabs/collector.sol:CollectorFab "COL
 message "COLLECTOR_FAB: $COLLECTOR_FAB"
 
 # deploy nft feed or ceiling and threshold
-if [ "$FEED"  ==  "nav" ]; then
-    FEED_FAB=$(getFabContract src/borrower/fabs/navfeed.sol:NAVFeedFab "FEED_FAB")
-else
-    FEED_FAB=$(getFabContract src/borrower/fabs/nftfeed.sol:NFTFeedFab "FEED_FAB")
-fi
-
+FEED_FAB=$(getFabContract 'src/borrower/fabs/navfeed.sol:NAVFeedFab' "FEED_FAB")
 message "FEED_FAB: $FEED_FAB"
 
 success_msg Borrower Fabs ready
@@ -53,7 +48,6 @@ seth send $BORROWER_DEPLOYER 'deployTitle()'
 export TITLE=$(seth call $BORROWER_DEPLOYER 'title()(address)')
 dapp verify-contract 'lib/tinlake-title/src/title.sol:Title' $TITLE '"Tinlake Loan Token"' '"TLNFT"'
 
-
 message "deploy pile contract"
 seth send $BORROWER_DEPLOYER 'deployPile()'
 export PILE="$(seth call $BORROWER_DEPLOYER 'pile()(address)')"
@@ -62,6 +56,7 @@ dapp verify-contract 'src/borrower/pile.sol:Pile' $PILE
 message "deploy nftFeed contract"
 seth send $BORROWER_DEPLOYER 'deployFeed()'
 export FEED=$(seth call $BORROWER_DEPLOYER 'feed()(address)')
+dapp verify-contract "src/borrower/feed/navfeed.sol:NAVFeed" $FEED
 
 message "deploy shelf contract"
 seth send $BORROWER_DEPLOYER 'deployShelf()'
