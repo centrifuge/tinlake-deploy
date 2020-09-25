@@ -3,8 +3,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 BIN_DIR=${BIN_DIR:-$(cd "${0%/*}"&&pwd)}
 cd $BIN_DIR
-CONTRACT_BIN=$BIN_DIR/../../lib/tinlake/out
-
+export DAPP_JSON=$BIN_DIR/../../lib/tinlake/out/dapp.sol.json
 source $BIN_DIR/../util/util.sh
 
 # set SETH enviroment variable
