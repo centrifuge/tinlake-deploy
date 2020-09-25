@@ -48,13 +48,13 @@ seth send $ROOT_CONTRACT 'denyContract(address,address)' $SENIOR_TOKEN  $GOVERNA
 message Junior Memberlist
 seth send $ROOT_CONTRACT 'denyContract(address,address)' $JUNIOR_MEMBERLIST  $GOVERNANCE
 message Senior Memberlist
-seth send $ROOT_CONTRACT 'relyContract(address,address)' $SENIOR_MEMBERLIST $GOVERNANCE
+seth send $ROOT_CONTRACT 'denyContract(address,address)' $SENIOR_MEMBERLIST $GOVERNANCE
 
 message Assessor
-seth send $ROOT_CONTRACT 'relyContract(address,address)' $ASSESSOR $GOVERNANCE
+seth send $ROOT_CONTRACT 'denyContract(address,address)' $ASSESSOR $GOVERNANCE
 
 message Epoch Coordinator
-seth send $ROOT_CONTRACT 'relyContract(address,address)' $COORDINATOR $GOVERNANCE
+seth send $ROOT_CONTRACT 'denyContract(address,address)' $COORDINATOR $GOVERNANCE
 
 message Reserve
 seth send $ROOT_CONTRACT 'denyContract(address,address)' $RESERVE  $GOVERNANCE
