@@ -66,7 +66,7 @@ dapp verify-contract 'src/borrower/shelf.sol:Shelf' $SHELF $TINLAKE_CURRENCY $TI
 message "deploy collector contract"
 seth send $BORROWER_DEPLOYER 'deployCollector()'
 export COLLECTOR=$(seth call $BORROWER_DEPLOYER 'collector()(address)')
-dapp verify-contract 'src/borrower/collect/collector.sol:Collector' $SHELF $PILE $FEED
+dapp verify-contract 'src/borrower/collect/collector.sol:Collector' $COLLECTOR $SHELF $PILE $FEED
 
 message "finalize borrower contracts"
 seth send $BORROWER_DEPLOYER 'deploy()'
