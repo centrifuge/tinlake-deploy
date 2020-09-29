@@ -19,7 +19,6 @@ import "ds-test/test.sol";
 import "./../deployer.sol";
 import "tinlake/borrower/fabs/pile.sol";
 
-
 contract FabDeployerTest is DSTest {
     MainDeployer deployer;
 

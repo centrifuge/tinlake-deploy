@@ -14,16 +14,16 @@ if [ -d "./../../out" ]; then
 # count contract abi files
 CONTRACT_FILES_TINLAKE=$(ls ./../../out | wc -l)
 fi
+export DAPP_SOLC_VERSION=0.5.15
 
 # build contracts if required
 if [ "$CONTRACT_FILES_TINLAKE" -lt  "2" ]; then
     cd ../..
-    echo $(pwd)
     dapp update
-    dapp --use solc:0.5.15 build --extract
+    dapp build --extract
     cd  lib/tinlake
     dapp update
-    dapp --use solc:0.5.15 build --extract
+    dapp build --extract
     cd ../..
 fi
 echo "Contract build done"
