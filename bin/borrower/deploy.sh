@@ -37,33 +37,34 @@ success_msg Borrower Fabs ready
 
 message Create Borrower Deployer
 
-export BORROWER_DEPLOYER=$(dapp create --verify "src/borrower/deployer.sol:BorrowerDeployer" $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $COLLECTOR_FAB $FEED_FAB $TINLAKE_CURRENCY '"Tinlake Loan Token"' '"TLNFT"' $DISCOUNT_RATE)
+export BORROWER_DEPLOYER=$(dapp create verify "src/borrower/deployer.sol:BorrowerDeployer" $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $COLLECTOR_FAB $FEED_FAB $TINLAKE_CURRENCY '"Tinlake Loan Token"' '"TLNFT"' $DISCOUNT_RATE)
+dapp verify-contract --async "src/borrower/deployer.sol:BorrowerDeployer" $BORROWER_DEPLOYER $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $COLLECTOR_FAB $FEED_FAB $TINLAKE_CURRENCY '"Tinlake Loan Token"' '"TLNFT"' $DISCOUNT_RATE
 
 message "deploy title contract"
 
 seth send $BORROWER_DEPLOYER 'deployTitle()'
 export TITLE=$(seth call $BORROWER_DEPLOYER 'title()(address)')
-dapp verify-contract 'lib/tinlake-title/src/title.sol:Title' $TITLE '"Tinlake Loan Token"' '"TLNFT"'
+dapp verify-contract --async 'lib/tinlake-title/src/title.sol:Title' $TITLE '"Tinlake Loan Token"' '"TLNFT"'
 
 message "deploy pile contract"
 seth send $BORROWER_DEPLOYER 'deployPile()'
 export PILE="$(seth call $BORROWER_DEPLOYER 'pile()(address)')"
-dapp verify-contract 'src/borrower/pile.sol:Pile' $PILE
+dapp verify-contract --async 'src/borrower/pile.sol:Pile' $PILE
 
 message "deploy nftFeed contract"
 seth send $BORROWER_DEPLOYER 'deployFeed()'
 export FEED=$(seth call $BORROWER_DEPLOYER 'feed()(address)')
-dapp verify-contract "src/borrower/feed/navfeed.sol:NAVFeed" $FEED
+dapp verify-contract --async 'src/borrower/feed/navfeed.sol:NAVFeed' $FEED
 
 message "deploy shelf contract"
 seth send $BORROWER_DEPLOYER 'deployShelf()'
 export SHELF="$(seth call $BORROWER_DEPLOYER 'shelf()(address)')"
-dapp verify-contract 'src/borrower/shelf.sol:Shelf' $SHELF $TINLAKE_CURRENCY $TITLE $PILE $FEED
+dapp verify-contract --async 'src/borrower/shelf.sol:Shelf' $SHELF $TINLAKE_CURRENCY $TITLE $PILE $FEED
 
 message "deploy collector contract"
 seth send $BORROWER_DEPLOYER 'deployCollector()'
 export COLLECTOR=$(seth call $BORROWER_DEPLOYER 'collector()(address)')
-dapp verify-contract 'src/borrower/collect/collector.sol:Collector' $COLLECTOR $SHELF $PILE $FEED
+dapp verify-contract --async 'src/borrower/collect/collector.sol:Collector' $COLLECTOR $SHELF $PILE $FEED
 
 message "finalize borrower contracts"
 seth send $BORROWER_DEPLOYER 'deploy()'

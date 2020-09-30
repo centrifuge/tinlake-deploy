@@ -16,7 +16,8 @@ DEPLOYMENT_NAME="Tinlake Deployment on $(seth chain)"
 
 message Deploy Root Contract
 
-export ROOT_CONTRACT=$(dapp create --verify src/root.sol:TinlakeRoot "$ETH_FROM")
+export ROOT_CONTRACT=$(dapp create 'src/root.sol:TinlakeRoot' "$ETH_FROM")
+dapp verify-contract --async 'src/root.sol:TinlakeRoot' $ROOT_CONTRACT "$ETH_FROM"
 
 touch $DEPLOYMENT_FILE
 addValuesToFile $DEPLOYMENT_FILE <<EOF
