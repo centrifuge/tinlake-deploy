@@ -35,9 +35,6 @@ message "FEED_FAB: $FEED_FAB"
 
 success_msg Borrower Fabs ready
 
-TITLE_NAME="Tinlake Loan Token"
-TITLE_SYMBOL="TLNFT"
-
 message Create Borrower Deployer
 
 export BORROWER_DEPLOYER=$(dapp create --verify "src/borrower/deployer.sol:BorrowerDeployer" $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $COLLECTOR_FAB $FEED_FAB $TINLAKE_CURRENCY '"Tinlake Loan Token"' '"TLNFT"' $DISCOUNT_RATE)

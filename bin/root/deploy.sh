@@ -3,9 +3,11 @@
 set -e
 
 BIN_DIR=${BIN_DIR:-$(cd "${0%/*}"&&pwd)}
-cd $BIN_DIR
+source $BIN_DIR/util/util.sh
 export DAPP_JSON=$BIN_DIR/../lib/tinlake/out/dapp.sol.json
 export DAPP_ROOT=$BIN_DIR/../lib/tinlake
+
+cd $BIN_DIR
 
 # todo it should be possible to define other path
 DEPLOYMENT_FILE="./../deployments/addresses_$(seth chain).json"
