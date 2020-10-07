@@ -37,7 +37,7 @@ success_msg Borrower Fabs ready
 
 message Create Borrower Deployer
 
-export BORROWER_DEPLOYER=$(dapp create verify "src/borrower/deployer.sol:BorrowerDeployer" $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $COLLECTOR_FAB $FEED_FAB $TINLAKE_CURRENCY '"Tinlake Loan Token"' '"TLNFT"' $DISCOUNT_RATE)
+export BORROWER_DEPLOYER=$(dapp create "src/borrower/deployer.sol:BorrowerDeployer" $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $COLLECTOR_FAB $FEED_FAB $TINLAKE_CURRENCY '"Tinlake Loan Token"' '"TLNFT"' $DISCOUNT_RATE)
 dapp verify-contract --async "src/borrower/deployer.sol:BorrowerDeployer" $BORROWER_DEPLOYER $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $COLLECTOR_FAB $FEED_FAB $TINLAKE_CURRENCY '"Tinlake Loan Token"' '"TLNFT"' $DISCOUNT_RATE
 
 message "deploy title contract"

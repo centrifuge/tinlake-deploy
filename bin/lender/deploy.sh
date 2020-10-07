@@ -40,10 +40,10 @@ message "COORDINATOR_FAB: $COORDINATOR_FAB"
 # contract deployment
 success_msg Lender Fabs ready
 
-#[[ -z "$JUNIOR_TOKEN_NAME" ]] && JUNIOR_TOKEN_NAME="TIN Token"
-#[[ -z "$JUNIOR_TOKEN_SYMBOL" ]] && JUNIOR_TOKEN_SYMBOL="TIN"
-#[[ -z "$SENIOR_TOKEN_NAME" ]] && SENIOR_TOKEN_NAME="DROP Token"
-#[[ -z "$SENIOR_TOKEN_SYMBOL" ]] && SENIOR_TOKEN_SYMBOL="DROP"
+[[ -z "$JUNIOR_TOKEN_NAME" ]] && JUNIOR_TOKEN_NAME="Kovan RevP1 TIN"
+[[ -z "$JUNIOR_TOKEN_SYMBOL" ]] && JUNIOR_TOKEN_SYMBOL="KRev1TIN"
+[[ -z "$SENIOR_TOKEN_NAME" ]] && SENIOR_TOKEN_NAME="Kovan RevP1 DROP"
+[[ -z "$SENIOR_TOKEN_SYMBOL" ]] && SENIOR_TOKEN_SYMBOL="KRev1DROP"
 
 ## backer allows lender to take currency
 message create lender deployer
@@ -56,7 +56,7 @@ MAX_SENIOR_RATIO=$(seth --to-uint256 $MAX_SENIOR_RATIO)
 MAX_RESERVE=$(seth --to-uint256 $MAX_RESERVE)
 CHALLENGE_TIME=$(seth --to-uint256 $CHALLENGE_TIME)
 SENIOR_INTEREST_RATE=$(seth --to-uint256 $SENIOR_INTEREST_RATE)
-seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string memory,string memory,string memory,string memory)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE '"DROP Token"' '"DROP"' '"TIN Token"' '"TIN"'
+seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string memory,string memory,string memory,string memory)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE '"$SENIOR_TOKEN_NAME"' '"$SENIOR_TOKEN_SYMBOL"' '"$JUNIOR_TOKEN_NAME"' '"$JUNIOR_TOKEN_SYMBOL"'
 
 message deploy tranches
 seth send $LENDER_DEPLOYER 'deployJunior()'
@@ -64,10 +64,10 @@ export JUNIOR_TRANCHE=$(seth call $LENDER_DEPLOYER 'juniorTranche()(address)')
 export JUNIOR_TOKEN=$(seth call $LENDER_DEPLOYER 'juniorToken()(address)')
 export JUNIOR_OPERATOR=$(seth call $LENDER_DEPLOYER 'juniorOperator()(address)')
 export JUNIOR_MEMBERLIST=$(seth call $LENDER_DEPLOYER 'juniorMemberlist()(address)')
-dapp verify-contract --async 'src/lender/token/restricted.sol' $JUNIOR_TOKEN '"$JUNIOR_TOKEN_SYMBOL"' '"$JUNIOR_TOKEN_NAME"'
-dapp verify-contract --async 'src/lender/tranche.sol' $JUNIOR_TRANCHE $TINLAKE_CURRENCY $JUNIOR_TOKEN
-dapp verify-contract --async 'src/lender/token/memberlist.sol' $JUNIOR_MEMBERLIST
-dapp verify-contract --async 'src/lender/operator.sol' $JUNIOR_OPERATOR $JUNIOR_TRANCHE
+dapp verify-contract --async 'src/lender/token/restricted.sol:RestrictedToken' $JUNIOR_TOKEN '"$JUNIOR_TOKEN_SYMBOL"' '"$JUNIOR_TOKEN_NAME"'
+dapp verify-contract --async 'src/lender/tranche.sol:Tranche' $JUNIOR_TRANCHE $TINLAKE_CURRENCY $JUNIOR_TOKEN
+dapp verify-contract --async 'src/lender/token/memberlist.sol:Memberlist' $JUNIOR_MEMBERLIST
+dapp verify-contract --async 'src/lender/operator.sol:Operator' $JUNIOR_OPERATOR $JUNIOR_TRANCHE
 
 seth send $LENDER_DEPLOYER 'deploySenior()'
 export SENIOR_TRANCHE=$(seth call $LENDER_DEPLOYER 'seniorTranche()(address)')
@@ -78,17 +78,17 @@ export SENIOR_MEMBERLIST=$(seth call $LENDER_DEPLOYER 'seniorMemberlist()(addres
 message deploy reserve
 seth send $LENDER_DEPLOYER 'deployReserve()'
 export RESERVE=$(seth call $LENDER_DEPLOYER 'reserve()(address)')
-dapp verify-contract --async 'src/lender/reserve.sol' $RESERVE $TINLAKE_CURRENCY
+dapp verify-contract --async 'src/lender/reserve.sol:Reserve' $RESERVE $TINLAKE_CURRENCY
 
 message deploy assessor
 seth send $LENDER_DEPLOYER 'deployAssessor()'
 export ASSESSOR=$(seth call $LENDER_DEPLOYER 'assessor()(address)')
-dapp verify-contract --async 'src/lender/assessor.sol' $ASSESSOR
+dapp verify-contract --async 'src/lender/assessor.sol:Assessor' $ASSESSOR
 
 message deploy coordinator
 seth send $LENDER_DEPLOYER 'deployCoordinator()'
 export COORDINATOR=$(seth call $LENDER_DEPLOYER 'coordinator()(address)')
-dapp verify-contract --async 'src/lender/coordinator.sol' $COORDINATOR $CHALLENGE_TIME
+dapp verify-contract --async 'src/lender/coordinator.sol:EpochCoordinator' $COORDINATOR $CHALLENGE_TIME
 
 message lender deployer rely/depend/file
 seth send $LENDER_DEPLOYER 'deploy()'
