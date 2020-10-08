@@ -4,7 +4,7 @@ Contains the scripts to deploy the [Tinlake contracts](https://github.com/centri
 
 ## Requirements
 
-1. Tinlake is build and developed with  [dapp.tools](https://github.com/dapphub/dapptools) from DappHub. The deployments happens with bash scripts and the command-line tool `seth`.
+1. Tinlake is build and developed with  [dapp.tools](https://github.com/dapphub/dapptools) from DappHub. The deployments happens with bash scripts and the command-line tool `seth`. ! note: dapp.tools version has to be > 0.28.0.
 2. On MacOS, install coreutils `brew install coreutils` (this package cotains `realpath`, a dependency used in the scripts).
 3. On Linux, install `jq`, e. g. with `apt-get install jq`
 3. Init/update git submodules: `git submodule update`
@@ -27,6 +27,7 @@ For a deployment config file needs to be defined.
   "MIN_SENIOR_RATIO": "<<NUMBER>>",
   "CHALLENGE_TIME": "<<NUMBER>>",
   "DISCOUNT_RATE": "<<NUMBER>>",
+  "FEED": "nav"
 }
 ```
 `TINLAKE_CURRENCY` defines the stablecoin for the Tinlake. For example on mainnet this could be the `DAI` stablecoin or any other ERC20 contract.
@@ -36,8 +37,7 @@ For a deployment config file needs to be defined.
 `MAX_SENIOR_RATIO` should follow ONE as 10^27
 `MIN_SENIOR_RATIO` should follow ONE as 10^27
 `CHALLENGE_TIME` should be in seconds
-`DISCOUNT_RATE`
-`FEED_MAX_DAYS`
+`DISCOUNT_RATE` should follow ONE as 10^27
 
 ### NFT Feed
 
