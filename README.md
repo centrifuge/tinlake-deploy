@@ -67,7 +67,7 @@ The config file can contain addresses for Fabs.
 `MAX_SENIOR_RATIO` should follow ONE as 10^27  
 `MIN_SENIOR_RATIO` should follow ONE as 10^27  
 `CHALLENGE_TIME` should be in seconds  
-`DISCOUNT_RATE` should follow ONE as 10^27  
+`DISCOUNT_RATE` should follow ONE as 10^27 (ratePerSecond) 
 `SENIOR_TRANCHE_SYMBOL` string not longer then 6 chars  
 `SENIOR_TRANCHE_SYMBOL` string not longer then 6 chars  
 
