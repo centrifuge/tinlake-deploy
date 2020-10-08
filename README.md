@@ -26,8 +26,7 @@ For a deployment config file needs to be defined.
   "MAX_SENIOR_RATIO": "<<NUMBER>>",
   "MIN_SENIOR_RATIO": "<<NUMBER>>",
   "CHALLENGE_TIME": "<<NUMBER>>",
-  "DISCOUNT_RATE": "<<NUMBER>>",
-  "FEED": "nav",
+  "DISCOUNT_RATE": "<<NUMBER>>"
 }
 ```
 
@@ -60,17 +59,17 @@ Otherwise, the FEED will default to the NFT Feed
 }
 ```
 
-The config file can contain addresses for Fabs.
-`TINLAKE_CURRENCY` defines the stablecoin for the Tinlake. For example on mainnet this could be the `DAI` stablecoin or any other ERC20 contract.
-`MAIN_DEPLOYER` is a contract which deploys our factories with the create2 opcode.  The other parameters are default config parameters from `seth`
-`SENIOR_INTEREST_RATE`should follow ONE as 10^27 (ratePerSecond)
-`MAX_RESERVE` should follow ONE as 10^18
-`MAX_SENIOR_RATIO` should follow ONE as 10^27
-`MIN_SENIOR_RATIO` should follow ONE as 10^27
-`CHALLENGE_TIME` should be in seconds
-`DISCOUNT_RATE` should follow ONE as 10^27
-`SENIOR_TRANCHE_SYMBOL` string not longer then 6 chars
-`SENIOR_TRANCHE_SYMBOL` string not longer then 6 chars
+The config file can contain addresses for Fabs.  
+`TINLAKE_CURRENCY` defines the stablecoin for the Tinlake. For example on mainnet this could be the `DAI` stablecoin or any other ERC20 contract.  
+`MAIN_DEPLOYER` is a contract which deploys our factories with the create2 opcode.  The other parameters are default config parameters from `seth`  
+`SENIOR_INTEREST_RATE`should follow ONE as 10^27 (ratePerSecond)  
+`MAX_RESERVE` should follow ONE as 10^18  
+`MAX_SENIOR_RATIO` should follow ONE as 10^27  
+`MIN_SENIOR_RATIO` should follow ONE as 10^27  
+`CHALLENGE_TIME` should be in seconds  
+`DISCOUNT_RATE` should follow ONE as 10^27  
+`SENIOR_TRANCHE_SYMBOL` string not longer then 6 chars  
+`SENIOR_TRANCHE_SYMBOL` string not longer then 6 chars  
 
 ## Deploy Contracts
 
