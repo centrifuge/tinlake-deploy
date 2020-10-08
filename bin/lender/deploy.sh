@@ -40,10 +40,10 @@ message "COORDINATOR_FAB: $COORDINATOR_FAB"
 # contract deployment
 success_msg Lender Fabs ready
 
-[[ -z "$JUNIOR_TOKEN_NAME" ]] && JUNIOR_TOKEN_NAME="Kovan RevP1 TIN"
-[[ -z "$JUNIOR_TOKEN_SYMBOL" ]] && JUNIOR_TOKEN_SYMBOL="KRev1TIN"
-[[ -z "$SENIOR_TOKEN_NAME" ]] && SENIOR_TOKEN_NAME="Kovan RevP1 DROP"
-[[ -z "$SENIOR_TOKEN_SYMBOL" ]] && SENIOR_TOKEN_SYMBOL="KRev1DROP"
+[[ -z "$JUNIOR_TOKEN_NAME" ]] && JUNIOR_TOKEN_NAME="TIN"
+[[ -z "$JUNIOR_TOKEN_SYMBOL" ]] && JUNIOR_TOKEN_SYMBOL="TIN"
+[[ -z "$SENIOR_TOKEN_NAME" ]] && SENIOR_TOKEN_NAME="DROP"
+[[ -z "$SENIOR_TOKEN_SYMBOL" ]] && SENIOR_TOKEN_SYMBOL="DROP"
 
 ## backer allows lender to take currency
 message create lender deployer
