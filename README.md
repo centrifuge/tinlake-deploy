@@ -8,6 +8,7 @@ Contains the scripts to deploy the [Tinlake contracts](https://github.com/centri
 2. On MacOS, install coreutils `brew install coreutils` (this package cotains `realpath`, a dependency used in the scripts).
 3. On Linux, install `jq`, e. g. with `apt-get install jq`
 3. Init/update git submodules: `git submodule update`
+4. add env var with your etherscan API key `export ETHERSCAN_API_KEY=<<YOUR KEY>>`
 
 ### Deploy Config File
 
