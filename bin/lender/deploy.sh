@@ -43,15 +43,14 @@ message "COORDINATOR_FAB: $COORDINATOR_FAB"
 # contract deployment
 success_msg Lender Fabs ready
 
-[[ -z "$JUNIOR_TOKEN_NAME" ]] && JUNIOR_TOKEN_NAME="Bling Series 1 TIN"
-[[ -z "$JUNIOR_TOKEN_SYMBOL" ]] && JUNIOR_TOKEN_SYMBOL="BL1TIN"
-[[ -z "$SENIOR_TOKEN_NAME" ]] && SENIOR_TOKEN_NAME="Bling Series 1 DROP"
-[[ -z "$SENIOR_TOKEN_SYMBOL" ]] && SENIOR_TOKEN_SYMBOL="BL1DRP"
+[[ -z "$JUNIOR_TOKEN_NAME" ]] && JUNIOR_TOKEN_NAME="TIN TOKEN"
+[[ -z "$JUNIOR_TOKEN_SYMBOL" ]] && JUNIOR_TOKEN_SYMBOL="TIN"
+[[ -z "$SENIOR_TOKEN_NAME" ]] && SENIOR_TOKEN_NAME="DROP TOKEN"
+[[ -z "$SENIOR_TOKEN_SYMBOL" ]] && SENIOR_TOKEN_SYMBOL="DROP"
 
 ## backer allows lender to take currency
 message create lender deployer
 export LENDER_DEPLOYER=$(dapp create "src/lender/deployer.sol:LenderDeployer" $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTEDTOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $ASSESSOR_ADMIN_FAB)
-# dapp verify-contract --async "src/lender/deployer.sol:LenderDeployer" $LENDER_DEPLOYER $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTEDTOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $ASSESSOR_ADMIN_FAB
 
 message "Init Lender Deployer"
 MIN_SENIOR_RATIO=$(seth --to-uint256 $MIN_SENIOR_RATIO)
@@ -59,7 +58,7 @@ MAX_SENIOR_RATIO=$(seth --to-uint256 $MAX_SENIOR_RATIO)
 MAX_RESERVE=$(seth --to-uint256 $MAX_RESERVE)
 CHALLENGE_TIME=$(seth --to-uint256 $CHALLENGE_TIME)
 SENIOR_INTEREST_RATE=$(seth --to-uint256 $SENIOR_INTEREST_RATE)
-seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string memory,string memory,string memory,string memory)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE '"Bling Series 1 DROP"' '"BL1DRP"' '"Bling Series 1 TIN"' '"BL1TIN"'
+seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string memory,string memory,string memory,string memory)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE "$SENIOR_TOKEN_NAME" "$SENIOR_TOKEN_SYMBOL" "$JUNIOR_TOKEN_NAME" "$JUNIOR_TOKEN_SYMBOL"
 
 message deploy tranches
 seth send $LENDER_DEPLOYER 'deployJunior()'
@@ -67,41 +66,30 @@ export JUNIOR_TRANCHE=$(seth call $LENDER_DEPLOYER 'juniorTranche()(address)')
 export JUNIOR_TOKEN=$(seth call $LENDER_DEPLOYER 'juniorToken()(address)')
 export JUNIOR_OPERATOR=$(seth call $LENDER_DEPLOYER 'juniorOperator()(address)')
 export JUNIOR_MEMBERLIST=$(seth call $LENDER_DEPLOYER 'juniorMemberlist()(address)')
-# dapp verify-contract --async 'src/lender/token/restricted.sol:RestrictedToken' $JUNIOR_TOKEN '"BL1TIN"' '"Bling Series 1 TIN"'
-# dapp verify-contract --async 'src/lender/tranche.sol:Tranche' $JUNIOR_TRANCHE $TINLAKE_CURRENCY $JUNIOR_TOKEN
-# dapp verify-contract --async 'src/lender/token/memberlist.sol:Memberlist' $JUNIOR_MEMBERLIST
-# dapp verify-contract --async 'src/lender/operator.sol:Operator' $JUNIOR_OPERATOR $JUNIOR_TRANCHE
+
 
 seth send $LENDER_DEPLOYER 'deploySenior()'
 export SENIOR_TRANCHE=$(seth call $LENDER_DEPLOYER 'seniorTranche()(address)')
 export SENIOR_TOKEN=$(seth call $LENDER_DEPLOYER 'seniorToken()(address)')
 export SENIOR_OPERATOR=$(seth call $LENDER_DEPLOYER 'seniorOperator()(address)')
 export SENIOR_MEMBERLIST=$(seth call $LENDER_DEPLOYER 'seniorMemberlist()(address)')
-# dapp verify-contract --async 'src/lender/token/restricted.sol:RestrictedToken' $SENIOR_TOKEN '"BL1DRP"' '"Bling Series 1 DROP"'
-# dapp verify-contract --async 'src/lender/tranche.sol:Tranche' $SENIOR_TRANCHE $TINLAKE_CURRENCY $SENIOR_TOKEN
-# dapp verify-contract --async 'src/lender/token/memberlist.sol:Memberlist' $SENIOR_MEMBERLIST
-# dapp verify-contract --async 'src/lender/operator.sol:Operator' $SENIOR_OPERATOR $SENIOR_TRANCHE
 
 message deploy reserve
 seth send $LENDER_DEPLOYER 'deployReserve()'
 export RESERVE=$(seth call $LENDER_DEPLOYER 'reserve()(address)')
-# dapp verify-contract --async 'src/lender/reserve.sol:Reserve' $RESERVE $TINLAKE_CURRENCY
 
 message deploy assessor
 seth send $LENDER_DEPLOYER 'deployAssessor()'
 export ASSESSOR=$(seth call $LENDER_DEPLOYER 'assessor()(address)')
-# dapp verify-contract --async 'src/lender/assessor.sol:Assessor' $ASSESSOR
 
 message deploy assessor admin
 seth send $LENDER_DEPLOYER 'deployAssessorAdmin()'
 export ASSESSOR_ADMIN=$(seth call $LENDER_DEPLOYER 'assessorAdmin()(address)')
-# dapp verify-contract --async 'src/lender/admin/assessor.sol:AssessorAdmin' $ASSESSOR_ADMIN
 
 
 message deploy coordinator
 seth send $LENDER_DEPLOYER 'deployCoordinator()'
 export COORDINATOR=$(seth call $LENDER_DEPLOYER 'coordinator()(address)')
-# dapp verify-contract --async 'src/lender/coordinator.sol:EpochCoordinator' $COORDINATOR $CHALLENGE_TIME
 
 message lender deployer rely/depend/file
 seth send $LENDER_DEPLOYER 'deploy()'
