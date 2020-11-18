@@ -45,7 +45,7 @@ loadValuesFromFile() {
     keys=$(jq -r "keys_unsorted[]" "$1")
     for KEY in $keys; do
         VALUE=$(jq -r ".$KEY" "$1")
-        eval "export $KEY=$VALUE"
+        eval "export $KEY='$VALUE'"
     done
 }
 
