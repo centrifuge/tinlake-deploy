@@ -12,12 +12,10 @@ source $BIN_DIR/local_env.sh
 # Defaults
 test -z "$CURRENCY_SYMBOL" && CURRENCY_SYMBOL="DAI"
 test -z "$CURRENCY_NAME" && CURRENCY_NAME="DAI Stablecoin"
-test -z "$CURRENCY_VERSION" && CURRENCY_VERSION="a"
-test -z "$CURRENCY_CHAINID" && CURRENCY_CHAINID=1
 
 # Deploy Default Currency
 message create ERC20 Tinlake currency
-TINLAKE_CURRENCY=$(DAPP_ROOT=$BIN_DIR/../../lib/tinlake dapp create --verify 'src/test/simple/token.sol:SimpleToken' '"$CURRENCY_SYMBOL"' '"$CURRENCY_NAME"' '"$CURRENCY_VERSION"' $(seth --to-uint256 $CURRENCY_CHAINID))
+TINLAKE_CURRENCY=$(DAPP_ROOT=$BIN_DIR/../../lib/tinlake dapp create --verify 'src/test/simple/token.sol:SimpleToken' '"$CURRENCY_SYMBOL"' '"$CURRENCY_NAME"')
 
 message create Main Deployer
 MAIN_DEPLOYER=$(DAPP_ROOT=$BIN_DIR/../../ DAPP_JSON=$BIN_DIR/../../out/dapp.sol.json dapp create --verify src/deployer.sol:MainDeployer)
