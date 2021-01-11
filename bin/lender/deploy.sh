@@ -43,11 +43,6 @@ message "COORDINATOR_FAB: $COORDINATOR_FAB"
 # contract deployment
 success_msg Lender Fabs ready
 
-[[ -z '"databased.FINANCE 1 TIN"' ]] && JUNIOR_TOKEN_NAME="TIN TOKEN"
-[[ -z '"DF1TIN"' ]] && JUNIOR_TOKEN_SYMBOL="TIN"
-[[ -z '"databased.FINANCE 1 DROP"' ]] && SENIOR_TOKEN_NAME="DROP TOKEN"
-[[ -z '"DF1DRP"' ]] && SENIOR_TOKEN_SYMBOL="DROP"
-
 ## backer allows lender to take currency
 message create lender deployer
 export LENDER_DEPLOYER=$(dapp create "src/lender/deployer.sol:LenderDeployer" $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTEDTOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $ASSESSOR_ADMIN_FAB)
