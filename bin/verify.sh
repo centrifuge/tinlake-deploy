@@ -19,19 +19,19 @@ CONFIG_FILE="./config_$(seth chain).json"
 loadValuesFromFile $CONFIG_FILE
 loadValuesFromFile $ADDRESSES_FILE
 
-# message verify root $ROOT_CONTRACT
-# dapp verify-contract --async 'src/root.sol:TinlakeRoot' $ROOT_CONTRACT "$ETH_FROM"
+message verify root $ROOT_CONTRACT
+dapp verify-contract --async 'src/root.sol:TinlakeRoot' $ROOT_CONTRACT "$ETH_FROM"
 
 
-# message verify borrower contracts
-# message verify borrower deployer $BORROWER_DEPLOYER
-# dapp verify-contract --async "src/borrower/deployer.sol:BorrowerDeployer" $BORROWER_DEPLOYER $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $COLLECTOR_FAB $FEED_FAB $TINLAKE_CURRENCY '"Tinlake Loan Token"' '"TLNFT"' $DISCOUNT_RATE
+message verify borrower contracts
+message verify borrower deployer $BORROWER_DEPLOYER
+dapp verify-contract --async "src/borrower/deployer.sol:BorrowerDeployer" $BORROWER_DEPLOYER $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $COLLECTOR_FAB $FEED_FAB $TINLAKE_CURRENCY '"Tinlake Loan Token"' '"TLNFT"' $DISCOUNT_RATE
 
-# message verify title $TITLE 
-# dapp verify-contract --async 'lib/tinlake-title/src/title.sol:Title' $TITLE '"Tinlake Loan Token"' '"TLNFT"'
+message verify title $TITLE 
+dapp verify-contract --async 'lib/tinlake-title/src/title.sol:Title' $TITLE '"Tinlake Loan Token"' '"TLNFT"'
 
-# message verify pile $PILE
-# dapp verify-contract --async 'src/borrower/pile.sol:Pile' $PILE
+message verify pile $PILE
+dapp verify-contract --async 'src/borrower/pile.sol:Pile' $PILE
 
 message verify feed $FEED
 dapp verify-contract --async 'src/borrower/feed/navfeed.sol:NAVFeed' $FEED
