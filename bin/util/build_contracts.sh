@@ -19,10 +19,10 @@ export DAPP_SOLC_VERSION=0.5.15
 # build contracts if required
 if [ "$CONTRACT_FILES_TINLAKE" -lt  "2" ]; then
     cd ../..
-    dapp update
+
     dapp build --extract
     cd  lib/tinlake
-    dapp update
+
     dapp build --extract
     cd ../..
 fi

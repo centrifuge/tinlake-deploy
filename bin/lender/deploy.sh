@@ -43,10 +43,10 @@ message "COORDINATOR_FAB: $COORDINATOR_FAB"
 # contract deployment
 success_msg Lender Fabs ready
 
-[[ -z "$JUNIOR_TOKEN_NAME" ]] && JUNIOR_TOKEN_NAME="TIN TOKEN"
-[[ -z "$JUNIOR_TOKEN_SYMBOL" ]] && JUNIOR_TOKEN_SYMBOL="TIN"
-[[ -z "$SENIOR_TOKEN_NAME" ]] && SENIOR_TOKEN_NAME="DROP TOKEN"
-[[ -z "$SENIOR_TOKEN_SYMBOL" ]] && SENIOR_TOKEN_SYMBOL="DROP"
+[[ -z '"databased.FINANCE 1 TIN"' ]] && JUNIOR_TOKEN_NAME="TIN TOKEN"
+[[ -z '"DF1TIN"' ]] && JUNIOR_TOKEN_SYMBOL="TIN"
+[[ -z '"databased.FINANCE 1 DROP"' ]] && SENIOR_TOKEN_NAME="DROP TOKEN"
+[[ -z '"DF1DRP"' ]] && SENIOR_TOKEN_SYMBOL="DROP"
 
 ## backer allows lender to take currency
 message create lender deployer
@@ -58,7 +58,7 @@ MAX_SENIOR_RATIO=$(seth --to-uint256 $MAX_SENIOR_RATIO)
 MAX_RESERVE=$(seth --to-uint256 $MAX_RESERVE)
 CHALLENGE_TIME=$(seth --to-uint256 $CHALLENGE_TIME)
 SENIOR_INTEREST_RATE=$(seth --to-uint256 $SENIOR_INTEREST_RATE)
-seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string memory,string memory,string memory,string memory)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE "$SENIOR_TOKEN_NAME" "$SENIOR_TOKEN_SYMBOL" "$JUNIOR_TOKEN_NAME" "$JUNIOR_TOKEN_SYMBOL"
+seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string memory,string memory,string memory,string memory)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE '"databased.FINANCE 1 DROP"' '"DF1DRP"' '"databased.FINANCE 1 TIN"' '"DF1TIN"'
 
 message deploy tranches
 seth send $LENDER_DEPLOYER 'deployJunior()'
