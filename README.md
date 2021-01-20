@@ -4,14 +4,14 @@ Contains the scripts to deploy the [Tinlake contracts](https://github.com/centri
 
 ## Requirements
 
-1. Tinlake is build and developed with  [dapp.tools](https://github.com/dapphub/dapptools) from DappHub. The deployments happens with bash scripts and the command-line tool `seth`. ! note: dapp.tools version has to be > 0.28.0.
+1. Tinlake is built and developed with  [dapp.tools](https://github.com/dapphub/dapptools) from DappHub. The deployments happen with bash scripts and the command-line tool `seth`. ! note: dapp.tools version has to be > 0.28.0.
 2. On MacOS, install coreutils `brew install coreutils` (this package cotains `realpath`, a dependency used in the scripts).
 3. On Linux, install `jq`, e. g. with `apt-get install jq`
 3. Init/update git submodules: `git submodule update`
 
 ### Deploy Config File
 
-For a deployment config file needs to be defined.
+For a deployment, a config file needs to be defined.
 
 ### Required Parameters
 
