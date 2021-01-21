@@ -73,7 +73,6 @@ getFabContract() {
             echo "Deploying Fab: $2" > /dev/stderr
             seth send $MAIN_DEPLOYER 'deploy(bytes,bytes32)(address)' $CONTRACT_CODE $SALT
             FAB_ADDR=$(seth call $MAIN_DEPLOYER 'getAddress(bytes32,bytes32)(address)' $BYTECODE_HASH $SALT)
-            dapp verify-contract $1 $FAB_ADDR
         fi
     else
         echo "Using $2 address from config file" > /dev/stderr

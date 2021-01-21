@@ -4,6 +4,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 BIN_DIR=${BIN_DIR:-$(cd "${0%/*}"&&pwd)}
 cd $BIN_DIR
 export DAPP_JSON=$BIN_DIR/../../lib/tinlake/out/dapp.sol.json
+export DAPP_ROOT=$BIN_DIR/../lib/tinlake
 source $BIN_DIR/../util/util.sh
 
 # set SETH enviroment variable
@@ -11,16 +12,19 @@ source $BIN_DIR/local_env.sh
 
 # Defaults
 test -z "$CURRENCY_SYMBOL" && CURRENCY_SYMBOL="DAI"
-test -z "$CURRENCY_NAME" && CURRENCY_NAME="DAI Stablecoin"
+test -z "$CURRENCY_NAME" && CURRENCY_NAME="DAI-Stablecoin"
 test -z "$CURRENCY_VERSION" && CURRENCY_VERSION="a"
 test -z "$CURRENCY_CHAINID" && CURRENCY_CHAINID=1
+test -z "$ETH_GAS_PRICE" && export ETH_GAS_PRICE=1000000000
+test -z "$ETH_GAS" && export ETH_GAS=10000000
 
 # Deploy Default Currency
 message create ERC20 Tinlake currency
-TINLAKE_CURRENCY=$(DAPP_ROOT=$BIN_DIR/../../lib/tinlake dapp create --verify 'src/test/simple/token.sol:SimpleToken' '"$CURRENCY_SYMBOL"' '"$CURRENCY_NAME"' '"$CURRENCY_VERSION"' $(seth --to-uint256 $CURRENCY_CHAINID))
+export ME="$CURRENCY_SYMBOL"
+TINLAKE_CURRENCY=$(dapp create SimpleToken \"$CURRENCY_SYMBOL\" \"$CURRENCY_NAME\")
 
 message create Main Deployer
-MAIN_DEPLOYER=$(DAPP_ROOT=$BIN_DIR/../../ DAPP_JSON=$BIN_DIR/../../out/dapp.sol.json dapp create --verify src/deployer.sol:MainDeployer)
+MAIN_DEPLOYER=$(DAPP_ROOT=$BIN_DIR/../../ DAPP_JSON=$BIN_DIR/../../out/dapp.sol.json dapp create src/deployer.sol:MainDeployer)
 
 CONFIG_FILE=$1
 [ -z "$1" ] && CONFIG_FILE="$BIN_DIR/../config_$(seth chain).json"
@@ -42,7 +46,11 @@ addValuesToFile $CONFIG_FILE <<EOF
     "MAX_SENIOR_RATIO": "850000000000000000000000000",
     "MIN_SENIOR_RATIO": "750000000000000000000000000",
     "CHALLENGE_TIME": "3600",
-    "DISCOUNT_RATE": "1000000001585489599188229325"
+    "DISCOUNT_RATE": "1000000001585489599188229325",
+    "JUNIOR_TOKEN_SYMBOL": "Test-TIN",
+    "JUNIOR_TOKEN_SYMBOL": "TIN",
+    "SENIOR_TOKEN_Name": "Test-DROP",
+    "SENIOR_TOKEN_SYMBOL": "DROP"
 }
 EOF
 message config file created
