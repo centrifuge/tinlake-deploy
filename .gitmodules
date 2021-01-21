@@ -5,6 +5,3 @@
 	path = lib/tinlake-auth
 	url = https://github.com/centrifuge/tinlake-auth
 
-[submodule "lib/tinlake"]
-	path = lib/tinlake
-	url = https://github.com/centrifuge/tinlake
