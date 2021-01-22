@@ -18,6 +18,10 @@ source $BIN_DIR/util/env-check.sh
 
 success_msg "Correct Config File"
 
+message Tinlake Deployment Config
+
+cat $CONFIG_FILE
+
 # create deployment folder
 mkdir -p $BIN_DIR/../deployments
 
