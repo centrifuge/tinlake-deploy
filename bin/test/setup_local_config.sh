@@ -21,7 +21,7 @@ test -z "$ETH_GAS" && export ETH_GAS=10000000
 # Deploy Default Currency
 message create ERC20 Tinlake currency
 export ME="$CURRENCY_SYMBOL"
-TINLAKE_CURRENCY=$(dapp create SimpleToken \"$CURRENCY_SYMBOL\" \"$CURRENCY_NAME\")
+TINLAKE_CURRENCY=$(dapp create ERC20 \"$CURRENCY_SYMBOL\" \"$CURRENCY_NAME\")
 
 message create Main Deployer
 MAIN_DEPLOYER=$(DAPP_ROOT=$BIN_DIR/../../ DAPP_JSON=$BIN_DIR/../../out/dapp.sol.json dapp create src/deployer.sol:MainDeployer)
