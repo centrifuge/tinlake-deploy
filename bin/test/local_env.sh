@@ -11,4 +11,4 @@ touch $GETH_DIR/.empty-password
 export ETH_PASSWORD=$GETH_DIR/.empty-password
 export ETH_FROM=$(cat $GETH_DIR/keystore/* | jq -r '.address' | head -n 1)
 
-export ETH_GAS=${ETH_GAS:-"7000000"}
+export ETH_GAS=${ETH_GAS:-"10000000"}
