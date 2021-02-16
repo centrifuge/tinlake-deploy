@@ -27,10 +27,4 @@ jobs:
         skipPush: true
         signingKey: ''
     - name: test
-      run: |
-      nix-shell --pure --command "make build"
-      nix-shell --pure --command "dapp testnet &"
-      nix-shell --pure --command "make test-config"
-      nix-shell --pure --command "make deploy"
-
-
+      run: nix-shell --pure --command "make test-run"
