@@ -5,10 +5,10 @@ GETH_DIR=$HOME/.dapp/testnet/8545
 mkdir -p $GETH_DIR
 
 # Default Test Config
-export ETH_RPC_URL=http://127.0.0.1:8545
-export ETH_KEYSTORE=$GETH_DIR/keystore
 touch $GETH_DIR/.empty-password
-export ETH_PASSWORD=$GETH_DIR/.empty-password
-export ETH_FROM=$(cat $GETH_DIR/keystore/* | jq -r '.address' | head -n 1)
 
-export ETH_GAS=${ETH_GAS:-"10000000"}
+test -z "$ETH_RPC_URL" && ETH_RPC_URL=http://127.0.0.1:8545
+test -z "$ETH_KEYSTORE" && ETH_KEYSTORE=$GETH_DIR/keystore
+test -z "$ETH_PASSWORD" && CURRENCY_VERSION=$GETH_DIR/.empty-password
+test -z "$ETH_FROM" && ETH_FROM=$(cat $GETH_DIR/keystore/* | jq -r '.address' | head -n 1)
+test -z "$ETH_GAS" && export ETH_GAS=10000000
