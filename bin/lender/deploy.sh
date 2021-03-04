@@ -48,6 +48,11 @@ success_msg Lender Fabs ready
 [[ -z "$SENIOR_TOKEN_NAME" ]] && SENIOR_TOKEN_NAME="DROP TOKEN"
 [[ -z "$SENIOR_TOKEN_SYMBOL" ]] && SENIOR_TOKEN_SYMBOL="DROP"
 
+JUNIOR_TOKEN_NAME="KR2 TIN Token"
+JUNIOR_TOKEN_SYMBOL='"KR2TIN"'
+SENIOR_TOKEN_NAME='"KR2 DROP Token"'
+SENIOR_TOKEN_SYMBOL="KR2DRP"
+
 ## backer allows lender to take currency
 message create lender deployer
 export LENDER_DEPLOYER=$(dapp create "src/lender/deployer.sol:LenderDeployer" $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTEDTOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $ASSESSOR_ADMIN_FAB)
@@ -58,7 +63,7 @@ MAX_SENIOR_RATIO=$(seth --to-uint256 $MAX_SENIOR_RATIO)
 MAX_RESERVE=$(seth --to-uint256 $MAX_RESERVE)
 CHALLENGE_TIME=$(seth --to-uint256 $CHALLENGE_TIME)
 SENIOR_INTEREST_RATE=$(seth --to-uint256 $SENIOR_INTEREST_RATE)
-seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string memory,string memory,string memory,string memory)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE "$SENIOR_TOKEN_NAME" "$SENIOR_TOKEN_SYMBOL" "$JUNIOR_TOKEN_NAME" "$JUNIOR_TOKEN_SYMBOL"
+seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string memory,string memory,string memory,string memory)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE '"KR2 DROP Token"' '"KR2DRP"' '"KR2 TIN Token"' '"KR2TIN"'
 
 message deploy tranches
 seth send $LENDER_DEPLOYER 'deployJunior()'
