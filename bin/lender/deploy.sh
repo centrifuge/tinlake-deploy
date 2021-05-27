@@ -16,28 +16,28 @@ ZERO_ADDRESS=0x0000000000000000000000000000000000000000
 
 message Fetch Fab Addresses or Deploy
 
-RESERVE_FAB=$(getFabContract src/lender/fabs/reserve.sol:ReserveFab "RESERVE_FAB")
+RESERVE_FAB=$(getFabContract src/lender/fabs/reserve.sol ReserveFab "RESERVE_FAB")
 message "RESERVE_FAB: $RESERVE_FAB"
 
-ASSESSOR_FAB=$(getFabContract src/lender/fabs/assessor.sol:AssessorFab "ASSESSOR_FAB")
+ASSESSOR_FAB=$(getFabContract src/lender/fabs/assessor.sol AssessorFab "ASSESSOR_FAB")
 message "ASSESSOR_FAB: $ASSESSOR_FAB"
 
-ASSESSOR_ADMIN_FAB=$(getFabContract src/lender/fabs/assessoradmin.sol:AssessorAdminFab "ASSESSOR_ADMIN_FAB")
+ASSESSOR_ADMIN_FAB=$(getFabContract src/lender/fabs/assessoradmin.sol AssessorAdminFab "ASSESSOR_ADMIN_FAB")
 message "ASSESSOR_ADMIN_FAB: $ASSESSOR_ADMIN_FAB"
 
-TRANCHE_FAB=$(getFabContract src/lender/fabs/tranche.sol:TrancheFab "TRANCHE_FAB")
+TRANCHE_FAB=$(getFabContract src/lender/fabs/tranche.sol TrancheFab "TRANCHE_FAB")
 message "TRANCHE_FAB: $TRANCHE_FAB"
 
-MEMBERLIST_FAB=$(getFabContract src/lender/fabs/memberlist.sol:MemberlistFab "MEMBERLIST_FAB")
+MEMBERLIST_FAB=$(getFabContract src/lender/fabs/memberlist.sol MemberlistFab "MEMBERLIST_FAB")
 message "MEMBERLIST_FAB: $MEMBERLIST_FAB"
 
-RESTRICTEDTOKEN_FAB=$(getFabContract src/lender/fabs/restrictedtoken.sol:RestrictedTokenFab "RESTRICTEDTOKEN_FAB")
+RESTRICTEDTOKEN_FAB=$(getFabContract src/lender/fabs/restrictedtoken.sol RestrictedTokenFab "RESTRICTEDTOKEN_FAB")
 message "RESTRICTEDTOKEN_FAB: $RESTRICTEDTOKEN_FAB"
 
-OPERATOR_FAB=$(getFabContract src/lender/fabs/operator.sol:OperatorFab "OPERATOR_FAB")
+OPERATOR_FAB=$(getFabContract src/lender/fabs/operator.sol OperatorFab "OPERATOR_FAB")
 message "OPERATOR_FAB: $OPERATOR_FAB"
 
-COORDINATOR_FAB=$(getFabContract src/lender/fabs/coordinator.sol:CoordinatorFab "COORDINATOR_FAB")
+COORDINATOR_FAB=$(getFabContract src/lender/fabs/coordinator.sol CoordinatorFab "COORDINATOR_FAB")
 message "COORDINATOR_FAB: $COORDINATOR_FAB"
 
 # contract deployment
