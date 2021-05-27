@@ -3,3 +3,5 @@
 deployments
 config
 bin/config_*.json
+.DS_Store
+.vscode
