@@ -47,13 +47,13 @@ message verify lender deployer $LENDER_DEPLOYER
 dapp verify-contract --async "src/lender/deployer.sol:LenderDeployer" $LENDER_DEPLOYER $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTEDTOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $ASSESSOR_ADMIN_FAB
 
 message verify junior tranche contracts
-dapp verify-contract --async 'src/lender/token/restricted.sol:RestrictedToken' $JUNIOR_TOKEN "$JUNIOR_TOKEN_SYMBOL" "$JUNIOR_TOKEN_NAME"
+dapp verify-contract --async 'src/lender/token/restricted.sol:RestrictedToken' $JUNIOR_TOKEN \"$JUNIOR_TOKEN_SYMBOL\" \"$JUNIOR_TOKEN_NAME\"
 dapp verify-contract --async 'src/lender/tranche.sol:Tranche' $JUNIOR_TRANCHE $TINLAKE_CURRENCY $JUNIOR_TOKEN
 dapp verify-contract --async 'src/lender/token/memberlist.sol:Memberlist' $JUNIOR_MEMBERLIST
 dapp verify-contract --async 'src/lender/operator.sol:Operator' $JUNIOR_OPERATOR $JUNIOR_TRANCHE
 
 message verify senior tranche contracts
-dapp verify-contract --async 'src/lender/token/restricted.sol:RestrictedToken' $SENIOR_TOKEN "$SENIOR_TOKEN_SYMBOL" "$SENIOR_TOKEN_NAME"
+dapp verify-contract --async 'src/lender/token/restricted.sol:RestrictedToken' $SENIOR_TOKEN \"$SENIOR_TOKEN_SYMBOL\" \"$SENIOR_TOKEN_NAME\"
 dapp verify-contract --async 'src/lender/tranche.sol:Tranche' $SENIOR_TRANCHE $TINLAKE_CURRENCY $SENIOR_TOKEN
 dapp verify-contract --async 'src/lender/token/memberlist.sol:Memberlist' $SENIOR_MEMBERLIST
 dapp verify-contract --async 'src/lender/operator.sol:Operator' $SENIOR_OPERATOR $SENIOR_TRANCHE
