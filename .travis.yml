@@ -3,4 +3,5 @@ script: |
   cachix use dapp
   git clone --recursive https://github.com/dapphub/dapptools $HOME/.dapp/dapptools
   nix-env -f $HOME/.dapp/dapptools -iA dapp solc
-  dapp --use solc:0.5.15 test
+  nix-env -f https://github.com/dapphub/dapptools/archive/master.tar.gz -iA solc-static-versions.solc_0_6_12
+  dapp --use solc:0.6.12 test

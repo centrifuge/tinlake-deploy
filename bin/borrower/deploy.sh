@@ -17,20 +17,20 @@ ZERO_ADDRESS=0x0000000000000000000000000000000000000000
 
 message Fetch Fab Addresses or Deploy
 
-TITLE_FAB=$(getFabContract src/borrower/fabs/title.sol:TitleFab "TITLE_FAB")
+TITLE_FAB=$(getFabContract src/borrower/fabs/title.sol TitleFab "TITLE_FAB")
 message "TITLE_FAB: $TITLE_FAB"
 
-SHELF_FAB=$(getFabContract src/borrower/fabs/shelf.sol:ShelfFab "SHELF_FAB")
+SHELF_FAB=$(getFabContract src/borrower/fabs/shelf.sol ShelfFab "SHELF_FAB")
 message "SHELF_FAB: $SHELF_FAB"
 
-PILE_FAB=$(getFabContract src/borrower/fabs/pile.sol:PileFab "PILE_FAB")
+PILE_FAB=$(getFabContract src/borrower/fabs/pile.sol PileFab "PILE_FAB")
 message "PILE_FAB: $PILE_FAB"
 
-COLLECTOR_FAB=$(getFabContract src/borrower/fabs/collector.sol:CollectorFab "COLLECTOR_FAB")
+COLLECTOR_FAB=$(getFabContract src/borrower/fabs/collector.sol CollectorFab "COLLECTOR_FAB")
 message "COLLECTOR_FAB: $COLLECTOR_FAB"
 
 # deploy nft feed or ceiling and threshold
-FEED_FAB=$(getFabContract 'src/borrower/fabs/navfeed.sol:NAVFeedFab' "FEED_FAB")
+FEED_FAB=$(getFabContract src/borrower/fabs/navfeed.sol NAVFeedFab "FEED_FAB")
 message "FEED_FAB: $FEED_FAB"
 
 success_msg Borrower Fabs ready

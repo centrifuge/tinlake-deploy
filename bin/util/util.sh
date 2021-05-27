@@ -55,14 +55,15 @@ addValuesToFile() {
 }
 
 getContractCode() {
-    echo 0x$(cat $DAPP_JSON | jq -r ".contracts[\"$1\"].bin")
+    echo 0x$(cat $DAPP_JSON | jq -r ".contracts[\"$1\"][\"$2\"].evm.bytecode.object")
 }
 
 
 getFabContract() {
-    CONTRACT_CODE=$(getContractCode $1)
-    SALT=$(seth --to-bytes32 $(seth --from-ascii $2))
-    FAB_ADDR="${!2}"
+    CONTRACT_CODE=$(getContractCode $1 $2)
+    SALT=$(seth --to-bytes32 $(seth --from-ascii $3))
+   # checks if a env variable with name of the fab is defined
+    FAB_ADDR="${!3}"
     if [ -z "$FAB_ADDR" ]
     then
         # check if fab bytecode is already deployed at the network
@@ -70,12 +71,12 @@ getFabContract() {
         BYTECODE_HASH=$(seth call $MAIN_DEPLOYER 'bytecodeHash(bytes)(bytes32)' $CONTRACT_CODE)
         FAB_ADDR=$(seth call $MAIN_DEPLOYER 'getAddress(bytes32,bytes32)(address)' $BYTECODE_HASH $SALT)
         if [ "$FAB_ADDR"  ==  "$ZERO_ADDRESS" ]; then
-            echo "Deploying Fab: $2" > /dev/stderr
+            echo "Deploying Fab: $3" > /dev/stderr
             seth send $MAIN_DEPLOYER 'deploy(bytes,bytes32)(address)' $CONTRACT_CODE $SALT
             FAB_ADDR=$(seth call $MAIN_DEPLOYER 'getAddress(bytes32,bytes32)(address)' $BYTECODE_HASH $SALT)
         fi
     else
-        echo "Using $2 address from config file" > /dev/stderr
+        echo "Using $3 address from config file" > /dev/stderr
     fi
     echo $FAB_ADDR
 }
