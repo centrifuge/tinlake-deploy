@@ -62,6 +62,7 @@ getContractCode() {
 getFabContract() {
     CONTRACT_CODE=$(getContractCode $1 $2)
     SALT=$(seth --to-bytes32 $(seth --from-ascii $3))
+   # checks if a env variable with name of the fab is defined
     FAB_ADDR="${!3}"
     if [ -z "$FAB_ADDR" ]
     then
