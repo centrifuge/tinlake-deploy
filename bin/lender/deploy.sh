@@ -31,8 +31,8 @@ message "TRANCHE_FAB: $TRANCHE_FAB"
 MEMBERLIST_FAB=$(getFabContract src/lender/fabs/memberlist.sol MemberlistFab "MEMBERLIST_FAB")
 message "MEMBERLIST_FAB: $MEMBERLIST_FAB"
 
-RESTRICTEDTOKEN_FAB=$(getFabContract src/lender/fabs/restrictedtoken.sol RestrictedTokenFab "RESTRICTEDTOKEN_FAB")
-message "RESTRICTEDTOKEN_FAB: $RESTRICTEDTOKEN_FAB"
+RESTRICTED_TOKEN_FAB=$(getFabContract src/lender/fabs/restrictedtoken.sol RestrictedTokenFab "RESTRICTED_TOKEN_FAB")
+message "RESTRICTED_TOKEN_FAB: $RESTRICTED_TOKEN_FAB"
 
 OPERATOR_FAB=$(getFabContract src/lender/fabs/operator.sol OperatorFab "OPERATOR_FAB")
 message "OPERATOR_FAB: $OPERATOR_FAB"
@@ -50,7 +50,7 @@ success_msg Lender Fabs ready
 
 ## backer allows lender to take currency
 message create lender deployer
-export LENDER_DEPLOYER=$(dapp create "src/lender/deployer.sol:LenderDeployer" $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTEDTOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $ASSESSOR_ADMIN_FAB)
+export LENDER_DEPLOYER=$(dapp create "src/lender/deployer.sol:LenderDeployer" $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $ASSESSOR_ADMIN_FAB)
 
 message "Init Lender Deployer"
 MIN_SENIOR_RATIO=$(seth --to-uint256 $MIN_SENIOR_RATIO)
@@ -100,7 +100,7 @@ addValuesToFile $DEPLOYMENT_FILE <<EOF
     "OPERATOR_FAB"       :  "$OPERATOR_FAB",
     "ASSESSOR_FAB"       :  "$ASSESSOR_FAB",
     "ASSESSOR_ADMIN_FAB" :  "$ASSESSOR_ADMIN_FAB",
-    "RESTRICTEDTOKEN_FAB" :  "$RESTRICTEDTOKEN_FAB",
+    "RESTRICTED_TOKEN_FAB" :  "$RESTRICTED_TOKEN_FAB",
     "COORDINATOR_FAB"    :  "$COORDINATOR_FAB",
     "TRANCHE_FAB"        :  "$TRANCHE_FAB",
     "MEMBERLIST_FAB"     :  "$MEMBERLIST_FAB",
