@@ -22,8 +22,8 @@ message "RESERVE_FAB: $RESERVE_FAB"
 ASSESSOR_FAB=$(getFabContract src/lender/fabs/assessor.sol AssessorFab "ASSESSOR_FAB")
 message "ASSESSOR_FAB: $ASSESSOR_FAB"
 
-ASSESSOR_ADMIN_FAB=$(getFabContract src/lender/fabs/assessoradmin.sol AssessorAdminFab "ASSESSOR_ADMIN_FAB")
-message "ASSESSOR_ADMIN_FAB: $ASSESSOR_ADMIN_FAB"
+POOL_ADMIN_FAB=$(getFabContract src/lender/fabs/pooladmin.sol PoolAdminFab "POOL_ADMIN_FAB")
+message "POOL_ADMIN_FAB: $POOL_ADMIN_FAB"
 
 TRANCHE_FAB=$(getFabContract src/lender/fabs/tranche.sol TrancheFab "TRANCHE_FAB")
 message "TRANCHE_FAB: $TRANCHE_FAB"
@@ -50,7 +50,7 @@ success_msg Lender Fabs ready
 
 ## backer allows lender to take currency
 message create lender deployer
-export LENDER_DEPLOYER=$(dapp create "src/lender/deployer.sol:LenderDeployer" $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $ASSESSOR_ADMIN_FAB)
+export LENDER_DEPLOYER=$(dapp create "src/lender/deployer.sol:LenderDeployer" $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $POOL_ADMIN_FAB $MEMBER_ADMIN)
 
 message "Init Lender Deployer"
 MIN_SENIOR_RATIO=$(seth --to-uint256 $MIN_SENIOR_RATIO)
@@ -82,10 +82,9 @@ message deploy assessor
 seth send $LENDER_DEPLOYER 'deployAssessor()'
 export ASSESSOR=$(seth call $LENDER_DEPLOYER 'assessor()(address)')
 
-message deploy assessor admin
-seth send $LENDER_DEPLOYER 'deployAssessorAdmin()'
-export ASSESSOR_ADMIN=$(seth call $LENDER_DEPLOYER 'assessorAdmin()(address)')
-
+message deploy pool admin
+seth send $LENDER_DEPLOYER 'deployPoolAdmin(address,address,address,address,address,address)' $POOL_ADMIN1 $POOL_ADMIN2 $POOL_ADMIN3 $POOL_ADMIN4 $POOL_ADMIN5 $AO_POOL_ADMIN
+export POOL_ADMIN=$(seth call $LENDER_DEPLOYER 'poolAdmin()(address)')
 
 message deploy coordinator
 seth send $LENDER_DEPLOYER 'deployCoordinator()'
@@ -99,7 +98,7 @@ addValuesToFile $DEPLOYMENT_FILE <<EOF
     "LENDER_DEPLOYER"    :  "$LENDER_DEPLOYER",
     "OPERATOR_FAB"       :  "$OPERATOR_FAB",
     "ASSESSOR_FAB"       :  "$ASSESSOR_FAB",
-    "ASSESSOR_ADMIN_FAB" :  "$ASSESSOR_ADMIN_FAB",
+    "POOL_ADMIN_FAB"     :  "$POOL_ADMIN_FAB",
     "RESTRICTED_TOKEN_FAB" :  "$RESTRICTED_TOKEN_FAB",
     "COORDINATOR_FAB"    :  "$COORDINATOR_FAB",
     "TRANCHE_FAB"        :  "$TRANCHE_FAB",
@@ -114,8 +113,9 @@ addValuesToFile $DEPLOYMENT_FILE <<EOF
     "JUNIOR_MEMBERLIST"  :  "$JUNIOR_MEMBERLIST",
     "SENIOR_MEMBERLIST"  :  "$SENIOR_MEMBERLIST",
     "ASSESSOR"           :  "$ASSESSOR",
-    "ASSESSOR_ADMIN"     :  "$ASSESSOR_ADMIN",
+    "POOL_ADMIN"         :  "$POOL_ADMIN",
     "COORDINATOR"        :  "$COORDINATOR",
-    "RESERVE"            :  "$RESERVE"
+    "RESERVE"            :  "$RESERVE",
+    "MEMBER_ADMIN"       :  "$MEMBER_ADMIN"
 }
 EOF

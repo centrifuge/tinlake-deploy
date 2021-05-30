@@ -26,6 +26,8 @@ cat $CONFIG_FILE
 # create deployment folder
 mkdir -p $BIN_DIR/../deployments
 
+[[ -z "$GOVERNANCE" ]] && GOVERNANCE="$ETH_FROM"
+
 # deploy root contract
 source ./root/deploy.sh
 
@@ -38,9 +40,7 @@ source ./lender/deploy.sh
 # finalize deployment
 message Finalize Deployment
 
-[[ -z "$GOVERNANCE" ]] && GOVERNANCE="$ETH_FROM"
-
-seth send $ROOT_CONTRACT 'prepare(address,address,address)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $GOVERNANCE
+seth send $ROOT_CONTRACT 'prepare(address,address,address)' $LENDER_DEPLOYER $BORROWER_DEPLOYER
 seth send $ROOT_CONTRACT 'deploy()'
 
 success_msg "Tinlake Deployment $(seth chain)"
@@ -49,7 +49,6 @@ success_msg "Deployment File: $(realpath $DEPLOYMENT_FILE)"
 #touch $DEPLOYMENT_FILE
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
-    "GOVERNANCE"        :    "$GOVERNANCE",
     "MAIN_DEPLOYER"     :    "$MAIN_DEPLOYER",
     "COMMIT_HASH"       :    "$(git --git-dir ./../lib/tinlake/.git rev-parse HEAD )"
 }

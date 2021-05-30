@@ -16,13 +16,14 @@ DEPLOYMENT_NAME="Tinlake Deployment on $(seth chain)"
 
 message Deploy Root Contract
 
-export ROOT_CONTRACT=$(dapp create 'src/root.sol:TinlakeRoot' "$ETH_FROM")
+export ROOT_CONTRACT=$(dapp create 'src/root.sol:TinlakeRoot' "$ETH_FROM" "$GOVERNANCE")
 
 touch $DEPLOYMENT_FILE
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
     "DEPLOYMENT_NAME"   : "$DEPLOYMENT_NAME",
     "ROOT_CONTRACT"     : "$ROOT_CONTRACT",
-    "TINLAKE_CURRENCY"  : "$TINLAKE_CURRENCY"
+    "TINLAKE_CURRENCY"  : "$TINLAKE_CURRENCY",
+    "GOVERNANCE"        : "$GOVERNANCE"
 }
 EOF
