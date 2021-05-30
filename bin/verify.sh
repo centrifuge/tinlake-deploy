@@ -19,8 +19,10 @@ CONFIG_FILE="./config_$(seth chain).json"
 loadValuesFromFile $CONFIG_FILE
 loadValuesFromFile $ADDRESSES_FILE
 
+[[ -z "$GOVERNANCE" ]] && GOVERNANCE="$ETH_FROM"
+
 message verify root $ROOT_CONTRACT
-dapp verify-contract --async 'src/root.sol:TinlakeRoot' $ROOT_CONTRACT "$ETH_FROM"
+dapp verify-contract --async 'src/root.sol:TinlakeRoot' $ROOT_CONTRACT "$ETH_FROM" "$GOVERNANCE"
 
 
 message verify borrower contracts
@@ -44,7 +46,7 @@ dapp verify-contract --async 'src/borrower/collect/collector.sol:Collector' $COL
 
 message verify lender contracts
 message verify lender deployer $LENDER_DEPLOYER
-dapp verify-contract --async "src/lender/deployer.sol:LenderDeployer" $LENDER_DEPLOYER $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $POOL_ADMIN_FAB
+dapp verify-contract --async "src/lender/deployer.sol:LenderDeployer" $LENDER_DEPLOYER $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $POOL_ADMIN_FAB $MEMBER_ADMIN
 
 message verify junior tranche contracts
 dapp verify-contract --async 'src/lender/token/restricted.sol:RestrictedToken' $JUNIOR_TOKEN \"$JUNIOR_TOKEN_SYMBOL\" \"$JUNIOR_TOKEN_NAME\"
@@ -64,5 +66,5 @@ message verify assessor $ASSESSOR
 dapp verify-contract --async 'src/lender/assessor.sol:Assessor' $ASSESSOR
 message verify pool admin $POOL_ADMIN
 dapp verify-contract --async 'src/lender/admin/pool.sol:PoolAdmin' $POOL_ADMIN
-message verify assessor coordinator $COORDINATOR
+message verify epoch coordinator $COORDINATOR
 dapp verify-contract --async 'src/lender/coordinator.sol:EpochCoordinator' $COORDINATOR $CHALLENGE_TIME
