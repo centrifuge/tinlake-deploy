@@ -83,7 +83,7 @@ seth send $LENDER_DEPLOYER 'deployAssessor()'
 export ASSESSOR=$(seth call $LENDER_DEPLOYER 'assessor()(address)')
 
 message deploy pool admin
-seth send $LENDER_DEPLOYER 'deployPoolAdmin(address,address,address,address,address,address)' $POOL_ADMIN1 $POOL_ADMIN2 $POOL_ADMIN3 $POOL_ADMIN4 $POOL_ADMIN5 $AO_POOL_ADMIN
+seth send $LENDER_DEPLOYER 'deployPoolAdmin()'
 export POOL_ADMIN=$(seth call $LENDER_DEPLOYER 'poolAdmin()(address)')
 
 message deploy coordinator
