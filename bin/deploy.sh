@@ -40,8 +40,8 @@ source ./lender/deploy.sh
 # finalize deployment
 message Finalize Deployment
 
-seth send $ROOT_CONTRACT 'prepare(address,address)' $LENDER_DEPLOYER $BORROWER_DEPLOYER
-seth send $ROOT_CONTRACT 'deploy(address,address,address,address,address,address,address)' $ORACLE $POOL_ADMIN1 $POOL_ADMIN2 $POOL_ADMIN3 $POOL_ADMIN4 $POOL_ADMIN5 $AO_POOL_ADMIN
+seth send $ROOT_CONTRACT 'prepare(address,address,address, address[] memory)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]"
+seth send $ROOT_CONTRACT 'deploy(address,address,address,address,address,address,address)'
 
 success_msg "Tinlake Deployment $(seth chain)"
 success_msg "Deployment File: $(realpath $DEPLOYMENT_FILE)"
