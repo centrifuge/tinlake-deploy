@@ -79,6 +79,21 @@ The config file can contain addresses for Fabs.
 `SENIOR_TRANCHE_SYMBOL` string not longer then 6 chars  
 `SENIOR_TRANCHE_SYMBOL` string not longer then 6 chars  
 
+### Maker Parameters
+```json
+{
+  "IS_MKR": true,
+  "MKR_MGR": "<<ADDRESS>>",
+  "MKR_SPOTTER": "<<ADDRESS>>",
+  "MKR_VAT": "<<ADDRESS>>",
+  "MKR_JUG": "<<ADDRESS>>",
+  "MKR_URN": "<<ADDRESS>>",
+  "MKR_LIQ": "<<ADDRESS>>",
+  "MKR_END": "<<ADDRESS>>",
+  "MKR_MAT_BUFFER": "10000000000000000000000000"
+}
+```
+
 ## Deploy Contracts
 
 ### Build Contracts
