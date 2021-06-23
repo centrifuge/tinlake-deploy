@@ -37,16 +37,21 @@ source ./borrower/deploy.sh
 # deploy lender contracts
 source ./lender/deploy.sh
 
+if [ "$IS_MKR" == "true" ]; then
+    # deploy adapter contracts
+    source ./adapter/deploy.sh
+fi
+
 # finalize deployment
 message Finalize Deployment
 
-seth send $ROOT_CONTRACT 'prepare(address,address,address,address[] memory)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]"
+seth send $ROOT_CONTRACT 'prepare(address,address,address,address[] memory)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]" true
+
 seth send $ROOT_CONTRACT 'deploy()'
 
 success_msg "Tinlake Deployment $(seth chain)"
 success_msg "Deployment File: $(realpath $DEPLOYMENT_FILE)"
 
-#touch $DEPLOYMENT_FILE
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
     "MAIN_DEPLOYER"     :    "$MAIN_DEPLOYER",

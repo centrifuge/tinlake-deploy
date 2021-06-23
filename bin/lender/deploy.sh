@@ -40,13 +40,6 @@ message "OPERATOR_FAB: $OPERATOR_FAB"
 COORDINATOR_FAB=$(getFabContract src/lender/fabs/coordinator.sol CoordinatorFab "COORDINATOR_FAB")
 message "COORDINATOR_FAB: $COORDINATOR_FAB"
 
-if [ "$IS_MKR" == "true" ]; then
-    CLERK_FAB=$(getFabContract src/lender/adapters/mkr/fabs/clerk.sol ClerkFab "CLERK_FAB")
-    message "CLERK_FAB: $CLERK_FAB"
-else
-    CLERK_FAB="0x0"
-fi
-
 # contract deployment
 success_msg Lender Fabs ready
 
@@ -57,13 +50,8 @@ success_msg Lender Fabs ready
 
 ## backer allows lender to take currency
 
-if [ "$IS_MKR" == "true" ]; then
-    message create lender deployer
-    export LENDER_DEPLOYER=$(dapp create "src/lender/adapters/mkr/deployer.sol:MKRLenderDeployer" $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $POOL_ADMIN_FAB $CLERK_FAB $MEMBER_ADMIN)
-else
-    message create lender deployer
-    export LENDER_DEPLOYER=$(dapp create "src/lender/deployer.sol:LenderDeployer" $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $POOL_ADMIN_FAB $MEMBER_ADMIN)
-fi
+message create lender deployer
+export LENDER_DEPLOYER=$(dapp create "src/lender/deployer.sol:LenderDeployer" $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $POOL_ADMIN_FAB $MEMBER_ADMIN)
 
 message "Init Lender Deployer"
 MIN_SENIOR_RATIO=$(seth --to-uint256 $MIN_SENIOR_RATIO)
@@ -73,11 +61,6 @@ CHALLENGE_TIME=$(seth --to-uint256 $CHALLENGE_TIME)
 SENIOR_INTEREST_RATE=$(seth --to-uint256 $SENIOR_INTEREST_RATE)
 
 $(seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string,string,string,string)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE \"$SENIOR_TOKEN_NAME\" \"$SENIOR_TOKEN_SYMBOL\" \"$JUNIOR_TOKEN_NAME\" \"$JUNIOR_TOKEN_SYMBOL\")
-
-if [ "$IS_MKR" == "true" ]; then
-    message "Init MKR Lender Deployer"
-    $(seth send $LENDER_DEPLOYER 'initMKR(address, address, address, address, address, address, address, uint)' $MKR_MGR $MKR_SPOTTER $MKR_VAT $MKR_JUG $MKR_URN $MKR_LIQ $MKR_END $MKR_MAT_BUFFER)
-fi
 
 message deploy tranches
 seth send $LENDER_DEPLOYER 'deployJunior()'
