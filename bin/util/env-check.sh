@@ -6,8 +6,6 @@ source $BIN_DIR/util/util.sh
 # Env vars
 message Enviroment Variables
 
-echo "NETWORK = $(seth chain)"
-
 if [[ -z "$ETH_RPC_URL" ]]; then
     error_exit "ETH_RPC_URL is not defined"
 fi
@@ -21,12 +19,19 @@ echo "ETH_FROM = $ETH_FROM"
 if [[ -z "$ETH_GAS" ]]; then
     warning_msg "ETH_GAS is not defined"
 fi
-echo "ETH_GAS = $(printf %.2f $(echo "$ETH_GAS/10^6" | bc -l)) million"
+echo "ETH_GAS = $(printf %.0f $(echo "$ETH_GAS/10^6" | bc -l)) million"
 
-if [[ -z "$ETH_GAS_PRICE" ]]; then
-    warning_msg "ETH_GAS_PRICE is not defined"
-fi
-echo "ETH_GAS_PRICE = $(printf %.2f $(echo "$ETH_GAS_PRICE/10^9" | bc -l)) gwei"
+# if [[ -z "$GASNOW_PRICE_ESTIMATE" ]]; then
+echo "ETH_GAS_PRICE = $(printf %.0f $(echo "$ETH_GAS_PRICE/10^9" | bc -l)) gwei"
+# else
+#     export ETH_GAS_PRICE=$(curl -s "https://www.gasnow.org/api/v3/gas/price?utm_source=tinlake-deploy" | jq -r ".data.$GASNOW_PRICE_ESTIMATE")
+#     echo "ETH_GAS_PRICE = $(printf %.0f $(echo "$ETH_GAS_PRICE/10^9" | bc -l)) gwei [$GASNOW_PRICE_ESTIMATE]"
+# fi
+
+printf "\n"
+
+echo "network = $(seth chain)"
+echo "balance = $(echo "$(seth balance $ETH_FROM)/10^18" | bc -l) ETH"
 
 # Addresses
 message Contract Addresses
@@ -34,7 +39,7 @@ message Contract Addresses
 if [[ -z "$TINLAKE_CURRENCY" ]]; then
     error_exit "TINLAKE_CURRENCY is not defined"
 fi
-echo "TINLAKE_CURRENCY = $TINLAKE_CURRENCY"
+echo "TINLAKE_CURRENCY = $(seth call $TINLAKE_CURRENCY 'symbol()(string)')"
 
 if [[ -z "$MAIN_DEPLOYER" ]]; then
     error_exit "MAIN_DEPLOYER is not defined"

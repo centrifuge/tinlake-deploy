@@ -46,7 +46,7 @@ dapp verify-contract --async 'src/borrower/collect/collector.sol:Collector' $COL
 
 message verify lender contracts
 message verify lender deployer $LENDER_DEPLOYER
-dapp verify-contract --async "src/lender/deployer.sol:LenderDeployer" $LENDER_DEPLOYER $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $POOL_ADMIN_FAB $MEMBER_ADMIN
+dapp verify-contract --async "src/lender/deployer.sol:LenderDeployer" $LENDER_DEPLOYER $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $POOL_ADMIN_FAB $MEMBER_ADMIN $ADAPTER_DEPLOYER
 
 message verify junior tranche contracts
 dapp verify-contract --async 'src/lender/token/restricted.sol:RestrictedToken' $JUNIOR_TOKEN \"$JUNIOR_TOKEN_SYMBOL\" \"$JUNIOR_TOKEN_NAME\"
@@ -68,3 +68,11 @@ message verify pool admin $POOL_ADMIN
 dapp verify-contract --async 'src/lender/admin/pool.sol:PoolAdmin' $POOL_ADMIN
 message verify epoch coordinator $COORDINATOR
 dapp verify-contract --async 'src/lender/coordinator.sol:EpochCoordinator' $COORDINATOR $CHALLENGE_TIME
+
+if [ "$IS_MKR" == "true" ]; then
+  message verify adapter deployer $ADAPTER_DEPLOYER
+  dapp verify-contract --async "src/lender/adapters/deployer.sol:AdapterDeployer" $ADAPTER_DEPLOYER $ROOT_CONTRACT $CLERK_FAB
+
+  message verify clerk $CLERK
+  dapp verify-contract --async 'src/lender/adapters/mkr/clerk.sol:Clerk' $CLERK
+fi

@@ -40,6 +40,11 @@ message "OPERATOR_FAB: $OPERATOR_FAB"
 COORDINATOR_FAB=$(getFabContract src/lender/fabs/coordinator.sol CoordinatorFab "COORDINATOR_FAB")
 message "COORDINATOR_FAB: $COORDINATOR_FAB"
 
+if [ "$IS_MKR" == "true" ]; then
+    CLERK_FAB=$(getFabContract src/lender/adapters/mkr/fabs/clerk.sol ClerkFab "CLERK_FAB")
+    message "CLERK_FAB: $CLERK_FAB"
+fi
+
 # contract deployment
 success_msg Lender Fabs ready
 
@@ -48,10 +53,17 @@ success_msg Lender Fabs ready
 [[ -z "$SENIOR_TOKEN_NAME" ]] && SENIOR_TOKEN_NAME="DROP-TOKEN"
 [[ -z "$SENIOR_TOKEN_SYMBOL" ]] && SENIOR_TOKEN_SYMBOL="DROP"
 
+if [ "$IS_MKR" == "true" ]; then
+    message create adapter deployer
+    export ADAPTER_DEPLOYER=$(dapp create "src/lender/adapters/deployer.sol:AdapterDeployer" $ROOT_CONTRACT $CLERK_FAB)
+else
+    export ADAPTER_DEPLOYER="0x0"
+fi
+
 ## backer allows lender to take currency
 
 message create lender deployer
-export LENDER_DEPLOYER=$(dapp create "src/lender/deployer.sol:LenderDeployer" $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $POOL_ADMIN_FAB $MEMBER_ADMIN)
+export LENDER_DEPLOYER=$(dapp create "src/lender/deployer.sol:LenderDeployer" $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $POOL_ADMIN_FAB $MEMBER_ADMIN $ADAPTER_DEPLOYER)
 
 message "Init Lender Deployer"
 MIN_SENIOR_RATIO=$(seth --to-uint256 $MIN_SENIOR_RATIO)
@@ -94,6 +106,15 @@ export COORDINATOR=$(seth call $LENDER_DEPLOYER 'coordinator()(address)')
 message lender deployer rely/depend/file
 seth send $LENDER_DEPLOYER 'deploy()'
 
+if [ "$IS_MKR" == "true" ]; then
+    message "Init Adapter Deployer"
+    $(seth send $ADAPTER_DEPLOYER 'initMKR(address,address,address,address,address,address,address,address,uint)' $LENDER_DEPLOYER $MKR_MGR $MKR_SPOTTER $MKR_VAT $MKR_JUG $MKR_URN $MKR_LIQ $MKR_END $MKR_MAT_BUFFER)
+
+    message deploy clerk
+    seth send $ADAPTER_DEPLOYER 'deployClerk()'
+    export CLERK=$(seth call $ADAPTER_DEPLOYER 'clerk()(address)')
+fi
+
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
     "LENDER_DEPLOYER"    :  "$LENDER_DEPLOYER",
@@ -117,6 +138,12 @@ addValuesToFile $DEPLOYMENT_FILE <<EOF
     "POOL_ADMIN"         :  "$POOL_ADMIN",
     "COORDINATOR"        :  "$COORDINATOR",
     "RESERVE"            :  "$RESERVE",
-    "MEMBER_ADMIN"       :  "$MEMBER_ADMIN"
+    "MEMBER_ADMIN"       :  "$MEMBER_ADMIN",
+    "ADAPTER_DEPLOYER"   :  "$ADAPTER_DEPLOYER",
+    "CLERK_FAB"          :  "$CLERK_FAB",
+    "MAKER_MGR"          :  "$MKR_MGR",
+    "MKR_VAT"            :  "$MKR_VAT",
+    "MKR_JUG"            :  "$MKR_JUG",
+    "CLERK"              :  "$CLERK"
 }
 EOF

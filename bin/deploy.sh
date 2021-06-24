@@ -17,46 +17,46 @@ cd $BIN_DIR
 source $BIN_DIR/util/env-check.sh
 
 read -p "Ready to deploy? [y/n] " -n 1 -r
-echo 
-if [[ $REPLY =~ ^[Yy]$ ]]
+if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
-    # create deployment folder
-    mkdir -p $BIN_DIR/../deployments
-
-    [[ -z "$GOVERNANCE" ]] && GOVERNANCE="$ETH_FROM"
-
-    # deploy root contract
-    source ./root/deploy.sh
-
-    # deploy borrower contracts
-    source ./borrower/deploy.sh
-
-    # deploy lender contracts
-    source ./lender/deploy.sh
-
-    if [ "$IS_MKR" == "true" ]; then
-        # deploy adapter contracts
-        source ./adapter/deploy.sh
-    fi
-
-    # finalize deployment
-    message Finalize Deployment
-
-    seth send $ROOT_CONTRACT 'prepare(address,address,address,address[] memory)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]" true
-
-    seth send $ROOT_CONTRACT 'deploy()'
-
-    success_msg "Tinlake Deployment $(seth chain)"
-    success_msg "Deployment File: $(realpath $DEPLOYMENT_FILE)"
-
-    addValuesToFile $DEPLOYMENT_FILE <<EOF
-    {
-        "MAIN_DEPLOYER"     :    "$MAIN_DEPLOYER",
-        "COMMIT_HASH"       :    "$(git --git-dir ./../lib/tinlake/.git rev-parse HEAD )"
-    }
-    EOF
-
-    cat $DEPLOYMENT_FILE
-
-    success_msg DONE
+    exit 1
 fi
+
+# create deployment folder
+mkdir -p $BIN_DIR/../deployments
+
+[[ -z "$GOVERNANCE" ]] && GOVERNANCE="$ETH_FROM"
+
+# deploy root contract
+source ./root/deploy.sh
+
+# deploy borrower contracts
+source ./borrower/deploy.sh
+
+# deploy lender contracts
+source ./lender/deploy.sh
+
+# finalize deployment
+message Finalize Deployment
+
+if [ "$IS_MKR" == "true" ]; then
+    seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory,bool)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]" true
+else
+    seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory,bool)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]" false
+fi
+
+seth send $ROOT_CONTRACT 'deploy()'
+
+success_msg "Tinlake Deployment $(seth chain)"
+success_msg "Deployment File: $(realpath $DEPLOYMENT_FILE)"
+
+addValuesToFile $DEPLOYMENT_FILE <<EOF
+{
+    "MAIN_DEPLOYER"     :    "$MAIN_DEPLOYER",
+    "COMMIT_HASH"       :    "$(git --git-dir ./../lib/tinlake/.git rev-parse HEAD )"
+}
+EOF
+
+cat $DEPLOYMENT_FILE
+
+success_msg DONE
