@@ -71,8 +71,10 @@ dapp verify-contract --async 'src/lender/coordinator.sol:EpochCoordinator' $COOR
 
 if [ "$IS_MKR" == "true" ]; then
   message verify adapter deployer $ADAPTER_DEPLOYER
-  dapp verify-contract --async "src/lender/adapters/deployer.sol:AdapterDeployer" $ADAPTER_DEPLOYER $ROOT_CONTRACT $CLERK_FAB
+  dapp verify-contract --async "src/lender/adapters/deployer.sol:AdapterDeployer" $ADAPTER_DEPLOYER $ROOT_CONTRACT $CLERK_FAB $MKR_MGR_FAB
 
   message verify clerk $CLERK
   dapp verify-contract --async 'src/lender/adapters/mkr/clerk.sol:Clerk' $CLERK
+
+  message TODO: verify manager manually
 fi

@@ -55,7 +55,7 @@ success_msg Lender Fabs ready
 
 if [ "$IS_MKR" == "true" ]; then
     message create adapter deployer
-    export ADAPTER_DEPLOYER=$(dapp create "src/lender/adapters/deployer.sol:AdapterDeployer" $ROOT_CONTRACT $CLERK_FAB)
+    export ADAPTER_DEPLOYER=$(dapp create "src/lender/adapters/deployer.sol:AdapterDeployer" $ROOT_CONTRACT $CLERK_FAB $MKR_MGR_FAB)
 else
     export ADAPTER_DEPLOYER="0x0"
 fi
@@ -108,11 +108,11 @@ seth send $LENDER_DEPLOYER 'deploy()'
 
 if [ "$IS_MKR" == "true" ]; then
     message deploy clerk
-    seth send $ADAPTER_DEPLOYER 'deployClerk()'
+    seth send $ADAPTER_DEPLOYER 'deployClerk(address)' $LENDER_DEPLOYER
     export CLERK=$(seth call $ADAPTER_DEPLOYER 'clerk()(address)')
 
     message deploy manager
-    seth send $ADAPTER_DEPLOYER 'deployMgr(address dai, address daiJoin, address end, address vat, address vow, address urn, address liq, address spotter, address jug, uint matBuffer)' $MKR_DAI $MKR_DAI_JOIN $MKR_END $MKR_VAT $MKR_VOW $MKR_URN $MKR_LIQ $MKR_SPOTTER $MKR_JUG $MKR_MAT_BUFFER
+    seth send $ADAPTER_DEPLOYER 'deployMgr(address,address,address,address,address,address,address,address,address,uint)' $MKR_DAI $MKR_DAI_JOIN $MKR_END $MKR_VAT $MKR_VOW $MKR_URN $MKR_LIQ $MKR_SPOTTER $MKR_JUG $MKR_MAT_BUFFER
     export MAKER_MGR=$(seth call $ADAPTER_DEPLOYER 'mgr()(address)')
 fi
 

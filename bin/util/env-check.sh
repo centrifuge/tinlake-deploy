@@ -150,10 +150,20 @@ echo "ORACLE = $ORACLE"
 if [ "$IS_MKR" == "true" ]; then
     message Maker Setup
 
-    if [[ -z "$MKR_MGR" ]]; then
-        error_exit "MKR_MGR is not defined"
+    if [[ -z "$MKR_MGR_FAB" ]]; then
+        error_exit "MKR_MGR_FAB is not defined"
     fi
-    echo "MKR_MGR = $MKR_MGR"
+    echo "MKR_MGR_FAB = $MKR_MGR_FAB"
+
+    if [[ -z "$MKR_DAI" ]]; then
+        error_exit "MKR_DAI is not defined"
+    fi
+    echo "MKR_DAI = $MKR_DAI"
+
+    if [[ -z "$MKR_DAI_JOIN" ]]; then
+        error_exit "MKR_DAI_JOIN is not defined"
+    fi
+    echo "MKR_DAI_JOIN = $MKR_DAI_JOIN"
 
     if [[ -z "$MKR_SPOTTER" ]]; then
         error_exit "MKR_SPOTTER is not defined"

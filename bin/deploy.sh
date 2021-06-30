@@ -40,9 +40,9 @@ source ./lender/deploy.sh
 message Finalize Deployment
 
 if [ "$IS_MKR" == "true" ]; then
-    seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory,bool)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]" true
+    seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]"
 else
-    seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory,bool)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]" false
+    seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]"
 fi
 
 seth send $ROOT_CONTRACT 'deploy()'
