@@ -83,14 +83,15 @@ The config file can contain addresses for Fabs.
 ```json
 {
   "IS_MKR": true,
-  "MKR_MGR": "<<ADDRESS>>",
+  "MKR_MGR_FAB": "<<ADDRESS>>",
   "MKR_SPOTTER": "<<ADDRESS>>",
   "MKR_VAT": "<<ADDRESS>>",
   "MKR_JUG": "<<ADDRESS>>",
   "MKR_URN": "<<ADDRESS>>",
   "MKR_LIQ": "<<ADDRESS>>",
   "MKR_END": "<<ADDRESS>>",
-  "MKR_MAT_BUFFER": "10000000000000000000000000"
+  "MKR_MAT_BUFFER": "10000000000000000000000000",
+  "MKR_MGR_FAB": "0xE5797dD56688f80B79C1FAC7D4441c60cCE95b09"
 }
 ```
 

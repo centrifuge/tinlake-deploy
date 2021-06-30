@@ -107,12 +107,13 @@ message lender deployer rely/depend/file
 seth send $LENDER_DEPLOYER 'deploy()'
 
 if [ "$IS_MKR" == "true" ]; then
-    message "Init Adapter Deployer"
-    $(seth send $ADAPTER_DEPLOYER 'initMKR(address,address,address,address,address,address,address,address,uint)' $LENDER_DEPLOYER $MKR_MGR $MKR_SPOTTER $MKR_VAT $MKR_JUG $MKR_URN $MKR_LIQ $MKR_END $MKR_MAT_BUFFER)
-
     message deploy clerk
     seth send $ADAPTER_DEPLOYER 'deployClerk()'
     export CLERK=$(seth call $ADAPTER_DEPLOYER 'clerk()(address)')
+
+    message deploy manager
+    seth send $ADAPTER_DEPLOYER 'deployMgr(address dai, address daiJoin, address end, address vat, address vow, address urn, address liq, address spotter, address jug, uint matBuffer)' $MKR_DAI $MKR_DAI_JOIN $MKR_END $MKR_VAT $MKR_VOW $MKR_URN $MKR_LIQ $MKR_SPOTTER $MKR_JUG $MKR_MAT_BUFFER
+    export MAKER_MGR=$(seth call $ADAPTER_DEPLOYER 'mgr()(address)')
 fi
 
 addValuesToFile $DEPLOYMENT_FILE <<EOF
@@ -141,7 +142,7 @@ addValuesToFile $DEPLOYMENT_FILE <<EOF
     "MEMBER_ADMIN"       :  "$MEMBER_ADMIN",
     "ADAPTER_DEPLOYER"   :  "$ADAPTER_DEPLOYER",
     "CLERK_FAB"          :  "$CLERK_FAB",
-    "MAKER_MGR"          :  "$MKR_MGR",
+    "MAKER_MGR"          :  "$MAKER_MGR",
     "MKR_VAT"            :  "$MKR_VAT",
     "MKR_JUG"            :  "$MKR_JUG",
     "CLERK"              :  "$CLERK"
