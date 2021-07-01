@@ -77,4 +77,5 @@ if [ "$IS_MKR" == "true" ]; then
   dapp verify-contract --async 'src/lender/adapters/mkr/clerk.sol:Clerk' $CLERK
 
   message TODO: verify manager manually
+  echo "DAPP_SOLC_VERSION=0.5.12 dapp verify-contract --async 'src/mgr.sol:TinlakeManager' $MAKER_MGR $MKR_DAI $MKR_DAI_JOIN $SENIOR_TOKEN $SENIOR_OPERATOR $SENIOR_TRANCHE $MKR_END $MKR_VAT $MKR_VOW"
 fi
