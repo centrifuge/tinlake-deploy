@@ -30,6 +30,7 @@ echo "ETH_GAS_PRICE = $(printf %.0f $(echo "$ETH_GAS_PRICE/10^9" | bc -l)) gwei"
 
 printf "\n"
 
+echo "solc version = $(echo $DAPP_SOLC_VERSION)"
 echo "network = $(seth chain)"
 echo "balance = $(echo "$(seth balance $ETH_FROM)/10^18" | bc -l) ETH"
 
@@ -179,11 +180,6 @@ if [ "$IS_MKR" == "true" ]; then
         error_exit "MKR_JUG is not defined"
     fi
     echo "MKR_JUG = $MKR_JUG"
-
-    if [[ -z "$MKR_URN" ]]; then
-        error_exit "MKR_URN is not defined"
-    fi
-    echo "MKR_URN = $MKR_URN"
 
     if [[ -z "$MKR_LIQ" ]]; then
         error_exit "MKR_LIQ is not defined"

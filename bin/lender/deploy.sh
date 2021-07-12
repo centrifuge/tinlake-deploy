@@ -112,7 +112,7 @@ if [ "$IS_MKR" == "true" ]; then
     export CLERK=$(seth call $ADAPTER_DEPLOYER 'clerk()(address)')
 
     message deploy manager
-    seth send $ADAPTER_DEPLOYER 'deployMgr(address,address,address,address,address,address,address,address,address,uint)' $MKR_DAI $MKR_DAI_JOIN $MKR_END $MKR_VAT $MKR_VOW $MKR_URN $MKR_LIQ $MKR_SPOTTER $MKR_JUG $MKR_MAT_BUFFER
+    seth send $ADAPTER_DEPLOYER 'deployMgr(address,address,address,address,address,address,address,address,uint)' $MKR_DAI $MKR_DAI_JOIN $MKR_END $MKR_VAT $MKR_VOW $MKR_LIQ $MKR_SPOTTER $MKR_JUG $MKR_MAT_BUFFER
     export MAKER_MGR=$(seth call $ADAPTER_DEPLOYER 'mgr()(address)')
 fi
 
