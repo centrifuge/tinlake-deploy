@@ -9,7 +9,7 @@ set -e
 BIN_DIR=${BIN_DIR:-$(cd "${0%/*}"&&pwd)}
 cd $BIN_DIR
 
-export DAPP_SOLC_VERSION=0.6.12
+export DAPP_SOLC_VERSION=0.7.6
 
 cd ../..
 dapp update

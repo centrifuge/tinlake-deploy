@@ -22,8 +22,8 @@ message "RESERVE_FAB: $RESERVE_FAB"
 ASSESSOR_FAB=$(getFabContract src/lender/fabs/assessor.sol AssessorFab "ASSESSOR_FAB")
 message "ASSESSOR_FAB: $ASSESSOR_FAB"
 
-ASSESSOR_ADMIN_FAB=$(getFabContract src/lender/fabs/assessoradmin.sol AssessorAdminFab "ASSESSOR_ADMIN_FAB")
-message "ASSESSOR_ADMIN_FAB: $ASSESSOR_ADMIN_FAB"
+POOL_ADMIN_FAB=$(getFabContract src/lender/fabs/pooladmin.sol PoolAdminFab "POOL_ADMIN_FAB")
+message "POOL_ADMIN_FAB: $POOL_ADMIN_FAB"
 
 TRANCHE_FAB=$(getFabContract src/lender/fabs/tranche.sol TrancheFab "TRANCHE_FAB")
 message "TRANCHE_FAB: $TRANCHE_FAB"
@@ -40,6 +40,11 @@ message "OPERATOR_FAB: $OPERATOR_FAB"
 COORDINATOR_FAB=$(getFabContract src/lender/fabs/coordinator.sol CoordinatorFab "COORDINATOR_FAB")
 message "COORDINATOR_FAB: $COORDINATOR_FAB"
 
+if [ "$IS_MKR" == "true" ]; then
+    CLERK_FAB=$(getFabContract src/lender/adapters/mkr/fabs/clerk.sol ClerkFab "CLERK_FAB")
+    message "CLERK_FAB: $CLERK_FAB"
+fi
+
 # contract deployment
 success_msg Lender Fabs ready
 
@@ -48,9 +53,17 @@ success_msg Lender Fabs ready
 [[ -z "$SENIOR_TOKEN_NAME" ]] && SENIOR_TOKEN_NAME="DROP-TOKEN"
 [[ -z "$SENIOR_TOKEN_SYMBOL" ]] && SENIOR_TOKEN_SYMBOL="DROP"
 
+if [ "$IS_MKR" == "true" ]; then
+    message create adapter deployer
+    export ADAPTER_DEPLOYER=$(dapp create "src/lender/adapters/deployer.sol:AdapterDeployer" $ROOT_CONTRACT $CLERK_FAB $MKR_MGR_FAB)
+else
+    export ADAPTER_DEPLOYER="0x0"
+fi
+
 ## backer allows lender to take currency
+
 message create lender deployer
-export LENDER_DEPLOYER=$(dapp create "src/lender/deployer.sol:LenderDeployer" $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $ASSESSOR_ADMIN_FAB)
+export LENDER_DEPLOYER=$(dapp create "src/lender/deployer.sol:LenderDeployer" $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $POOL_ADMIN_FAB $MEMBER_ADMIN $ADAPTER_DEPLOYER)
 
 message "Init Lender Deployer"
 MIN_SENIOR_RATIO=$(seth --to-uint256 $MIN_SENIOR_RATIO)
@@ -60,13 +73,13 @@ CHALLENGE_TIME=$(seth --to-uint256 $CHALLENGE_TIME)
 SENIOR_INTEREST_RATE=$(seth --to-uint256 $SENIOR_INTEREST_RATE)
 
 $(seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string,string,string,string)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE \"$SENIOR_TOKEN_NAME\" \"$SENIOR_TOKEN_SYMBOL\" \"$JUNIOR_TOKEN_NAME\" \"$JUNIOR_TOKEN_SYMBOL\")
+
 message deploy tranches
 seth send $LENDER_DEPLOYER 'deployJunior()'
 export JUNIOR_TRANCHE=$(seth call $LENDER_DEPLOYER 'juniorTranche()(address)')
 export JUNIOR_TOKEN=$(seth call $LENDER_DEPLOYER 'juniorToken()(address)')
 export JUNIOR_OPERATOR=$(seth call $LENDER_DEPLOYER 'juniorOperator()(address)')
 export JUNIOR_MEMBERLIST=$(seth call $LENDER_DEPLOYER 'juniorMemberlist()(address)')
-
 
 seth send $LENDER_DEPLOYER 'deploySenior()'
 export SENIOR_TRANCHE=$(seth call $LENDER_DEPLOYER 'seniorTranche()(address)')
@@ -82,10 +95,9 @@ message deploy assessor
 seth send $LENDER_DEPLOYER 'deployAssessor()'
 export ASSESSOR=$(seth call $LENDER_DEPLOYER 'assessor()(address)')
 
-message deploy assessor admin
-seth send $LENDER_DEPLOYER 'deployAssessorAdmin()'
-export ASSESSOR_ADMIN=$(seth call $LENDER_DEPLOYER 'assessorAdmin()(address)')
-
+message deploy pool admin
+seth send $LENDER_DEPLOYER 'deployPoolAdmin()'
+export POOL_ADMIN=$(seth call $LENDER_DEPLOYER 'poolAdmin()(address)')
 
 message deploy coordinator
 seth send $LENDER_DEPLOYER 'deployCoordinator()'
@@ -94,12 +106,22 @@ export COORDINATOR=$(seth call $LENDER_DEPLOYER 'coordinator()(address)')
 message lender deployer rely/depend/file
 seth send $LENDER_DEPLOYER 'deploy()'
 
+if [ "$IS_MKR" == "true" ]; then
+    message deploy clerk
+    seth send $ADAPTER_DEPLOYER 'deployClerk(address)' $LENDER_DEPLOYER
+    export CLERK=$(seth call $ADAPTER_DEPLOYER 'clerk()(address)')
+
+    message deploy manager
+    seth send $ADAPTER_DEPLOYER 'deployMgr(address,address,address,address,address,address,address,address,uint)' $MKR_DAI $MKR_DAI_JOIN $MKR_END $MKR_VAT $MKR_VOW $MKR_LIQ $MKR_SPOTTER $MKR_JUG $MKR_MAT_BUFFER
+    export MAKER_MGR=$(seth call $ADAPTER_DEPLOYER 'mgr()(address)')
+fi
+
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
     "LENDER_DEPLOYER"    :  "$LENDER_DEPLOYER",
     "OPERATOR_FAB"       :  "$OPERATOR_FAB",
     "ASSESSOR_FAB"       :  "$ASSESSOR_FAB",
-    "ASSESSOR_ADMIN_FAB" :  "$ASSESSOR_ADMIN_FAB",
+    "POOL_ADMIN_FAB"     :  "$POOL_ADMIN_FAB",
     "RESTRICTED_TOKEN_FAB" :  "$RESTRICTED_TOKEN_FAB",
     "COORDINATOR_FAB"    :  "$COORDINATOR_FAB",
     "TRANCHE_FAB"        :  "$TRANCHE_FAB",
@@ -114,8 +136,15 @@ addValuesToFile $DEPLOYMENT_FILE <<EOF
     "JUNIOR_MEMBERLIST"  :  "$JUNIOR_MEMBERLIST",
     "SENIOR_MEMBERLIST"  :  "$SENIOR_MEMBERLIST",
     "ASSESSOR"           :  "$ASSESSOR",
-    "ASSESSOR_ADMIN"     :  "$ASSESSOR_ADMIN",
+    "POOL_ADMIN"         :  "$POOL_ADMIN",
     "COORDINATOR"        :  "$COORDINATOR",
-    "RESERVE"            :  "$RESERVE"
+    "RESERVE"            :  "$RESERVE",
+    "MEMBER_ADMIN"       :  "$MEMBER_ADMIN",
+    "ADAPTER_DEPLOYER"   :  "$ADAPTER_DEPLOYER",
+    "CLERK_FAB"          :  "$CLERK_FAB",
+    "MAKER_MGR"          :  "$MAKER_MGR",
+    "MKR_VAT"            :  "$MKR_VAT",
+    "MKR_JUG"            :  "$MKR_JUG",
+    "CLERK"              :  "$CLERK"
 }
 EOF
