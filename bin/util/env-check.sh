@@ -42,6 +42,11 @@ if [[ -z "$TINLAKE_CURRENCY" ]]; then
 fi
 echo "TINLAKE_CURRENCY = $(seth call $TINLAKE_CURRENCY 'symbol()(string)')"
 
+if [[ -z "$GOVERNANCE" ]]; then
+    error_exit "GOVERNANCE is not defined"
+fi
+echo "GOVERNANCE = $GOVERNANCE"
+
 if [[ -z "$MAIN_DEPLOYER" ]]; then
     error_exit "MAIN_DEPLOYER is not defined"
 fi
