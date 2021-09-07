@@ -9,30 +9,37 @@ message Enviroment Variables
 if [[ -z "$ETH_RPC_URL" ]]; then
     error_exit "ETH_RPC_URL is not defined"
 fi
-echo "ETH_RPC_URL = $ETH_RPC_URL"
+echo "RPC URL = $ETH_RPC_URL"
 
 if [[ -z "$ETH_FROM" ]]; then
     error_exit "ETH_FROM is not defined"
 fi
-echo "ETH_FROM = $ETH_FROM"
+echo "Account = $ETH_FROM"
+
+printf "\n"
 
 if [[ -z "$ETH_GAS" ]]; then
     warning_msg "ETH_GAS is not defined"
 fi
-echo "ETH_GAS = $(printf %.0f $(echo "$ETH_GAS/10^6" | bc -l)) million"
+echo "Gas limit = $(printf %.0f $(echo "$ETH_GAS/10^6" | bc -l)) million"
 
-# if [[ -z "$GASNOW_PRICE_ESTIMATE" ]]; then
-echo "ETH_GAS_PRICE = $(printf %.0f $(echo "$ETH_GAS_PRICE/10^9" | bc -l)) gwei"
-# else
-#     export ETH_GAS_PRICE=$(curl -s "https://www.gasnow.org/api/v3/gas/price?utm_source=tinlake-deploy" | jq -r ".data.$GASNOW_PRICE_ESTIMATE")
-#     echo "ETH_GAS_PRICE = $(printf %.0f $(echo "$ETH_GAS_PRICE/10^9" | bc -l)) gwei [$GASNOW_PRICE_ESTIMATE]"
-# fi
+if [[ -z "$ETH_GAS_PRICE" ]]; then
+    error_exit "ETH_GAS_PRICE is not defined"
+fi
+
+if [[ -z "$ETH_PRIO_FEE" ]]; then
+    warning_msg "Not using EIP 1559 transactions, since ETH_PRIO_FEE is not defined"
+    echo "Fee Per Gas = $(printf %.0f $(echo "$ETH_GAS_PRICE/10^9" | bc -l)) gwei"
+else
+    echo "Max Priority Fee Per Gas = $(printf %.0f $(echo "$ETH_PRIO_FEE/10^9" | bc -l)) gwei"
+    echo "Max Fee Per Gas = $(printf %.0f $(echo "$ETH_GAS_PRICE/10^9" | bc -l)) gwei"
+fi
 
 printf "\n"
 
-echo "solc version = $(echo $DAPP_SOLC_VERSION)"
-echo "network = $(seth chain)"
-echo "balance = $(echo "$(seth balance $ETH_FROM)/10^18" | bc -l) ETH"
+echo "Solidity version = $(echo $DAPP_SOLC_VERSION)"
+echo "Network = $(seth chain)"
+echo "Balance = $(echo "$(seth balance $ETH_FROM)/10^18" | bc -l) ETH"
 
 # Addresses
 message Contract Addresses
@@ -109,10 +116,10 @@ if [[ -z "$SENIOR_TOKEN_SYMBOL" ]]; then
 fi
 echo "SENIOR_TOKEN_SYMBOL = $SENIOR_TOKEN_SYMBOL"
 
-if [[ -z "$FEED" ]]; then
-    error_exit "FEED is not defined"
+if [[ -z "$NAV_IMPLEMENTATION" ]]; then
+    error_exit "NAV_IMPLEMENTATION is not defined"
 fi
-echo "FEED = $FEED"
+echo "NAV_IMPLEMENTATION = $NAV_IMPLEMENTATION"
 
 # Admin Setup
 message Admin Setup

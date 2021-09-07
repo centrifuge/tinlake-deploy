@@ -48,8 +48,13 @@ message "deploy pile contract"
 seth send $BORROWER_DEPLOYER 'deployPile()'
 export PILE="$(seth call $BORROWER_DEPLOYER 'pile()(address)')"
 
-message "deploy nftFeed contract"
-seth send $BORROWER_DEPLOYER 'deployFeed()'
+if [ "$NAV_IMPLEMENTATION" == "creditline" ]; then
+    message "deploy creditline navFeed contract"
+    seth send $BORROWER_DEPLOYER 'deployFeed(bool)' true
+else
+    message "deploy principal navFeed contract"
+    seth send $BORROWER_DEPLOYER 'deployFeed(bool)' false
+fi
 export FEED=$(seth call $BORROWER_DEPLOYER 'feed()(address)')
 
 message "deploy shelf contract"
