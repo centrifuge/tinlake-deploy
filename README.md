@@ -38,18 +38,25 @@ For a deployment, a config file needs to be defined.
 }
 ```
 
-### NFT Feed
+### NAV Feed
 
-It is possible to use the NFT Feed or the NAV Feed
+It is possible to use the Principal NAV Feed or the Creditline NAV Feed
 
-To use the NAV Feed, set FEED to nav
+You can either set:
 
 ```json
 {
- "FEED": "nav"
+ "NAV_IMPLEMENTATION": "principal"
 }
 ```
-Otherwise, the FEED will default to the NFT Feed
+
+Or:
+
+```json
+{
+ "NAV_IMPLEMENTATION": "creditline"
+}
+```
 
 ### Optional Parameters
 
@@ -57,6 +64,7 @@ Otherwise, the FEED will default to the NFT Feed
 {
   "ETH_GAS": "<<NUMBER>>",
   "ETH_GAS_PRICE": "<<NUMBER>>",
+  "ETH_PRIO_FEE": "<<NUMBER>>",
   "ETH_KEYSTORE": "<<DIR PATH>>",
   "ETH_PASSWORD": "<<FILE PATH>>",
   "GOVERNANCE": "<<ADDRESS>>",
@@ -83,6 +91,7 @@ The config file can contain addresses for Fabs.
 ```json
 {
   "IS_MKR": true,
+  "WIRE_CLERK": false,
   "MKR_MGR_FAB": "<<ADDRESS>>",
   "MKR_DAI": "<<ADDRESS>>",
   "MKR_DAI_JOIN": "<<ADDRESS>>",

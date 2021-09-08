@@ -72,7 +72,7 @@ MAX_RESERVE=$(seth --to-uint256 $MAX_RESERVE)
 CHALLENGE_TIME=$(seth --to-uint256 $CHALLENGE_TIME)
 SENIOR_INTEREST_RATE=$(seth --to-uint256 $SENIOR_INTEREST_RATE)
 
-$(seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string,string,string,string)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE \"$SENIOR_TOKEN_NAME\" \"$SENIOR_TOKEN_SYMBOL\" \"$JUNIOR_TOKEN_NAME\" \"$JUNIOR_TOKEN_SYMBOL\")
+$(seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string,string,string,string)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE "\"$SENIOR_TOKEN_NAME\"" "\"$SENIOR_TOKEN_SYMBOL\"" "\"$JUNIOR_TOKEN_NAME\"" "\"$JUNIOR_TOKEN_SYMBOL\"")
 
 message deploy tranches
 seth send $LENDER_DEPLOYER 'deployJunior()'
@@ -108,7 +108,7 @@ seth send $LENDER_DEPLOYER 'deploy()'
 
 if [ "$IS_MKR" == "true" ]; then
     message deploy clerk
-    seth send $ADAPTER_DEPLOYER 'deployClerk(address)' $LENDER_DEPLOYER
+    seth send $ADAPTER_DEPLOYER 'deployClerk(address,bool)' $LENDER_DEPLOYER $WIRE_CLERK
     export CLERK=$(seth call $ADAPTER_DEPLOYER 'clerk()(address)')
 
     message deploy manager
