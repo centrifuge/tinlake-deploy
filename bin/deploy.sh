@@ -27,6 +27,10 @@ mkdir -p $BIN_DIR/../deployments
 
 [[ -z "$GOVERNANCE" ]] && GOVERNANCE="$ETH_FROM"
 
+# empty existing deployment file
+DEPLOYMENT_FILE="./../deployments/addresses_$(seth chain).json"
+truncate -s 0 $DEPLOYMENT_FILE
+
 # deploy root contract
 source ./root/deploy.sh
 

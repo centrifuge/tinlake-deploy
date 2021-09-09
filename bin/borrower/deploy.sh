@@ -26,12 +26,13 @@ echo "SHELF_FAB = $SHELF_FAB"
 PILE_FAB=$(getFabContract src/borrower/fabs/pile.sol PileFab "PILE_FAB")
 echo "PILE_FAB = $PILE_FAB"
 
-if [ "$NAV_IMPLEMENTATION" == "creditline" ]; then
-    FEED_FAB=$(getFabContract src/borrower/fabs/navfeed.creditline.sol CreditlineNAVFeedFab "FEED_FAB")
-else
-    FEED_FAB=$(getFabContract src/borrower/fabs/navfeed.principal.sol PrincipalNAVFeedFab "FEED_FAB")
-fi
-echo "FEED_FAB = $FEED_FAB"
+# if [ "$NAV_IMPLEMENTATION" == "creditline" ]; then
+#     FEED_FAB=$(getFabContract src/borrower/fabs/navfeed.creditline.sol CreditlineNAVFeedFab "FEED_FAB")
+# else
+#     FEED_FAB=$(getFabContract src/borrower/fabs/navfeed.principal.sol PrincipalNAVFeedFab "FEED_FAB")
+# fi
+# echo "FEED_FAB = $FEED_FAB"
+export FEED_FAB=0x0000000000000000000000000000000000000000
 
 success_msg Borrower Fabs ready
 
@@ -42,27 +43,21 @@ echo "BORROWER_DEPLOYER = $BORROWER_DEPLOYER"
 
 message Create Borrower Contracts
 
+seth send $BORROWER_DEPLOYER 'deployTitle()'
 TITLE=$(seth call $BORROWER_DEPLOYER 'title()(address)')
 echo "TITLE = $TITLE"
-if [ -z "$TITLE" ] then
-    seth send $BORROWER_DEPLOYER 'deployTitle()'
-    TITLE=$(seth call $BORROWER_DEPLOYER 'title()(address)')
-fi
-echo "TITLE = $TITLE"
 
+seth send $BORROWER_DEPLOYER 'deployPile()'
 PILE="$(seth call $BORROWER_DEPLOYER 'pile()(address)')"
-if [ -z "$TITLE" ] then
-    seth send $BORROWER_DEPLOYER 'deployPile()'
-    PILE="$(seth call $BORROWER_DEPLOYER 'pile()(address)')"
-fi
 echo "PILE = $PILE"
 
-if [ "$NAV_IMPLEMENTATION" == "creditline" ]; then
-    seth send $BORROWER_DEPLOYER 'deployFeed(bool)' true
-else
-    seth send $BORROWER_DEPLOYER 'deployFeed(bool)' false
-fi
-FEED=$(seth call $BORROWER_DEPLOYER 'feed()(address)')
+# if [ "$NAV_IMPLEMENTATION" == "creditline" ]; then
+#     seth send $BORROWER_DEPLOYER 'deployFeed(bool)' true
+# else
+#     seth send $BORROWER_DEPLOYER 'deployFeed(bool)' false
+# fi
+# FEED=$(seth call $BORROWER_DEPLOYER 'feed()(address)')
+export FEED=0xeaa5f2e99E6142231FB74Ba9853E3A413934F4F8
 echo "FEED = $FEED"
 
 seth send $BORROWER_DEPLOYER 'deployShelf()'
