@@ -209,4 +209,19 @@ if [ "$IS_MKR" == "true" ]; then
     echo "MKR_MAT_BUFFER = $(printf %.2f $(echo "$MKR_MAT_BUFFER/10^25" | bc -l))%"
 fi
 
+
+if [[ -n "$ROOT_CONTRACT" ]]; then
+    message Resuming deployment
+
+    echo "ROOT_CONTRACT = $ROOT_CONTRACT"
+
+    if [[ -n "$BORROWER_DEPLOYER" ]]; then
+        echo "BORROWER_DEPLOYER = $BORROWER_DEPLOYER"
+    fi
+
+    if [[ -n "$LENDER_DEPLOYER" ]]; then
+        echo "LENDER_DEPLOYER = $LENDER_DEPLOYER"
+    fi
+fi
+
 printf "\n\n"
