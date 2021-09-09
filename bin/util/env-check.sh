@@ -28,7 +28,7 @@ if [[ -z "$ETH_GAS_PRICE" ]]; then
 fi
 
 if [[ -z "$ETH_PRIO_FEE" ]]; then
-    warning_msg "Not using EIP 1559 transactions, since ETH_PRIO_FEE is not defined"
+    echo "WARN: Not using EIP 1559 transactions, since ETH_PRIO_FEE is not defined"
     echo "Fee Per Gas = $(printf %.0f $(echo "$ETH_GAS_PRICE/10^9" | bc -l)) gwei"
 else
     echo "Max Priority Fee Per Gas = $(printf %.0f $(echo "$ETH_PRIO_FEE/10^9" | bc -l)) gwei"

@@ -10,8 +10,6 @@ BIN_DIR=${BIN_DIR:-$(cd "${0%/*}"&&pwd)}
 cd $BIN_DIR
 
 export DAPP_SOLC_VERSION=0.7.6
-export DAPP_BUILD_OPTIMIZE=0
-export DAPP_BUILD_OPTIMIZE_RUNS=10000
 
 cd ../..
 dapp update

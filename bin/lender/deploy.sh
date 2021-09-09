@@ -53,6 +53,7 @@ success_msg Lender Fabs ready
 [[ -z "$SENIOR_TOKEN_NAME" ]] && SENIOR_TOKEN_NAME="DROP-TOKEN"
 [[ -z "$SENIOR_TOKEN_SYMBOL" ]] && SENIOR_TOKEN_SYMBOL="DROP"
 
+# TODO: if LENDER_DEPLOYER is, get ADAPTER_DEPLOYER=$(seth call $LENDER_DEPLOYER 'adapterDeployer()(address))
 if [ "$IS_MKR" == "true" ]; then
     message create adapter deployer
     export ADAPTER_DEPLOYER=$(dapp create "src/lender/adapters/deployer.sol:AdapterDeployer" $ROOT_CONTRACT $CLERK_FAB $MKR_MGR_FAB)
