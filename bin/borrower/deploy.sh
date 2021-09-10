@@ -38,7 +38,11 @@ echo "BORROWER_DEPLOYER = $BORROWER_DEPLOYER"
 
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
-    "BORROWER_DEPLOYER"       :  "$BORROWER_DEPLOYER"
+    "BORROWER_DEPLOYER"       :  "$BORROWER_DEPLOYER",
+    "TITLE_FAB"               :  "$TITLE_FAB",
+    "SHELF_FAB"               :  "$SHELF_FAB",
+    "PILE_FAB"                :  "$PILE_FAB",
+    "FEED_FAB"                :  "$FEED_FAB"
 }
 EOF
 

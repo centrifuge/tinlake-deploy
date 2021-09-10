@@ -77,7 +77,15 @@ fi
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
     "LENDER_DEPLOYER"    :  "$LENDER_DEPLOYER",
-    "ADAPTER_DEPLOYER"   :  "$ADAPTER_DEPLOYER"
+    "ADAPTER_DEPLOYER"   :  "$ADAPTER_DEPLOYER",
+    "OPERATOR_FAB"       :  "$OPERATOR_FAB",
+    "ASSESSOR_FAB"       :  "$ASSESSOR_FAB",
+    "POOL_ADMIN_FAB"     :  "$POOL_ADMIN_FAB",
+    "RESTRICTED_TOKEN_FAB" :  "$RESTRICTED_TOKEN_FAB",
+    "COORDINATOR_FAB"    :  "$COORDINATOR_FAB",
+    "TRANCHE_FAB"        :  "$TRANCHE_FAB",
+    "MEMBERLIST_FAB"     :  "$MEMBERLIST_FAB",
+    "RESERVE_FAB"        :  "$RESERVE_FAB"
 }
 EOF
 
@@ -156,7 +164,7 @@ if [ "$IS_MKR" == "true" ]; then
     MAKER_GMR=$(seth call $ADAPTER_DEPLOYER 'mgr()(address)')
     if [ "$MAKER_GMR" == "$ZERO_ADDRESS" ]; then
         seth send $ADAPTER_DEPLOYER 'deployMgr(address,address,address,address,address,address,address,address,uint)' $MKR_DAI $MKR_DAI_JOIN $MKR_END $MKR_VAT $MKR_VOW $MKR_LIQ $MKR_SPOTTER $MKR_JUG $MKR_MAT_BUFFER
-        MAKER_GMR=$(seth call $ADAPTER_DEPLOYER 'clerk()(address)')
+        MAKER_GMR=$(seth call $ADAPTER_DEPLOYER 'mgr()(address)')
     fi
     echo "MAKER_GMR = $MAKER_GMR"
 fi

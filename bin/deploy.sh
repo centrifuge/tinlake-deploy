@@ -56,10 +56,13 @@ if [ "$DEPLOY_USR" == "$ETH_FROM" ]; then
     fi
 fi
 
-seth send $ROOT_CONTRACT 'deploy()'
+DEPLOYED="$(seth call $ROOT_CONTRACT 'deployed()(bool)')"
+if [ "$DEPLOYED" == "false" ]; then
+    seth send $ROOT_CONTRACT 'deploy()'
+fi
 
-success_msg "Tinlake Deployment $(seth chain)"
-success_msg "Deployment File: $(realpath $DEPLOYMENT_FILE)"
+success_msg "Tinlake deployment $(seth chain)"
+success_msg "Deployment file: $(realpath $DEPLOYMENT_FILE)"
 
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
