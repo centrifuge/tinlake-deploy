@@ -14,7 +14,7 @@ DEPLOYMENT_FILE="./../deployments/addresses_$(seth chain).json"
 
 DEPLOYMENT_NAME="Tinlake Deployment on $(seth chain)"
 
-message Deploy Root Contract
+message Deploy root contract
 
 [[ -z "$ROOT_CONTRACT" ]] && ROOT_CONTRACT=$(dapp create 'src/root.sol:TinlakeRoot' "$ETH_FROM" "$GOVERNANCE")
 echo "ROOT_CONTRACT = $ROOT_CONTRACT"

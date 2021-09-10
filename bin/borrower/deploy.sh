@@ -13,7 +13,7 @@ cd $BIN_DIR
 DEPLOYMENT_FILE="./../deployments/addresses_$(seth chain).json"
 ZERO_ADDRESS=0x0000000000000000000000000000000000000000
 
-message Fetch borrower fab addresses or deploy
+message Deploy borrower fabs
 
 TITLE_FAB=$(getFabContract src/borrower/fabs/title.sol TitleFab "TITLE_FAB")
 echo "TITLE_FAB = $TITLE_FAB"
@@ -38,11 +38,7 @@ echo "BORROWER_DEPLOYER = $BORROWER_DEPLOYER"
 
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
-    "BORROWER_DEPLOYER"       :  "$BORROWER_DEPLOYER",
-    "TITLE_FAB"               :  "$TITLE_FAB",
-    "SHELF_FAB"               :  "$SHELF_FAB",
-    "PILE_FAB"                :  "$PILE_FAB",
-    "FEED_FAB"                :  "$FEED_FAB"
+    "BORROWER_DEPLOYER"       :  "$BORROWER_DEPLOYER"
 }
 EOF
 

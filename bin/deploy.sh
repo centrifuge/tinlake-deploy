@@ -45,12 +45,15 @@ source ./borrower/deploy.sh
 source ./lender/deploy.sh
 
 # finalize deployment
-message Finalize Deployment
+message Wire borrower and lender side
 
-if [ "$IS_MKR" == "true" ]; then
-    seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]"
-else
-    seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]"
+DEPLOY_USR="$(seth call $ROOT_CONTRACT 'deployUsr()(address)')"
+if [ "$DEPLOY_USR" == "$ETH_FROM" ]; then
+    if [ "$IS_MKR" == "true" ]; then
+        seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]"
+    else
+        seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]"
+    fi
 fi
 
 seth send $ROOT_CONTRACT 'deploy()'
@@ -66,5 +69,3 @@ addValuesToFile $DEPLOYMENT_FILE <<EOF
 EOF
 
 cat $DEPLOYMENT_FILE
-
-success_msg DONE

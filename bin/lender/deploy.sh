@@ -12,35 +12,35 @@ cd $BIN_DIR
 DEPLOYMENT_FILE="./../deployments/addresses_$(seth chain).json"
 ZERO_ADDRESS=0x0000000000000000000000000000000000000000
 
-message Fetch fab addresses or deploy
+message Deploy lender fabs
 
 RESERVE_FAB=$(getFabContract src/lender/fabs/reserve.sol ReserveFab "RESERVE_FAB")
-message "RESERVE_FAB = $RESERVE_FAB"
+echo "RESERVE_FAB = $RESERVE_FAB"
 
 ASSESSOR_FAB=$(getFabContract src/lender/fabs/assessor.sol AssessorFab "ASSESSOR_FAB")
-message "ASSESSOR_FAB = $ASSESSOR_FAB"
+echo "ASSESSOR_FAB = $ASSESSOR_FAB"
 
 POOL_ADMIN_FAB=$(getFabContract src/lender/fabs/pooladmin.sol PoolAdminFab "POOL_ADMIN_FAB")
-message "POOL_ADMIN_FAB = $POOL_ADMIN_FAB"
+echo "POOL_ADMIN_FAB = $POOL_ADMIN_FAB"
 
 TRANCHE_FAB=$(getFabContract src/lender/fabs/tranche.sol TrancheFab "TRANCHE_FAB")
-message "TRANCHE_FAB = $TRANCHE_FAB"
+echo "TRANCHE_FAB = $TRANCHE_FAB"
 
 MEMBERLIST_FAB=$(getFabContract src/lender/fabs/memberlist.sol MemberlistFab "MEMBERLIST_FAB")
-message "MEMBERLIST_FAB = $MEMBERLIST_FAB"
+echo "MEMBERLIST_FAB = $MEMBERLIST_FAB"
 
 RESTRICTED_TOKEN_FAB=$(getFabContract src/lender/fabs/restrictedtoken.sol RestrictedTokenFab "RESTRICTED_TOKEN_FAB")
-message "RESTRICTED_TOKEN_FAB = $RESTRICTED_TOKEN_FAB"
+echo "RESTRICTED_TOKEN_FAB = $RESTRICTED_TOKEN_FAB"
 
 OPERATOR_FAB=$(getFabContract src/lender/fabs/operator.sol OperatorFab "OPERATOR_FAB")
-message "OPERATOR_FAB = $OPERATOR_FAB"
+echo "OPERATOR_FAB = $OPERATOR_FAB"
 
 COORDINATOR_FAB=$(getFabContract src/lender/fabs/coordinator.sol CoordinatorFab "COORDINATOR_FAB")
-message "COORDINATOR_FAB = $COORDINATOR_FAB"
+echo "COORDINATOR_FAB = $COORDINATOR_FAB"
 
 if [ "$IS_MKR" == "true" ]; then
     CLERK_FAB=$(getFabContract src/lender/adapters/mkr/fabs/clerk.sol ClerkFab "CLERK_FAB")
-    message "CLERK_FAB = $CLERK_FAB"
+    echo "CLERK_FAB = $CLERK_FAB"
 fi
 
 # contract deployment
@@ -53,7 +53,7 @@ if [ "$IS_MKR" == "true" ]; then
     fi
     echo "ADAPTER_DEPLOYER = $ADAPTER_DEPLOYER"
 else
-    ADAPTER_DEPLOYER="0x0"
+    ADAPTER_DEPLOYER=0x0000000000000000000000000000000000000000
 fi
 
 ## backer allows lender to take currency
@@ -69,25 +69,19 @@ MAX_RESERVE=$(seth --to-uint256 $MAX_RESERVE)
 CHALLENGE_TIME=$(seth --to-uint256 $CHALLENGE_TIME)
 SENIOR_INTEREST_RATE=$(seth --to-uint256 $SENIOR_INTEREST_RATE)
 
-$(seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string,string,string,string)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE "\"$SENIOR_TOKEN_NAME\"" "\"$SENIOR_TOKEN_SYMBOL\"" "\"$JUNIOR_TOKEN_NAME\"" "\"$JUNIOR_TOKEN_SYMBOL\"")
+DEPLOYER="$(seth call $LENDER_DEPLOYER 'deployer()(address)')"
+if [ "$DEPLOYER" == "$ETH_FROM" ]; then
+    seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string,string,string,string)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE "\"$SENIOR_TOKEN_NAME\"" "\"$SENIOR_TOKEN_SYMBOL\"" "\"$JUNIOR_TOKEN_NAME\"" "\"$JUNIOR_TOKEN_SYMBOL\""
+fi
 
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
     "LENDER_DEPLOYER"    :  "$LENDER_DEPLOYER",
-    "OPERATOR_FAB"       :  "$OPERATOR_FAB",
-    "ASSESSOR_FAB"       :  "$ASSESSOR_FAB",
-    "POOL_ADMIN_FAB"     :  "$POOL_ADMIN_FAB",
-    "RESTRICTED_TOKEN_FAB" :  "$RESTRICTED_TOKEN_FAB",
-    "COORDINATOR_FAB"    :  "$COORDINATOR_FAB",
-    "TRANCHE_FAB"        :  "$TRANCHE_FAB",
-    "MEMBERLIST_FAB"     :  "$MEMBERLIST_FAB",
-    "RESERVE_FAB"        :  "$RESERVE_FAB",
-    "ADAPTER_DEPLOYER"   :  "$ADAPTER_DEPLOYER",
-    "CLERK_FAB"          :  "$CLERK_FAB",
+    "ADAPTER_DEPLOYER"   :  "$ADAPTER_DEPLOYER"
 }
 EOF
 
-message Deploy tranches
+message Deploy lender contracts
 
 JUNIOR_TRANCHE=$(seth call $LENDER_DEPLOYER 'juniorTranche()(address)')
 if [ "$JUNIOR_TRANCHE" == "$ZERO_ADDRESS" ]; then
@@ -102,14 +96,14 @@ echo "JUNIOR_TOKEN = $JUNIOR_TOKEN"
 echo "JUNIOR_OPERATOR = $JUNIOR_OPERATOR"
 echo "JUNIOR_MEMBERLIST = $JUNIOR_MEMBERLIST"
 
-SENIOR_TRANCHE=$(seth call $LENDER_DEPLOYER 'seinorTranche()(address)')
+SENIOR_TRANCHE=$(seth call $LENDER_DEPLOYER 'seniorTranche()(address)')
 if [ "$SENIOR_TRANCHE" == "$ZERO_ADDRESS" ]; then
     seth send $LENDER_DEPLOYER 'deploySenior()'
-    SENIOR_TRANCHE=$(seth call $LENDER_DEPLOYER 'seinorTranche()(address)')
+    SENIOR_TRANCHE=$(seth call $LENDER_DEPLOYER 'seniorTranche()(address)')
 fi
-SENIOR_TOKEN=$(seth call $LENDER_DEPLOYER 'seinorToken()(address)')
-SENIOR_OPERATOR=$(seth call $LENDER_DEPLOYER 'seinorOperator()(address)')
-SENIOR_MEMBERLIST=$(seth call $LENDER_DEPLOYER 'seinorMemberlist()(address)')
+SENIOR_TOKEN=$(seth call $LENDER_DEPLOYER 'seniorToken()(address)')
+SENIOR_OPERATOR=$(seth call $LENDER_DEPLOYER 'seniorOperator()(address)')
+SENIOR_MEMBERLIST=$(seth call $LENDER_DEPLOYER 'seniorMemberlist()(address)')
 echo "SENIOR_TRANCHE = $SENIOR_TRANCHE"
 echo "SENIOR_TOKEN = $SENIOR_TOKEN"
 echo "SENIOR_OPERATOR = $SENIOR_OPERATOR"
@@ -150,6 +144,8 @@ if [ "$WIRED" == "false" ]; then
 fi
 
 if [ "$IS_MKR" == "true" ]; then
+    message Deploy maker contracts
+
     CLERK=$(seth call $ADAPTER_DEPLOYER 'clerk()(address)')
     if [ "$CLERK" == "$ZERO_ADDRESS" ]; then
         seth send $ADAPTER_DEPLOYER 'deployClerk(address,bool)' $LENDER_DEPLOYER $WIRE_CLERK
