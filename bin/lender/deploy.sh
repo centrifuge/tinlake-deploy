@@ -75,6 +75,22 @@ SENIOR_INTEREST_RATE=$(seth --to-uint256 $SENIOR_INTEREST_RATE)
 
 $(seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string,string,string,string)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE "\"$SENIOR_TOKEN_NAME\"" "\"$SENIOR_TOKEN_SYMBOL\"" "\"$JUNIOR_TOKEN_NAME\"" "\"$JUNIOR_TOKEN_SYMBOL\"")
 
+addValuesToFile $DEPLOYMENT_FILE <<EOF
+{
+    "LENDER_DEPLOYER"    :  "$LENDER_DEPLOYER",
+    "OPERATOR_FAB"       :  "$OPERATOR_FAB",
+    "ASSESSOR_FAB"       :  "$ASSESSOR_FAB",
+    "POOL_ADMIN_FAB"     :  "$POOL_ADMIN_FAB",
+    "RESTRICTED_TOKEN_FAB" :  "$RESTRICTED_TOKEN_FAB",
+    "COORDINATOR_FAB"    :  "$COORDINATOR_FAB",
+    "TRANCHE_FAB"        :  "$TRANCHE_FAB",
+    "MEMBERLIST_FAB"     :  "$MEMBERLIST_FAB",
+    "RESERVE_FAB"        :  "$RESERVE_FAB",
+    "ADAPTER_DEPLOYER"   :  "$ADAPTER_DEPLOYER",
+    "CLERK_FAB"          :  "$CLERK_FAB",
+}
+EOF
+
 message deploy tranches
 seth send $LENDER_DEPLOYER 'deployJunior()'
 export JUNIOR_TRANCHE=$(seth call $LENDER_DEPLOYER 'juniorTranche()(address)')
@@ -119,15 +135,6 @@ fi
 
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
-    "LENDER_DEPLOYER"    :  "$LENDER_DEPLOYER",
-    "OPERATOR_FAB"       :  "$OPERATOR_FAB",
-    "ASSESSOR_FAB"       :  "$ASSESSOR_FAB",
-    "POOL_ADMIN_FAB"     :  "$POOL_ADMIN_FAB",
-    "RESTRICTED_TOKEN_FAB" :  "$RESTRICTED_TOKEN_FAB",
-    "COORDINATOR_FAB"    :  "$COORDINATOR_FAB",
-    "TRANCHE_FAB"        :  "$TRANCHE_FAB",
-    "MEMBERLIST_FAB"     :  "$MEMBERLIST_FAB",
-    "RESERVE_FAB"        :  "$RESERVE_FAB",
     "JUNIOR_OPERATOR"    :  "$JUNIOR_OPERATOR",
     "SENIOR_OPERATOR"    :  "$SENIOR_OPERATOR",
     "JUNIOR_TRANCHE"     :  "$JUNIOR_TRANCHE",
@@ -141,8 +148,6 @@ addValuesToFile $DEPLOYMENT_FILE <<EOF
     "COORDINATOR"        :  "$COORDINATOR",
     "RESERVE"            :  "$RESERVE",
     "MEMBER_ADMIN"       :  "$MEMBER_ADMIN",
-    "ADAPTER_DEPLOYER"   :  "$ADAPTER_DEPLOYER",
-    "CLERK_FAB"          :  "$CLERK_FAB",
     "MAKER_MGR"          :  "$MAKER_MGR",
     "MKR_VAT"            :  "$MKR_VAT",
     "MKR_JUG"            :  "$MKR_JUG",
