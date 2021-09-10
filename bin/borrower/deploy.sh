@@ -9,31 +9,27 @@ export DAPP_ROOT=$BIN_DIR/../lib/tinlake
 
 cd $BIN_DIR
 
-message Deploy Borrower
-
 # todo it should be possible to define other path
 DEPLOYMENT_FILE="./../deployments/addresses_$(seth chain).json"
 ZERO_ADDRESS=0x0000000000000000000000000000000000000000
 
-message Fetch Fab Addresses or Deploy
+message Fetch Borrower Fab Addresses or Deploy
 
 TITLE_FAB=$(getFabContract src/borrower/fabs/title.sol TitleFab "TITLE_FAB")
-echo "TITLE_FAB = $TITLE_FAB"
+echo "TITLE_FAB = $TITLE_FAB\n"
 
 SHELF_FAB=$(getFabContract src/borrower/fabs/shelf.sol ShelfFab "SHELF_FAB")
-echo "SHELF_FAB = $SHELF_FAB"
+echo "SHELF_FAB = $SHELF_FAB\n"
 
 PILE_FAB=$(getFabContract src/borrower/fabs/pile.sol PileFab "PILE_FAB")
-echo "PILE_FAB = $PILE_FAB"
+echo "PILE_FAB = $PILE_FAB\n"
 
 if [ "$NAV_IMPLEMENTATION" == "creditline" ]; then
     FEED_FAB=$(getFabContract src/borrower/fabs/navfeed.creditline.sol CreditlineNAVFeedFab "FEED_FAB")
 else
     FEED_FAB=$(getFabContract src/borrower/fabs/navfeed.principal.sol PrincipalNAVFeedFab "FEED_FAB")
 fi
-echo "FEED_FAB = $FEED_FAB"
-
-success_msg Borrower Fabs ready
+echo "FEED_FAB = $FEED_FAB\n"
 
 message Create Borrower Deployer
 
@@ -52,30 +48,39 @@ EOF
 
 message Create Borrower Contracts
 
-seth send $BORROWER_DEPLOYER 'deployTitle()'
 TITLE=$(seth call $BORROWER_DEPLOYER 'title()(address)')
-echo "TITLE = $TITLE"
-
-seth send $BORROWER_DEPLOYER 'deployPile()'
-PILE="$(seth call $BORROWER_DEPLOYER 'pile()(address)')"
-echo "PILE = $PILE"
-
-if [ "$NAV_IMPLEMENTATION" == "creditline" ]; then
-    seth send $BORROWER_DEPLOYER 'deployFeed()'
-else
-    seth send $BORROWER_DEPLOYER 'deployFeed()'
+if [ "$TITLE" == "$ZERO_ADDRESS" ]; then
+    seth send $BORROWER_DEPLOYER 'deployTitle()'
+    TITLE=$(seth call $BORROWER_DEPLOYER 'title()(address)')
 fi
-FEED=$(seth call $BORROWER_DEPLOYER 'feed()(address)')
-echo "FEED = $FEED"
+echo "TITLE = $TITLE\n"
 
-seth send $BORROWER_DEPLOYER 'deployShelf()'
+PILE="$(seth call $BORROWER_DEPLOYER 'pile()(address)')"
+if [ "$PILE" == "$ZERO_ADDRESS" ]; then
+    seth send $BORROWER_DEPLOYER 'deployPile()'
+    PILE="$(seth call $BORROWER_DEPLOYER 'pile()(address)')"
+fi
+echo "PILE = $PILE\n"
+
+FEED="$(seth call $BORROWER_DEPLOYER 'feed()(address)')"
+if [ "$FEED" == "$ZERO_ADDRESS" ]; then
+    seth send $BORROWER_DEPLOYER 'deployFeed()'
+    FEED=$(seth call $BORROWER_DEPLOYER 'feed()(address)')
+fi
+echo "FEED = $FEED\n"
+
 SHELF="$(seth call $BORROWER_DEPLOYER 'shelf()(address)')"
-echo "SHELF = $SHELF"
+if [ "$SHELF" == "$ZERO_ADDRESS" ]; then
+    seth send $BORROWER_DEPLOYER 'deployShelf()'
+    SHELF="$(seth call $BORROWER_DEPLOYER 'shelf()(address)')"
+fi
+echo "SHELF = $SHELF\n"
 
-message "finalize borrower contracts"
-seth send $BORROWER_DEPLOYER 'deploy()'
-
-success_msg Borrower Contracts deployed
+WIRED="$(seth call $BORROWER_DEPLOYER 'wired()(bool)')"
+if [ "$WIRED" == "false" ]; then
+    message "Wire borrower contracts"
+    seth send $BORROWER_DEPLOYER 'deploy()'
+fi
 
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {

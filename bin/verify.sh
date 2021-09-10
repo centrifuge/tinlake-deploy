@@ -21,13 +21,12 @@ loadValuesFromFile $ADDRESSES_FILE
 
 [[ -z "$GOVERNANCE" ]] && GOVERNANCE="$ETH_FROM"
 
-message verify root $ROOT_CONTRACT
-dapp verify-contract --async 'src/root.sol:TinlakeRoot' $ROOT_CONTRACT "$ETH_FROM" "$GOVERNANCE"
+# message verify root $ROOT_CONTRACT
+# dapp verify-contract --async 'src/root.sol:TinlakeRoot' $ROOT_CONTRACT "$ETH_FROM" "$GOVERNANCE"
 
 
-message verify borrower contracts
-message verify borrower deployer $BORROWER_DEPLOYER
-dapp verify-contract --async "src/borrower/deployer.sol:BorrowerDeployer" $BORROWER_DEPLOYER $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $FEED_FAB $TINLAKE_CURRENCY '"Tinlake Loan Token"' '"TLNFT"' $DISCOUNT_RATE
+# message verify borrower deployer $BORROWER_DEPLOYER
+# dapp verify-contract --async "src/borrower/deployer.sol:BorrowerDeployer" $BORROWER_DEPLOYER $ROOT_CONTRACT $TITLE_FAB $SHELF_FAB $PILE_FAB $FEED_FAB $TINLAKE_CURRENCY '"Tinlake Loan Token"' '"TLNFT"' $DISCOUNT_RATE
 
 message verify title $TITLE 
 dapp verify-contract --async 'lib/tinlake-title/src/title.sol:Title' $TITLE '"Tinlake Loan Token"' '"TLNFT"'
@@ -41,7 +40,6 @@ dapp verify-contract --async 'src/borrower/feed/navfeed.sol:NAVFeed' $FEED
 message verify shelf $SHELF
 dapp verify-contract --async 'src/borrower/shelf.sol:Shelf' $SHELF $TINLAKE_CURRENCY $TITLE $PILE $FEED
 
-message verify lender contracts
 message verify lender deployer $LENDER_DEPLOYER
 dapp verify-contract --async "src/lender/deployer.sol:LenderDeployer" $LENDER_DEPLOYER $ROOT_CONTRACT $TINLAKE_CURRENCY $TRANCHE_FAB $MEMBERLIST_FAB $RESTRICTED_TOKEN_FAB $RESERVE_FAB $ASSESSOR_FAB $COORDINATOR_FAB $OPERATOR_FAB $POOL_ADMIN_FAB $MEMBER_ADMIN $ADAPTER_DEPLOYER
 
