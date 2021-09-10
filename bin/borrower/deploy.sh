@@ -46,7 +46,7 @@ addValuesToFile $DEPLOYMENT_FILE <<EOF
     "TITLE_FAB"               :  "$TITLE_FAB",
     "SHELF_FAB"               :  "$SHELF_FAB",
     "PILE_FAB"                :  "$PILE_FAB",
-    "FEED_FAB"                :  "$FEED_FAB",
+    "FEED_FAB"                :  "$FEED_FAB"
 }
 EOF
 
@@ -61,9 +61,9 @@ PILE="$(seth call $BORROWER_DEPLOYER 'pile()(address)')"
 echo "PILE = $PILE"
 
 if [ "$NAV_IMPLEMENTATION" == "creditline" ]; then
-    seth send $BORROWER_DEPLOYER 'deployFeed(bool)' true
+    seth send $BORROWER_DEPLOYER 'deployFeed()'
 else
-    seth send $BORROWER_DEPLOYER 'deployFeed(bool)' false
+    seth send $BORROWER_DEPLOYER 'deployFeed()'
 fi
 FEED=$(seth call $BORROWER_DEPLOYER 'feed()(address)')
 echo "FEED = $FEED"

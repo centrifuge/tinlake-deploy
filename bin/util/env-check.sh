@@ -210,18 +210,10 @@ if [ "$IS_MKR" == "true" ]; then
 fi
 
 
-if [[ -n "$ROOT_CONTRACT" ]]; then
+if [[ -n "$RESUME" ]]; then
     message Resuming deployment
-
-    echo "ROOT_CONTRACT = $ROOT_CONTRACT"
-
-    if [[ -n "$BORROWER_DEPLOYER" ]]; then
-        echo "BORROWER_DEPLOYER = $BORROWER_DEPLOYER"
-    fi
-
-    if [[ -n "$LENDER_DEPLOYER" ]]; then
-        echo "LENDER_DEPLOYER = $LENDER_DEPLOYER"
-    fi
+    DEPLOYMENT_FILE="./../deployments/addresses_$(seth chain).json"
+    cat $DEPLOYMENT_FILE
 fi
 
 printf "\n\n"
