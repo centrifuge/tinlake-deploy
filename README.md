@@ -123,24 +123,11 @@ The default filepath of the configfile is: `./config_$(seth chain).json`
 `seth chain` returns the name of the current chain based on the provided
 
 ### Resuming a deployment
-If a deployment failed inbetween, you can resume the deployment. If it failed before the borrower deployer step was reached, you can run:
+If a deployment failed inbetween, you can resume the deployment. You can do this by running:
 
 ```bash
-ROOT_CONTRACT="REPLACE" make deploy
+RESUME=1 make deploy
 ```
-
-If it failed after the borrower deployer step was reached, but before the lender deployer, you can run:
-
-```bash
-ROOT_CONTRACT="REPLACE" BORROWER_DEPLOYER="REPLACE" make deploy
-```
-
-And finally, if it failed after the lender deployer step, you can run:
-
-```bash
-ROOT_CONTRACT="REPLACE" BORROWER_DEPLOYER="REPLACE" LENDER_DEPLOYER="REPLACE" make deploy
-```
-
 
 
 ## Local Test Deployment of Contracts

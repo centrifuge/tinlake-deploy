@@ -35,6 +35,8 @@ else
     loadValuesFromFile $DEPLOYMENT_FILE
 fi
 
+START_ETH_BALANCE=$(seth balance $ETH_FROM)
+
 # deploy root contract
 source ./root/deploy.sh
 
@@ -61,8 +63,12 @@ if [ "$DEPLOYED" == "false" ]; then
     seth send $ROOT_CONTRACT 'deploy()'
 fi
 
-success_msg "Tinlake deployment $(seth chain)"
-success_msg "Deployment file: $(realpath $DEPLOYMENT_FILE)"
+END_ETH_BALANCE=$(seth balance $ETH_FROM)
+ETH_SPENT="$((START_ETH_BALANCE-END_ETH_BALANCE))"
+
+echo "Tinlake deployment $(seth chain)"
+echo "Deployment file: $(realpath $DEPLOYMENT_FILE)"
+echo "ETH spent: $(echo "$ETH_SPENT/10^18" | bc -l) ETH"
 
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {

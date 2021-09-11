@@ -161,12 +161,12 @@ if [ "$IS_MKR" == "true" ]; then
     fi
     echo "CLERK = $CLERK"
 
-    MAKER_GMR=$(seth call $ADAPTER_DEPLOYER 'mgr()(address)')
-    if [ "$MAKER_GMR" == "$ZERO_ADDRESS" ]; then
+    MAKER_MGR=$(seth call $ADAPTER_DEPLOYER 'mgr()(address)')
+    if [ "$MAKER_MGR" == "$ZERO_ADDRESS" ]; then
         seth send $ADAPTER_DEPLOYER 'deployMgr(address,address,address,address,address,address,address,address,uint)' $MKR_DAI $MKR_DAI_JOIN $MKR_END $MKR_VAT $MKR_VOW $MKR_LIQ $MKR_SPOTTER $MKR_JUG $MKR_MAT_BUFFER
-        MAKER_GMR=$(seth call $ADAPTER_DEPLOYER 'mgr()(address)')
+        MAKER_MGR=$(seth call $ADAPTER_DEPLOYER 'mgr()(address)')
     fi
-    echo "MAKER_GMR = $MAKER_GMR"
+    echo "MAKER_MGR = $MAKER_MGR"
 fi
 
 addValuesToFile $DEPLOYMENT_FILE <<EOF
