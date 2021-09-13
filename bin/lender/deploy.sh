@@ -70,6 +70,7 @@ CHALLENGE_TIME=$(seth --to-uint256 $CHALLENGE_TIME)
 SENIOR_INTEREST_RATE=$(seth --to-uint256 $SENIOR_INTEREST_RATE)
 
 DEPLOYER="$(seth call $LENDER_DEPLOYER 'deployer()(address)')"
+# deployer address equals zero if main deploy function has been already called
 if [ "$DEPLOYER" == "$ETH_FROM" ]; then
     seth send $LENDER_DEPLOYER 'init(uint,uint,uint,uint,uint,string,string,string,string)' $MIN_SENIOR_RATIO $MAX_SENIOR_RATIO $MAX_RESERVE $CHALLENGE_TIME $SENIOR_INTEREST_RATE "\"$SENIOR_TOKEN_NAME\"" "\"$SENIOR_TOKEN_SYMBOL\"" "\"$JUNIOR_TOKEN_NAME\"" "\"$JUNIOR_TOKEN_SYMBOL\""
 fi
