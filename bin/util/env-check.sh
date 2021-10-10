@@ -124,30 +124,30 @@ echo "NAV_IMPLEMENTATION = $NAV_IMPLEMENTATION"
 # Admin Setup
 message Admin Setup
 
-if [[ -z "$POOL_ADMIN1" ]]; then
-    error_exit "POOL_ADMIN1 is not defined"
+if [[ -z "$LEVEL3_ADMIN1" ]]; then
+    error_exit "LEVEL3_ADMIN1 is not defined"
 fi
-echo "POOL_ADMIN1 = $POOL_ADMIN1"
+echo "LEVEL3_ADMIN1 = $LEVEL3_ADMIN1"
 
-if [[ -z "$POOL_ADMIN2" ]]; then
-    error_exit "POOL_ADMIN2 is not defined"
+if [[ -z "$LEVEL1_ADMIN2" ]]; then
+    error_exit "LEVEL1_ADMIN2 is not defined"
 fi
-echo "POOL_ADMIN2 = $POOL_ADMIN2"
+echo "LEVEL1_ADMIN2 = $LEVEL1_ADMIN2"
 
-if [[ -z "$POOL_ADMIN3" ]]; then
-    error_exit "POOL_ADMIN3 is not defined"
+if [[ -z "$LEVEL1_ADMIN3" ]]; then
+    error_exit "LEVEL1_ADMIN3 is not defined"
 fi
-echo "POOL_ADMIN3 = $POOL_ADMIN3"
+echo "LEVEL1_ADMIN3 = $LEVEL1_ADMIN3"
 
-if [[ -z "$POOL_ADMIN4" ]]; then
-    error_exit "POOL_ADMIN4 is not defined"
+if [[ -z "$LEVEL1_ADMIN4" ]]; then
+    error_exit "LEVEL1_ADMIN4 is not defined"
 fi
-echo "POOL_ADMIN4 = $POOL_ADMIN4"
+echo "LEVEL1_ADMIN4 = $LEVEL1_ADMIN4"
 
-if [[ -z "$POOL_ADMIN5" ]]; then
-    error_exit "POOL_ADMIN5 is not defined"
+if [[ -z "$LEVEL1_ADMIN5" ]]; then
+    error_exit "LEVEL1_ADMIN5 is not defined"
 fi
-echo "POOL_ADMIN5 = $POOL_ADMIN5"
+echo "LEVEL1_ADMIN5 = $LEVEL1_ADMIN5"
 
 if [[ -z "$AO_POOL_ADMIN" ]]; then
     error_exit "AO_POOL_ADMIN is not defined"

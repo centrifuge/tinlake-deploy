@@ -28,11 +28,12 @@ For a deployment, a config file needs to be defined.
   "CHALLENGE_TIME": "<<NUMBER>>",
   "DISCOUNT_RATE": "<<NUMBER>>",
   "MEMBER_ADMIN": "<<ADDRESS>>",
-  "POOL_ADMIN1": "<<ADDRESS>>",
-  "POOL_ADMIN2": "<<ADDRESS>>",
-  "POOL_ADMIN3": "<<ADDRESS>>",
-  "POOL_ADMIN4": "<<ADDRESS>>",
-  "POOL_ADMIN5": "<<ADDRESS>>",
+  "LEVEL3_ADMIN1": "<<ADDRESS>>",
+  "LEVEL1_ADMIN1": "<<ADDRESS>>",
+  "LEVEL1_ADMIN2": "<<ADDRESS>>",
+  "LEVEL1_ADMIN3": "<<ADDRESS>>",
+  "LEVEL1_ADMIN4": "<<ADDRESS>>",
+  "LEVEL1_ADMIN5": "<<ADDRESS>>",
   "AO_POOL_ADMIN": "<<ADDRESS>>",
   "ORACLE": "<<ADDRESS>>"
 }
