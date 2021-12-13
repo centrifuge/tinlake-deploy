@@ -52,9 +52,9 @@ message Wire borrower and lender side
 DEPLOY_USR="$(seth call $ROOT_CONTRACT 'deployUsr()(address)')"
 if [ "$DEPLOY_USR" == "$ETH_FROM" ]; then
     if [ "$IS_MKR" == "true" ]; then
-        seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory,address)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$LEVEL1_ADMIN1,$LEVEL1_ADMIN2,$LEVEL1_ADMIN3,$LEVEL1_ADMIN4,$LEVEL1_ADMIN5,$AO_POOL_ADMIN] $LEVEL3_ADMIN1"
+        seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory,address)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$LEVEL1_ADMIN1,$LEVEL1_ADMIN2,$LEVEL1_ADMIN3,$LEVEL1_ADMIN4,$LEVEL1_ADMIN5,$AO_POOL_ADMIN]" $LEVEL3_ADMIN1
     else
-        seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory,address)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$LEVEL1_ADMIN1,$LEVEL1_ADMIN2,$LEVEL1_ADMIN3,$LEVEL1_ADMIN4,$LEVEL1_ADMIN5,$AO_POOL_ADMIN] $LEVEL3_ADMIN1"
+        seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory,address)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$LEVEL1_ADMIN1,$LEVEL1_ADMIN2,$LEVEL1_ADMIN3,$LEVEL1_ADMIN4,$LEVEL1_ADMIN5,$AO_POOL_ADMIN]" $LEVEL3_ADMIN1
     fi
 fi
 
