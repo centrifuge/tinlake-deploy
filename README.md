@@ -28,28 +28,36 @@ For a deployment, a config file needs to be defined.
   "CHALLENGE_TIME": "<<NUMBER>>",
   "DISCOUNT_RATE": "<<NUMBER>>",
   "MEMBER_ADMIN": "<<ADDRESS>>",
-  "POOL_ADMIN1": "<<ADDRESS>>",
-  "POOL_ADMIN2": "<<ADDRESS>>",
-  "POOL_ADMIN3": "<<ADDRESS>>",
-  "POOL_ADMIN4": "<<ADDRESS>>",
-  "POOL_ADMIN5": "<<ADDRESS>>",
+  "LEVEL3_ADMIN1": "<<ADDRESS>>",
+  "LEVEL1_ADMIN1": "<<ADDRESS>>",
+  "LEVEL1_ADMIN2": "<<ADDRESS>>",
+  "LEVEL1_ADMIN3": "<<ADDRESS>>",
+  "LEVEL1_ADMIN4": "<<ADDRESS>>",
+  "LEVEL1_ADMIN5": "<<ADDRESS>>",
   "AO_POOL_ADMIN": "<<ADDRESS>>",
   "ORACLE": "<<ADDRESS>>"
 }
 ```
 
-### NFT Feed
+### NAV Feed
 
-It is possible to use the NFT Feed or the NAV Feed
+It is possible to use the Principal NAV Feed or the Creditline NAV Feed
 
-To use the NAV Feed, set FEED to nav
+You can either set:
 
 ```json
 {
- "FEED": "nav"
+ "NAV_IMPLEMENTATION": "principal"
 }
 ```
-Otherwise, the FEED will default to the NFT Feed
+
+Or:
+
+```json
+{
+ "NAV_IMPLEMENTATION": "creditline"
+}
+```
 
 ### Optional Parameters
 
@@ -57,6 +65,7 @@ Otherwise, the FEED will default to the NFT Feed
 {
   "ETH_GAS": "<<NUMBER>>",
   "ETH_GAS_PRICE": "<<NUMBER>>",
+  "ETH_PRIO_FEE": "<<NUMBER>>",
   "ETH_KEYSTORE": "<<DIR PATH>>",
   "ETH_PASSWORD": "<<FILE PATH>>",
   "GOVERNANCE": "<<ADDRESS>>",
@@ -83,6 +92,7 @@ The config file can contain addresses for Fabs.
 ```json
 {
   "IS_MKR": true,
+  "WIRE_CLERK": false,
   "MKR_MGR_FAB": "<<ADDRESS>>",
   "MKR_DAI": "<<ADDRESS>>",
   "MKR_DAI_JOIN": "<<ADDRESS>>",
@@ -108,10 +118,18 @@ make build
 For deploying the contracts execute the following script.
 
 ```bash
-./bin/deploy.sh <<Optional: Path to config file>>
+make deploy
 ```
 The default filepath of the configfile is: `./config_$(seth chain).json`
 `seth chain` returns the name of the current chain based on the provided
+
+### Resuming a deployment
+If a deployment failed inbetween, you can resume the deployment. You can do this by running:
+
+```bash
+RESUME=1 make deploy
+```
+
 
 ## Local Test Deployment of Contracts
 

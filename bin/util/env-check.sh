@@ -9,30 +9,37 @@ message Enviroment Variables
 if [[ -z "$ETH_RPC_URL" ]]; then
     error_exit "ETH_RPC_URL is not defined"
 fi
-echo "ETH_RPC_URL = $ETH_RPC_URL"
+echo "RPC URL = $ETH_RPC_URL"
 
 if [[ -z "$ETH_FROM" ]]; then
     error_exit "ETH_FROM is not defined"
 fi
-echo "ETH_FROM = $ETH_FROM"
+echo "Account = $ETH_FROM"
+
+printf "\n"
 
 if [[ -z "$ETH_GAS" ]]; then
     warning_msg "ETH_GAS is not defined"
 fi
-echo "ETH_GAS = $(printf %.0f $(echo "$ETH_GAS/10^6" | bc -l)) million"
+echo "Gas limit = $(printf %.0f $(echo "$ETH_GAS/10^6" | bc -l)) million"
 
-# if [[ -z "$GASNOW_PRICE_ESTIMATE" ]]; then
-echo "ETH_GAS_PRICE = $(printf %.0f $(echo "$ETH_GAS_PRICE/10^9" | bc -l)) gwei"
-# else
-#     export ETH_GAS_PRICE=$(curl -s "https://www.gasnow.org/api/v3/gas/price?utm_source=tinlake-deploy" | jq -r ".data.$GASNOW_PRICE_ESTIMATE")
-#     echo "ETH_GAS_PRICE = $(printf %.0f $(echo "$ETH_GAS_PRICE/10^9" | bc -l)) gwei [$GASNOW_PRICE_ESTIMATE]"
-# fi
+if [[ -z "$ETH_GAS_PRICE" ]]; then
+    error_exit "ETH_GAS_PRICE is not defined"
+fi
+
+if [[ -z "$ETH_PRIO_FEE" ]]; then
+    echo "WARN: Not using EIP 1559 transactions, since ETH_PRIO_FEE is not defined"
+    echo "Fee Per Gas = $(printf %.0f $(echo "$ETH_GAS_PRICE/10^9" | bc -l)) gwei"
+else
+    echo "Max Priority Fee Per Gas = $(printf %.0f $(echo "$ETH_PRIO_FEE/10^9" | bc -l)) gwei"
+    echo "Max Fee Per Gas = $(printf %.0f $(echo "$ETH_GAS_PRICE/10^9" | bc -l)) gwei"
+fi
 
 printf "\n"
 
-echo "solc version = $(echo $DAPP_SOLC_VERSION)"
-echo "network = $(seth chain)"
-echo "balance = $(echo "$(seth balance $ETH_FROM)/10^18" | bc -l) ETH"
+echo "Solidity version = $(echo $DAPP_SOLC_VERSION)"
+echo "Network = $(seth chain)"
+echo "Balance = $(echo "$(seth balance $ETH_FROM)/10^18" | bc -l) ETH"
 
 # Addresses
 message Contract Addresses
@@ -109,38 +116,38 @@ if [[ -z "$SENIOR_TOKEN_SYMBOL" ]]; then
 fi
 echo "SENIOR_TOKEN_SYMBOL = $SENIOR_TOKEN_SYMBOL"
 
-if [[ -z "$FEED" ]]; then
-    error_exit "FEED is not defined"
+if [[ -z "$NAV_IMPLEMENTATION" ]]; then
+    error_exit "NAV_IMPLEMENTATION is not defined"
 fi
-echo "FEED = $FEED"
+echo "NAV_IMPLEMENTATION = $NAV_IMPLEMENTATION"
 
 # Admin Setup
 message Admin Setup
 
-if [[ -z "$POOL_ADMIN1" ]]; then
-    error_exit "POOL_ADMIN1 is not defined"
+if [[ -z "$LEVEL3_ADMIN1" ]]; then
+    error_exit "LEVEL3_ADMIN1 is not defined"
 fi
-echo "POOL_ADMIN1 = $POOL_ADMIN1"
+echo "LEVEL3_ADMIN1 = $LEVEL3_ADMIN1"
 
-if [[ -z "$POOL_ADMIN2" ]]; then
-    error_exit "POOL_ADMIN2 is not defined"
+if [[ -z "$LEVEL1_ADMIN2" ]]; then
+    error_exit "LEVEL1_ADMIN2 is not defined"
 fi
-echo "POOL_ADMIN2 = $POOL_ADMIN2"
+echo "LEVEL1_ADMIN2 = $LEVEL1_ADMIN2"
 
-if [[ -z "$POOL_ADMIN3" ]]; then
-    error_exit "POOL_ADMIN3 is not defined"
+if [[ -z "$LEVEL1_ADMIN3" ]]; then
+    error_exit "LEVEL1_ADMIN3 is not defined"
 fi
-echo "POOL_ADMIN3 = $POOL_ADMIN3"
+echo "LEVEL1_ADMIN3 = $LEVEL1_ADMIN3"
 
-if [[ -z "$POOL_ADMIN4" ]]; then
-    error_exit "POOL_ADMIN4 is not defined"
+if [[ -z "$LEVEL1_ADMIN4" ]]; then
+    error_exit "LEVEL1_ADMIN4 is not defined"
 fi
-echo "POOL_ADMIN4 = $POOL_ADMIN4"
+echo "LEVEL1_ADMIN4 = $LEVEL1_ADMIN4"
 
-if [[ -z "$POOL_ADMIN5" ]]; then
-    error_exit "POOL_ADMIN5 is not defined"
+if [[ -z "$LEVEL1_ADMIN5" ]]; then
+    error_exit "LEVEL1_ADMIN5 is not defined"
 fi
-echo "POOL_ADMIN5 = $POOL_ADMIN5"
+echo "LEVEL1_ADMIN5 = $LEVEL1_ADMIN5"
 
 if [[ -z "$AO_POOL_ADMIN" ]]; then
     error_exit "AO_POOL_ADMIN is not defined"
@@ -200,6 +207,13 @@ if [ "$IS_MKR" == "true" ]; then
         warning_msg "MKR_MAT_BUFFER is not defined"
     fi
     echo "MKR_MAT_BUFFER = $(printf %.2f $(echo "$MKR_MAT_BUFFER/10^25" | bc -l))%"
+fi
+
+
+if [[ -n "$RESUME" ]]; then
+    message Resuming deployment
+    DEPLOYMENT_FILE="./../deployments/addresses_$(seth chain).json"
+    cat $DEPLOYMENT_FILE
 fi
 
 printf "\n\n"

@@ -27,6 +27,16 @@ mkdir -p $BIN_DIR/../deployments
 
 [[ -z "$GOVERNANCE" ]] && GOVERNANCE="$ETH_FROM"
 
+DEPLOYMENT_FILE="./../deployments/addresses_$(seth chain).json"
+if [[ -z "$RESUME" ]]; then
+    # empty existing deployment file
+    truncate -s 0 $DEPLOYMENT_FILE
+else
+    loadValuesFromFile $DEPLOYMENT_FILE
+fi
+
+START_ETH_BALANCE=$(seth balance $ETH_FROM)
+
 # deploy root contract
 source ./root/deploy.sh
 
@@ -37,18 +47,28 @@ source ./borrower/deploy.sh
 source ./lender/deploy.sh
 
 # finalize deployment
-message Finalize Deployment
+message Wire borrower and lender side
 
-if [ "$IS_MKR" == "true" ]; then
-    seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]"
-else
-    seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$POOL_ADMIN1,$POOL_ADMIN2,$POOL_ADMIN3,$POOL_ADMIN4,$POOL_ADMIN5,$AO_POOL_ADMIN]"
+DEPLOY_USR="$(seth call $ROOT_CONTRACT 'deployUsr()(address)')"
+if [ "$DEPLOY_USR" == "$ETH_FROM" ]; then
+    if [ "$IS_MKR" == "true" ]; then
+        seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory,address)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$LEVEL1_ADMIN1,$LEVEL1_ADMIN2,$LEVEL1_ADMIN3,$LEVEL1_ADMIN4,$LEVEL1_ADMIN5,$AO_POOL_ADMIN]" $LEVEL3_ADMIN1
+    else
+        seth send $ROOT_CONTRACT 'prepare(address,address,address,address,address[] memory,address)' $LENDER_DEPLOYER $BORROWER_DEPLOYER $ADAPTER_DEPLOYER $ORACLE "[$LEVEL1_ADMIN1,$LEVEL1_ADMIN2,$LEVEL1_ADMIN3,$LEVEL1_ADMIN4,$LEVEL1_ADMIN5,$AO_POOL_ADMIN]" $LEVEL3_ADMIN1
+    fi
 fi
 
-seth send $ROOT_CONTRACT 'deploy()'
+DEPLOYED="$(seth call $ROOT_CONTRACT 'deployed()(bool)')"
+if [ "$DEPLOYED" == "false" ]; then
+    seth send $ROOT_CONTRACT 'deploy()'
+fi
 
-success_msg "Tinlake Deployment $(seth chain)"
-success_msg "Deployment File: $(realpath $DEPLOYMENT_FILE)"
+END_ETH_BALANCE=$(seth balance $ETH_FROM)
+ETH_SPENT="$((START_ETH_BALANCE-END_ETH_BALANCE))"
+
+echo "Tinlake deployment $(seth chain)"
+echo "Deployment file: $(realpath $DEPLOYMENT_FILE)"
+echo "ETH spent: $(echo "$ETH_SPENT/10^18" | bc -l) ETH"
 
 addValuesToFile $DEPLOYMENT_FILE <<EOF
 {
@@ -58,5 +78,3 @@ addValuesToFile $DEPLOYMENT_FILE <<EOF
 EOF
 
 cat $DEPLOYMENT_FILE
-
-success_msg DONE
